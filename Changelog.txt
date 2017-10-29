@@ -1,0 +1,5 @@
+Description: 
+An automatic updater library for your .NET applications.
+
+Version 0.1a - 09/01/2017
+-	Initial release.

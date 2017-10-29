@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comet", "Comet\Comet.csproj", "{5BFB058C-944E-45BE-9DD2-097C9CF171BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5BFB058C-944E-45BE-9DD2-097C9CF171BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BFB058C-944E-45BE-9DD2-097C9CF171BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BFB058C-944E-45BE-9DD2-097C9CF171BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BFB058C-944E-45BE-9DD2-097C9CF171BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4CF242FE-6AC0-431C-B09F-E7FCA8E6A93E}
+	EndGlobalSection
+EndGlobal
