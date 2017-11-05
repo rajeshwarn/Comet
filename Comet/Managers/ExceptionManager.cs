@@ -38,6 +38,14 @@
             Console.Write("The value is null or empty. The field '" + field + "' must contain a value.");
         }
 
+        /// <summary>Creates a web exception file not found on remote server.</summary>
+        /// <param name="file">The path to the file.</param>
+        public static void ShowSourceNotFoundException(string file)
+        {
+            WriteException("The remote server cannot find the specified file.");
+            WriteException("Path: '" + file + "'");
+        }
+
         /// <summary>Creates an exception message.</summary>
         /// <param name="message">The message.</param>
         public static void WriteException(string message)

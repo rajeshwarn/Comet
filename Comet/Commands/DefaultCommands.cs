@@ -266,7 +266,7 @@
         {
             if (string.IsNullOrEmpty(path))
             {
-                ConsoleManager.WriteOutput("Open a package file.");
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[10]);
                 ConsoleManager.WriteOutput("Usage: Open [path]");
                 Console.WriteLine();
                 return string.Empty;
@@ -276,7 +276,7 @@
                 try
                 {
                     PackageManager.WorkingPath = path;
-                    PackageManager.WorkingPackage = new Package(path, Encoding.UTF8);
+                    PackageManager.WorkingPackage = new Package(path);
 
                     if (!PackageManager.WorkingPackage.IsEmpty)
                     {
@@ -356,11 +356,55 @@
         }
 
         /// <summary>Updates an application.</summary>
+        /// <param name="path">The path.</param>
         /// <returns>The <see cref="string" />.</returns>
-        public static string Update()
+        public static string Update(string path = "")
         {
-            ConsoleManager.WriteOutput("Updates the application.");
-            Console.Write(Environment.NewLine);
+            if (string.IsNullOrEmpty(path) || !NetworkManager.SourceExists(path))
+            {
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[11]);
+                ConsoleManager.WriteOutput("Usage: Update [path]");
+                Console.WriteLine();
+            }
+            else
+            {
+                try
+                {
+                    PackageManager.WorkingPath = path;
+                    PackageManager.WorkingPackage = new Package(path);
+
+                    if (!PackageManager.WorkingPackage.IsEmpty)
+                    {
+                        StringManager.DrawPackageTable(PackageManager.WorkingPackage);
+                    }
+
+                    Console.WriteLine();
+
+                    ConsoleManager.WriteOutput("Current version: " + Settings.CurrentVersion);
+                    ConsoleManager.WriteOutput("Latest version: " + PackageManager.WorkingPackage.Version);
+
+                    bool _updateRequired = ApplicationManager.CompareVersion(Settings.CurrentVersion, PackageManager.WorkingPackage.Version);
+
+                    string _updateMessage;
+                    if (_updateRequired)
+                    {
+                        _updateMessage = "You don't have the latest version.";
+                    }
+                    else
+                    {
+                        _updateMessage = "You have the latest version.";
+                    }
+
+                    ConsoleManager.WriteOutput(_updateMessage);
+                }
+                catch (Exception e)
+                {
+                    ExceptionManager.WriteException(e.Message);
+                }
+
+                return string.Empty;
+            }
+
             return string.Empty;
         }
 

@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
+    using System.Net;
     using System.Runtime.InteropServices;
     using System.Text;
     using System.Windows.Forms;
@@ -59,6 +60,13 @@
         public Package()
         {
             Update(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, new Version(0, 0, 0, 0));
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Package" /> class.</summary>
+        /// <param name="url">The url.</param>
+        public Package(string url)
+        {
+            Load(url);
         }
 
         /// <summary>Initializes a new instance of the <see cref="Package" /> class.</summary>
@@ -260,9 +268,13 @@
                 XDocument _xPackage = XDocument.Load(url);
                 Deserialize(_xPackage);
             }
+            catch (WebException)
+            {
+                ExceptionManager.ShowSourceNotFoundException(url);
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                ExceptionManager.WriteException(e.Message);
             }
         }
 
