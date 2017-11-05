@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Comet>
+	<ChangeLog>Initial release.</ChangeLog>
+	<Download>http://example.com/</Download>
+	<Filename>Comet.exe</Filename>
+	<Name>Comet</Name>
+	<Release>01/01/2017</Release>
+	<Version>1.0.0.1</Version>
+</Comet>
