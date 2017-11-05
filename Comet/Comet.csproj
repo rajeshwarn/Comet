@@ -94,7 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Comet.ico" />
-    <Content Include="Update.xml" />
+    <None Include="Update.package" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.2">
