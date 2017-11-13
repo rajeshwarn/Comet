@@ -28,9 +28,10 @@
                         "Displays network information.",
                         "Creates a new package.",
                         "Open a local or remote package file.",
-                        "Update the application.",
-                        "Reads the  loaded package from memory.",
-                        "Saves the working package to a file."
+                        "Reads the loaded package from memory.",
+                        "Saves the working package to a file.",
+                        "Unloads the working package.",
+                        "Update the application."
                     };
 
                 return _listDescriptions;

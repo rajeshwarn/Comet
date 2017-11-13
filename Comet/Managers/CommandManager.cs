@@ -38,9 +38,10 @@
                     { "Net", Descriptions.CommandDescriptions[8] },
                     { "New", Descriptions.CommandDescriptions[9] },
                     { "Open", Descriptions.CommandDescriptions[10] },
-                    { "Update", Descriptions.CommandDescriptions[11] },
-                    { "Read", Descriptions.CommandDescriptions[12] },
-                    { "Save", Descriptions.CommandDescriptions[13] }
+                    { "Read", Descriptions.CommandDescriptions[11] },
+                    { "Save", Descriptions.CommandDescriptions[12] },
+                    { "Unload", Descriptions.CommandDescriptions[13] },
+                    { "Update", Descriptions.CommandDescriptions[14] }
                 };
         }
 

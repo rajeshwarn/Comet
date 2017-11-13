@@ -221,7 +221,7 @@
         /// <returns>The <see cref="string" />.</returns>
         public static string Info()
         {
-            if (PackageManager.WorkingPackage == null)
+            if ((PackageManager.WorkingPackage == null) || string.IsNullOrWhiteSpace(PackageManager.WorkingPath))
             {
                 ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[7]);
                 ConsoleManager.WriteOutput("Usage: Info");
@@ -265,6 +265,7 @@
         /// <returns>The <see cref="string" />.</returns>
         public static string New()
         {
+            PackageManager.WorkingPath = string.Empty;
             PackageManager.WorkingPackage = new Package();
             ConsoleManager.WriteOutput("Created a new package.");
             Console.Write(Environment.NewLine);
@@ -312,7 +313,7 @@
         {
             if (PackageManager.WorkingPackage == null)
             {
-                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[12]);
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[11]);
                 ConsoleManager.WriteOutput("Usage: Read");
                 Console.WriteLine();
             }
@@ -339,7 +340,7 @@
         {
             if (string.IsNullOrEmpty(path) || (PackageManager.WorkingPackage == null))
             {
-                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[13]);
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[12]);
                 ConsoleManager.WriteOutput("Usage: Save [path]");
                 Console.WriteLine();
             }
@@ -367,6 +368,34 @@
             return string.Empty;
         }
 
+        /// <summary>Unload the working package.</summary>
+        /// <returns>The <see cref="string" />.</returns>
+        public static string Unload()
+        {
+            if (PackageManager.WorkingPackage == null)
+            {
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[13]);
+                ConsoleManager.WriteOutput("Usage: Unload");
+                Console.WriteLine();
+            }
+            else
+            {
+                try
+                {
+                    PackageManager.WorkingPath = string.Empty;
+                    PackageManager.WorkingPackage = new Package();
+                    ConsoleManager.WriteOutput("Unloaded package.");
+                    Console.WriteLine();
+                }
+                catch (Exception e)
+                {
+                    ExceptionManager.WriteException(e.Message);
+                }
+            }
+
+            return string.Empty;
+        }
+
         /// <summary>Updates an application.</summary>
         /// <param name="path">The path.</param>
         /// <returns>The <see cref="string" />.</returns>
@@ -374,7 +403,7 @@
         {
             if (string.IsNullOrEmpty(path) || !NetworkManager.SourceExists(path))
             {
-                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[11]);
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[14]);
                 ConsoleManager.WriteOutput("Usage: Update [path]");
                 Console.WriteLine();
             }
