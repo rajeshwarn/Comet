@@ -75,7 +75,7 @@
                             ConsoleManager.WriteOutput("Download link: " + url);
                             ConsoleManager.WriteOutput("Download output: " + fileName);
                             Console.WriteLine();
-                            UpdateManager.Download(new Uri(url), fileName);
+                            NetworkManager.Download(new Uri(url), fileName);
                         });
 
                     _downloadThread.Start();
@@ -396,6 +396,61 @@
             return string.Empty;
         }
 
+        /// <summary>Check for update.</summary>
+        /// <param name="path">The path.</param>
+        /// <returns>The <see cref="string" />.</returns>
+        public static string Check(string path = "")
+        {
+            if (string.IsNullOrEmpty(path) || !NetworkManager.SourceExists(path))
+            {
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[14]);
+                ConsoleManager.WriteOutput("Usage: Update [path]");
+                Console.WriteLine();
+            }
+            else
+            {
+                try
+                {
+                    PackageManager.WorkingPath = path;
+                    PackageManager.WorkingPackage = new Package(path);
+
+                    if (!PackageManager.WorkingPackage.IsEmpty)
+                    {
+                        StringManager.DrawPackageTable(PackageManager.WorkingPackage);
+                    }
+
+                    Console.WriteLine();
+
+                    ConsoleManager.WriteOutput("Current version: " + Settings.CurrentVersion);
+                    ConsoleManager.WriteOutput("Latest version: " + PackageManager.WorkingPackage.Version);
+
+                    bool _updateRequired = ApplicationManager.CompareVersion(Settings.CurrentVersion, PackageManager.WorkingPackage.Version);
+
+                    string _updateMessage;
+                    if (_updateRequired)
+                    {
+                        _updateMessage = "You don't have the latest version.";
+
+                        // TODO: Ask to update.
+                    }
+                    else
+                    {
+                        _updateMessage = "You have the latest version.";
+                    }
+
+                    ConsoleManager.WriteOutput(_updateMessage);
+                }
+                catch (Exception e)
+                {
+                    ExceptionManager.WriteException(e.Message);
+                }
+
+                return string.Empty;
+            }
+
+            return string.Empty;
+        }
+
         /// <summary>Updates an application.</summary>
         /// <param name="path">The path.</param>
         /// <returns>The <see cref="string" />.</returns>
@@ -430,6 +485,8 @@
                     if (_updateRequired)
                     {
                         _updateMessage = "You don't have the latest version.";
+
+                        // TODO: Ask to update.
                     }
                     else
                     {
