@@ -218,25 +218,37 @@
         }
 
         /// <summary>Displays details about the working package file.</summary>
-        public static void Info()
+        /// <returns>The <see cref="string" />.</returns>
+        public static string Info()
         {
-            string _file;
-            string _path;
-
-            if (!PackageManager.WorkingPackage.IsEmpty)
+            if (PackageManager.WorkingPackage == null)
             {
-                _file = Path.GetFileName(PackageManager.WorkingPath);
-                _path = Path.GetDirectoryName(PackageManager.WorkingPath);
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[7]);
+                ConsoleManager.WriteOutput("Usage: Info");
+                Console.WriteLine();
+                ConsoleManager.WriteOutput("No package has been loaded.");
+                Console.WriteLine();
             }
             else
             {
-                _file = "No package has been loaded.";
-                _path = "No package has been loaded.";
+                try
+                {
+                    string _file = Path.GetFileName(PackageManager.WorkingPath);
+                    string _path = Path.GetFullPath(PackageManager.WorkingPath);
+                    string _directory = Path.GetDirectoryName(_path);
+
+                    ConsoleManager.WriteOutput("Package Information:");
+                    ConsoleManager.WriteOutput("File: " + _file);
+                    ConsoleManager.WriteOutput("Path: " + _directory);
+                    Console.WriteLine();
+                }
+                catch (Exception e)
+                {
+                    ExceptionManager.WriteException(e.Message);
+                }
             }
 
-            ConsoleManager.WriteOutput("Package Information:");
-            ConsoleManager.WriteOutput("File: " + _file);
-            ConsoleManager.WriteOutput("Path: " + _path);
+            return string.Empty;
         }
 
         /// <summary>Displays network information.</summary>
