@@ -30,8 +30,8 @@ The [`Comet`](https://github.com/DarkByte7/Comet) repository is where we do deve
 - [Visual Studio 2017](https://www.visualstudio.com/downloads/)
 
 ## Compiling
-1. Open the project in Visual Studio and click build. To generate an ```Updater.dll``` file in ```Comet\Updater\bin\Debug```.
-2. Add the ```Updater.dll``` as a reference to your project. [How to: Add or Remove References in Visual Studio](https://msdn.microsoft.com/en-us/library/wkze6zky(v=vs.100).aspx).
+1. Open the project in Visual Studio and click build. To generate an `Comet.exe` file in `Comet\bin\Debug`.
+2. Add the `Comet.exe` as a reference to your project. [How to: Add or Remove References in Visual Studio](https://msdn.microsoft.com/en-us/library/wkze6zky(v=vs.100).aspx).
 3. Rebuild your project and it will now be available in the toolbox.
 
 ## Creating a Package
