@@ -265,7 +265,14 @@
         {
             try
             {
+                // TODO: Tests not done using async method
+                // Load using async with WebClient.
+                // WebClient _webClient = new WebClient();
+                // string _packageString = await _webClient.DownloadStringTaskAsync(url);
+
+                // Load from url
                 XDocument _xPackage = XDocument.Load(url);
+
                 Deserialize(_xPackage);
             }
             catch (WebException)

@@ -27,21 +27,21 @@
         {
             _commandDictionary = new Dictionary<string, string>
                 {
-                    { "Clear", Descriptions.CommandDescriptions[0] },
-                    { "Connect", Descriptions.CommandDescriptions[1] },
-                    { "Download", Descriptions.CommandDescriptions[2] },
-                    { "Edit", Descriptions.CommandDescriptions[3] },
-                    { "Exit", Descriptions.CommandDescriptions[4] },
-                    { "Get", Descriptions.CommandDescriptions[5] },
-                    { "Help", Descriptions.CommandDescriptions[6] },
-                    { "Info", Descriptions.CommandDescriptions[7] },
-                    { "Net", Descriptions.CommandDescriptions[8] },
-                    { "New", Descriptions.CommandDescriptions[9] },
-                    { "Open", Descriptions.CommandDescriptions[10] },
-                    { "Read", Descriptions.CommandDescriptions[11] },
-                    { "Save", Descriptions.CommandDescriptions[12] },
-                    { "Unload", Descriptions.CommandDescriptions[13] },
-                    { "Update", Descriptions.CommandDescriptions[14] }
+                    { "Check", Descriptions.CommandDescriptions[0] },
+                    { "Clear", Descriptions.CommandDescriptions[1] },
+                    { "Connect", Descriptions.CommandDescriptions[2] },
+                    { "Download", Descriptions.CommandDescriptions[3] },
+                    { "Edit", Descriptions.CommandDescriptions[4] },
+                    { "Exit", Descriptions.CommandDescriptions[5] },
+                    { "Get", Descriptions.CommandDescriptions[6] },
+                    { "Help", Descriptions.CommandDescriptions[7] },
+                    { "Info", Descriptions.CommandDescriptions[8] },
+                    { "Net", Descriptions.CommandDescriptions[9] },
+                    { "New", Descriptions.CommandDescriptions[10] },
+                    { "Open", Descriptions.CommandDescriptions[11] },
+                    { "Read", Descriptions.CommandDescriptions[12] },
+                    { "Save", Descriptions.CommandDescriptions[13] },
+                    { "Unload", Descriptions.CommandDescriptions[14] }
                 };
         }
 

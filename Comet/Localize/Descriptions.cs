@@ -17,6 +17,7 @@
             {
                 var _listDescriptions = new List<string>
                     {
+                        "Checks the application for an update.",
                         "Clears the console output.",
                         "Connect to a host.",
                         "Download a package.",
@@ -30,8 +31,7 @@
                         "Open a local or remote package file.",
                         "Reads the loaded package from memory.",
                         "Saves the working package to a file.",
-                        "Unloads the working package.",
-                        "Update the application."
+                        "Unloads the working package."
                     };
 
                 return _listDescriptions;

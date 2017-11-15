@@ -20,6 +20,55 @@
     {
         #region Events
 
+        /// <summary>Check for an update.</summary>
+        /// <param name="executablePath">The path to the executable.</param>
+        /// <param name="packagePath">The path to the package source.</param>
+        /// <returns>The <see cref="string" />.</returns>
+        public static string Check(string executablePath = "", string packagePath = "")
+        {
+            if (string.IsNullOrEmpty(packagePath) || !NetworkManager.SourceExists(packagePath) || string.IsNullOrEmpty(executablePath))
+            {
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[0]);
+                ConsoleManager.WriteOutput("Usage: Check [executablePath] [packagePath]");
+                Console.WriteLine();
+            }
+            else
+            {
+                try
+                {
+                    PackageManager.WorkingPath = packagePath;
+                    PackageManager.WorkingPackage = new Package(packagePath);
+                    Version _currentVersion = ApplicationManager.GetFileVersion(executablePath);
+
+                    ConsoleManager.WriteOutput("Current version: " + _currentVersion);
+                    ConsoleManager.WriteOutput("Latest version: " + PackageManager.WorkingPackage.Version);
+
+                    bool _updateRequired = ApplicationManager.CompareVersion(_currentVersion, PackageManager.WorkingPackage.Version);
+
+                    string _updateMessage;
+                    if (_updateRequired)
+                    {
+                        _updateMessage = "You don't have the latest version.";
+                    }
+                    else
+                    {
+                        _updateMessage = "You have the latest version.";
+                    }
+
+                    ConsoleManager.WriteOutput(_updateMessage);
+                    Console.WriteLine();
+                }
+                catch (Exception e)
+                {
+                    ExceptionManager.WriteException(e.Message);
+                }
+
+                return string.Empty;
+            }
+
+            return string.Empty;
+        }
+
         /// <summary>Clears the console.</summary>
         public static void Clear()
         {
@@ -391,116 +440,6 @@
                 {
                     ExceptionManager.WriteException(e.Message);
                 }
-            }
-
-            return string.Empty;
-        }
-
-        /// <summary>Check for update.</summary>
-        /// <param name="path">The path.</param>
-        /// <returns>The <see cref="string" />.</returns>
-        public static string Check(string path = "")
-        {
-            if (string.IsNullOrEmpty(path) || !NetworkManager.SourceExists(path))
-            {
-                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[14]);
-                ConsoleManager.WriteOutput("Usage: Update [path]");
-                Console.WriteLine();
-            }
-            else
-            {
-                try
-                {
-                    PackageManager.WorkingPath = path;
-                    PackageManager.WorkingPackage = new Package(path);
-
-                    if (!PackageManager.WorkingPackage.IsEmpty)
-                    {
-                        StringManager.DrawPackageTable(PackageManager.WorkingPackage);
-                    }
-
-                    Console.WriteLine();
-
-                    ConsoleManager.WriteOutput("Current version: " + Settings.CurrentVersion);
-                    ConsoleManager.WriteOutput("Latest version: " + PackageManager.WorkingPackage.Version);
-
-                    bool _updateRequired = ApplicationManager.CompareVersion(Settings.CurrentVersion, PackageManager.WorkingPackage.Version);
-
-                    string _updateMessage;
-                    if (_updateRequired)
-                    {
-                        _updateMessage = "You don't have the latest version.";
-
-                        // TODO: Ask to update.
-                    }
-                    else
-                    {
-                        _updateMessage = "You have the latest version.";
-                    }
-
-                    ConsoleManager.WriteOutput(_updateMessage);
-                }
-                catch (Exception e)
-                {
-                    ExceptionManager.WriteException(e.Message);
-                }
-
-                return string.Empty;
-            }
-
-            return string.Empty;
-        }
-
-        /// <summary>Updates an application.</summary>
-        /// <param name="path">The path.</param>
-        /// <returns>The <see cref="string" />.</returns>
-        public static string Update(string path = "")
-        {
-            if (string.IsNullOrEmpty(path) || !NetworkManager.SourceExists(path))
-            {
-                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[14]);
-                ConsoleManager.WriteOutput("Usage: Update [path]");
-                Console.WriteLine();
-            }
-            else
-            {
-                try
-                {
-                    PackageManager.WorkingPath = path;
-                    PackageManager.WorkingPackage = new Package(path);
-
-                    if (!PackageManager.WorkingPackage.IsEmpty)
-                    {
-                        StringManager.DrawPackageTable(PackageManager.WorkingPackage);
-                    }
-
-                    Console.WriteLine();
-
-                    ConsoleManager.WriteOutput("Current version: " + Settings.CurrentVersion);
-                    ConsoleManager.WriteOutput("Latest version: " + PackageManager.WorkingPackage.Version);
-
-                    bool _updateRequired = ApplicationManager.CompareVersion(Settings.CurrentVersion, PackageManager.WorkingPackage.Version);
-
-                    string _updateMessage;
-                    if (_updateRequired)
-                    {
-                        _updateMessage = "You don't have the latest version.";
-
-                        // TODO: Ask to update.
-                    }
-                    else
-                    {
-                        _updateMessage = "You have the latest version.";
-                    }
-
-                    ConsoleManager.WriteOutput(_updateMessage);
-                }
-                catch (Exception e)
-                {
-                    ExceptionManager.WriteException(e.Message);
-                }
-
-                return string.Empty;
             }
 
             return string.Empty;

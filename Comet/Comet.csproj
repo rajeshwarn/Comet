@@ -68,6 +68,8 @@
   <ItemGroup>
     <Compile Include="Commands\DefaultCommands.cs" />
     <Compile Include="Localize\Descriptions.cs" />
+    <Compile Include="Managers\FileManager.cs" />
+    <Compile Include="Exceptions\RemoteSourceNotFoundException.cs" />
     <Compile Include="Structure\ConsoleCommand.cs" />
     <Compile Include="InterfaceTypes.cs" />
     <Compile Include="Managers\ApplicationManager.cs" />
@@ -77,7 +79,7 @@
     <Compile Include="Managers\PackageManager.cs" />
     <Compile Include="Managers\StringManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
-    <Compile Include="Managers\UpdateManager.cs" />
+    <Compile Include="UpdateManager.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Structure\Bytes.cs" />
     <Compile Include="Structure\Package.cs" />

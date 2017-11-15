@@ -3,9 +3,14 @@
     #region Namespace
 
     using System;
+    using System.Data;
     using System.Diagnostics;
+    using System.IO;
     using System.Reflection;
     using System.Windows.Forms;
+
+    using Comet.Exceptions;
+    using Comet.Structure;
 
     #endregion
 
@@ -13,6 +18,47 @@
     public class ApplicationManager
     {
         #region Events
+
+        /// <summary>Checks for update.</summary>
+        /// <param name="executablePath">The executable path.</param>
+        /// <param name="url">The url to the package.</param>
+        /// <returns>The <see cref="bool" />.</returns>
+        public static bool CheckForUpdate(string executablePath, string url)
+        {
+            if (!File.Exists(executablePath))
+            {
+                throw new FileNotFoundException("The executable file doesn't exist.");
+            }
+
+            if (!NetworkManager.SourceExists(url))
+            {
+                throw new RemoteSourceNotFoundException("The remote package source doesn't exist");
+            }
+
+            return CompareVersion(executablePath, new Package(url));
+        }
+
+        /// <summary>Compares the source version with the comparison.</summary>
+        /// <param name="file">The file.</param>
+        /// <param name="package">The package.</param>
+        /// <returns>The <see cref="bool" />.</returns>
+        /// <exception cref="FileNotFoundException">The file doesn't exist.</exception>
+        /// <exception cref="NoNullAllowedException">The package cannot be empty or null.</exception>
+        public static bool CompareVersion(string file, Package package)
+        {
+            if (!File.Exists(file))
+            {
+                throw new FileNotFoundException("The file was not found.");
+            }
+
+            if (package == null)
+            {
+                throw new NoNullAllowedException("The package cannot be empty or null.");
+            }
+
+            Version _fileVersion = AssemblyName.GetAssemblyName(file).Version;
+            return CompareVersion(_fileVersion, package.Version);
+        }
 
         /// <summary>Compares the source version with the comparison.</summary>
         /// <param name="source">The source.</param>
