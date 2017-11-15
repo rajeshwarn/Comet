@@ -9,6 +9,7 @@
 
     using Comet.Commands;
     using Comet.Managers;
+    using Comet.Structure;
 
     #endregion
 
@@ -40,10 +41,9 @@
 
         /// <summary>Initializes a new instance of the <see cref="UpdateManager" /> class.</summary>
         /// <param name="packagePath">The package url.</param>
-        /// <param name="restart">Restart the application after update.</param>
-        public UpdateManager(Uri packagePath, bool restart) : this()
+        public UpdateManager(Uri packagePath) : this()
         {
-            Initialize(packagePath, FileManager.CreateTempPath("Update"), GetMainModuleFileName(), restart);
+            Initialize(packagePath, FileManager.CreateTempPath("Update"), GetMainModuleFileName(), false);
         }
 
         /// <summary>Initializes a new instance of the <see cref="UpdateManager" /> class.</summary>
@@ -64,11 +64,11 @@
             /// <summary>The not checked.</summary>
             NotChecked,
 
-            /// <summary>The checked.</summary>
-            Checked,
+            /// <summary>The updated.</summary>
+            Updated,
 
-            /// <summary>The prepared.</summary>
-            Prepared
+            /// <summary>The outdated.</summary>
+            Outdated
         }
 
         #endregion
@@ -175,11 +175,11 @@
 
             if (UpdateRequired())
             {
-                _state = UpdateState.Prepared;
+                _state = UpdateState.Outdated;
             }
             else
             {
-                _state = UpdateState.Checked;
+                _state = UpdateState.Updated;
             }
 
             DefaultCommands.Check(_executablePath, _packagePath.ToString());
@@ -191,8 +191,13 @@
             FileManager.DeleteDirectory(_downloadPath);
         }
 
+        /// <summary>Download the update package.</summary>
         public void Download()
         {
+            string _fileName = Path.GetTempFileName();
+
+            Package _package = new Package(_packagePath.ToString());
+            DefaultCommands.Download(_package.Download, _fileName);
         }
 
         /// <summary>Get the main module file name.</summary>
@@ -202,12 +207,20 @@
             return Process.GetCurrentProcess().MainModule.FileName;
         }
 
+        /// <summary>Install the update package.</summary>
         public void Install()
         {
             // create setup script and run it after closing application.
 
             // setup script should extract all the file/s?
             // Then it should replace them and start the main executable.
+        }
+
+        /// <summary>Check if update required.</summary>
+        /// <returns><see cref="bool" />.</returns>
+        public bool UpdateRequired()
+        {
+            return ApplicationManager.CheckForUpdate(_executablePath, _packagePath.ToString());
         }
 
         /// <summary>Initializes the <see cref="UpdateManager" />.</summary>
@@ -224,23 +237,26 @@
 
             CheckForUpdate();
 
-            // TODO: Prepare for update.
-            // TODO: Download.
-            // TODO: Extract and install.
-            // TODO: Restart
-            // TODO: Success? Cleanup then.
+            if (UpdateRequired())
+            {
+                if (_restart)
+                {
+                    PrepareUpdate();
+                    Download();
+
+                    // TODO: Extract and install.
+                    // TODO: Restart
+                    // TODO: Success? Cleanup then.
+                }
+            }
         }
 
+        /// <summary>Prepare the update package.</summary>
         private void PrepareUpdate()
         {
             FileManager.CreateDirectory(_downloadPath);
-        }
-
-        /// <summary>Check if update required.</summary>
-        /// <returns><see cref="bool" />.</returns>
-        private bool UpdateRequired()
-        {
-            return ApplicationManager.CheckForUpdate(_executablePath, _packagePath.ToString());
+            ConsoleManager.WriteOutput("Created download directory.");
+            ConsoleManager.WriteOutput("Directory: " + _downloadPath);
         }
 
         #endregion

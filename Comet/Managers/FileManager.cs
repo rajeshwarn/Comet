@@ -36,40 +36,13 @@
             destination.SetAccessControl(_fileSecurity);
         }
 
-        /// <summary>Create temp folder.</summary>
+        /// <summary>Create a directory.</summary>
         /// <param name="directory">The folder directory.</param>
         public static void CreateDirectory(string directory)
         {
-            CreateDirectory(directory, true);
-        }
-
-        /// <summary>Creates a directory.</summary>
-        /// <param name="directory">The folder directory.</param>
-        /// <param name="pathIncludeFile">Is the path included in filename.</param>
-        public static void CreateDirectory(string directory, bool pathIncludeFile)
-        {
-            var _paths = directory.Split(Path.DirectorySeparatorChar);
-
-            // Ignore the last split because it's the filename.
-            int _count = _paths.Length;
-            if (pathIncludeFile)
+            if (!Directory.Exists(directory))
             {
-                _count--;
-            }
-
-            for (var i = 0; i < _count; i++)
-            {
-                string _newPath = directory[0] + @"\";
-
-                for (var add = 1; add < i; add++)
-                {
-                    _newPath = Path.Combine(_newPath, _paths[add]);
-                }
-
-                if (!Directory.Exists(_newPath))
-                {
-                    Directory.CreateDirectory(_newPath);
-                }
+                Directory.CreateDirectory(directory);
             }
         }
 

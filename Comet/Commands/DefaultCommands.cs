@@ -328,7 +328,7 @@
         {
             if (string.IsNullOrEmpty(path))
             {
-                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[10]);
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[11]);
                 ConsoleManager.WriteOutput("Usage: Open [path]");
                 Console.WriteLine();
                 return string.Empty;
@@ -362,7 +362,7 @@
         {
             if (PackageManager.WorkingPackage == null)
             {
-                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[11]);
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[12]);
                 ConsoleManager.WriteOutput("Usage: Read");
                 Console.WriteLine();
             }
@@ -389,7 +389,7 @@
         {
             if (string.IsNullOrEmpty(path) || (PackageManager.WorkingPackage == null))
             {
-                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[12]);
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[13]);
                 ConsoleManager.WriteOutput("Usage: Save [path]");
                 Console.WriteLine();
             }
@@ -423,7 +423,7 @@
         {
             if (PackageManager.WorkingPackage == null)
             {
-                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[13]);
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[14]);
                 ConsoleManager.WriteOutput("Usage: Unload");
                 Console.WriteLine();
             }
