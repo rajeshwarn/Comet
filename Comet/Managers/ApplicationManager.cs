@@ -91,6 +91,13 @@
             return AssemblyName.GetAssemblyName(fileName).Version;
         }
 
+        /// <summary>Get the main module file name.</summary>
+        /// <returns><see cref="string" />.</returns>
+        public static string GetMainModuleFileName()
+        {
+            return Process.GetCurrentProcess().MainModule.FileName;
+        }
+
         /// <summary>Restarts the application.</summary>
         /// <param name="arguments">The arguments.</param>
         /// <param name="createNoWindow">Create no window.</param>

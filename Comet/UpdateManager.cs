@@ -4,7 +4,6 @@
 
     using System;
     using System.Data;
-    using System.Diagnostics;
     using System.IO;
 
     using Comet.Commands;
@@ -43,7 +42,7 @@
         /// <param name="packagePath">The package url.</param>
         public UpdateManager(Uri packagePath) : this()
         {
-            Initialize(packagePath, FileManager.CreateTempPath("Update"), GetMainModuleFileName(), false);
+            Initialize(packagePath, FileManager.CreateTempPath("Update"), ApplicationManager.GetMainModuleFileName(), false);
         }
 
         /// <summary>Initializes a new instance of the <see cref="UpdateManager" /> class.</summary>
@@ -198,13 +197,6 @@
 
             Package _package = new Package(_packagePath.ToString());
             DefaultCommands.Download(_package.Download, _fileName);
-        }
-
-        /// <summary>Get the main module file name.</summary>
-        /// <returns><see cref="string" />.</returns>
-        public string GetMainModuleFileName()
-        {
-            return Process.GetCurrentProcess().MainModule.FileName;
         }
 
         /// <summary>Install the update package.</summary>
