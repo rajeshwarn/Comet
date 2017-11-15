@@ -2,7 +2,7 @@
 [![Issues](https://img.shields.io/github/issues/DarkByte7/Comet.svg?style=flat)](https://github.com/DarkByte7/Comet/issues)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/Comet7/Lobby)
 
-The Comet library provides integration into your .NET Windows Form applications for automatic updating functionality.
+The Comet library provides integration into your .NET Windows Form and WPF applications for automatic updating functionality. You will be able to create packages and place them on local or remote servers that represent updates.
 
 | Service | Stable | Beta |
 | :---- | :---- | :------ |
@@ -34,10 +34,43 @@ The [`Comet`](https://github.com/DarkByte7/Comet) repository is where we do deve
 2. Add the ```Updater.dll``` as a reference to your project. [How to: Add or Remove References in Visual Studio](https://msdn.microsoft.com/en-us/library/wkze6zky(v=vs.100).aspx).
 3. Rebuild your project and it will now be available in the toolbox.
 
-## Create an Update Package
-1. Compress all your files into a ```.zip``` archieve and upload the archive to your server.
-2. Edit the file ```Update.xml``` located in ```Comet\Updater\Resources``` and upload it to your server.
-3. Open your project and add the ```Comet``` control and set the property of ```RemoteConfigXML``` to your source.
+## Creating a Package
+1. Compress all your files into a `.zip` archieve and upload the archive to your server.
+2. Run the `new` command in the console.
+3. Use the `edit` command to change the package data.
+```C#
+edit 0 "Initial release"
+edit 1 "https://www.example.com/link"
+edit 2 "FileName.exe"
+edit 3 "ProductName"
+edit 4 "01/01/2017"
+edit 5 "1.0.0.0"
+```
+4. Use the `save` command to save the package. And upload it to your remote server.
+
+## Using the UpdateManager
+Create a new UpdateManager object like this:
+```C#
+Uri _packagePath = new Uri("https://raw.githubusercontent.com/DarkByte7/Comet/stable/Comet/Update.package");
+string _downloadPath = FileManager.CreateTempPath("Download");
+string _executablePath = @"G:\Comet\Comet\bin\Debug\Comet.exe";
+
+// Create update manager object
+UpdateManager _updateManager = new UpdateManager(_packagePath, _downloadPath, _executablePath, false);
+```
+Check for updates:
+```C#
+try
+{
+    // Check for updates.
+     _updateManager.CheckForUpdates();
+}
+     catch (Exception e)
+{
+     Console.WriteLine(e);
+     throw;
+}
+```
 
 ## Features
 * Windows Toolbox Control
