@@ -53,7 +53,7 @@ Create a new UpdateManager object like this:
 ```C#
 Uri _packagePath = new Uri("https://raw.githubusercontent.com/DarkByte7/Comet/stable/Comet/Update.package");
 string _downloadPath = FileManager.CreateTempPath("Download");
-string _executablePath = @"G:\Comet\Comet\bin\Debug\Comet.exe";
+string _executablePath = Comet.Managers.ApplicationManager.GetMainModuleFileName();
 
 // Create update manager object
 UpdateManager _updateManager = new UpdateManager(_packagePath, _downloadPath, _executablePath, false);
