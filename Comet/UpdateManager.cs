@@ -17,10 +17,10 @@
     {
         #region Variables
 
+        private bool _autoUpdate;
         private string _downloadPath;
         private string _executablePath;
         private Uri _packagePath;
-        private bool _restart;
         private UpdateState _state;
         private bool _working;
 
@@ -32,10 +32,10 @@
         /// <param name="packagePath">The package url.</param>
         /// <param name="downloadPath">The download folder path.</param>
         /// <param name="executablePath">The destination executable Path.</param>
-        /// <param name="restart">Restart the application after update.</param>
-        public UpdateManager(Uri packagePath, string downloadPath, string executablePath, bool restart) : this()
+        /// <param name="autoUpdate">Auto update the application.</param>
+        public UpdateManager(Uri packagePath, string downloadPath, string executablePath, bool autoUpdate) : this()
         {
-            Initialize(packagePath, downloadPath, executablePath, restart);
+            Initialize(packagePath, downloadPath, executablePath, autoUpdate);
         }
 
         /// <summary>Initializes a new instance of the <see cref="UpdateManager" /> class.</summary>
@@ -50,7 +50,7 @@
         {
             _packagePath = null;
             _downloadPath = string.Empty;
-            Restart = false;
+            AutoUpdate = false;
             ExecutablePath = string.Empty;
             _working = false;
             _state = UpdateState.NotChecked;
@@ -73,6 +73,20 @@
         #endregion
 
         #region Properties
+
+        /// <summary>The AutoUpdate.</summary>
+        public bool AutoUpdate
+        {
+            get
+            {
+                return _autoUpdate;
+            }
+
+            set
+            {
+                _autoUpdate = value;
+            }
+        }
 
         /// <summary>The download path.</summary>
         public string DownloadPath
@@ -113,20 +127,6 @@
             set
             {
                 _packagePath = value;
-            }
-        }
-
-        /// <summary>The restart toggle.</summary>
-        public bool Restart
-        {
-            get
-            {
-                return _restart;
-            }
-
-            set
-            {
-                _restart = value;
             }
         }
 
@@ -219,19 +219,19 @@
         /// <param name="source">The source url.</param>
         /// <param name="downloadPath">The folder path.</param>
         /// <param name="installPath">The install Path.</param>
-        /// <param name="restart">The restart.</param>
-        private void Initialize(Uri source, string downloadPath, string installPath, bool restart)
+        /// <param name="autoUpdate">The AutoUpdate toggle.</param>
+        private void Initialize(Uri source, string downloadPath, string installPath, bool autoUpdate)
         {
             _packagePath = source;
             _downloadPath = downloadPath;
             _executablePath = installPath;
-            _restart = restart;
+            _autoUpdate = autoUpdate;
 
             CheckForUpdate();
 
             if (UpdateRequired())
             {
-                if (_restart)
+                if (_autoUpdate)
                 {
                     PrepareUpdate();
                     Download();
