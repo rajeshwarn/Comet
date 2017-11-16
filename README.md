@@ -35,7 +35,7 @@ The [`Comet`](https://github.com/DarkByte7/Comet) repository is where we do deve
 3. Rebuild your project and it will now be available in the toolbox.
 
 ## Creating a Package
-1. Compress all your files into a `.zip` archieve and upload the archive to your server.
+1. Compress all your files into a `.zip` archive and upload the archive to your server.
 2. Run the `new` command in the console.
 3. Use the `edit` command to change the package data.
 ```C#
