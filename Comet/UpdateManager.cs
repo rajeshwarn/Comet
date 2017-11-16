@@ -20,6 +20,7 @@
         private bool _autoUpdate;
         private string _downloadPath;
         private string _executablePath;
+        private string _packageDownloadPath;
         private Uri _packagePath;
         private UpdateState _state;
         private bool _working;
@@ -50,10 +51,11 @@
         {
             _packagePath = null;
             _downloadPath = string.Empty;
-            AutoUpdate = false;
-            ExecutablePath = string.Empty;
+            _autoUpdate = false;
+            _executablePath = string.Empty;
             _working = false;
             _state = UpdateState.NotChecked;
+            _packageDownloadPath = string.Empty;
         }
 
         /// <summary>The update state.</summary>
@@ -67,7 +69,10 @@
             Updated,
 
             /// <summary>The outdated.</summary>
-            Outdated
+            Outdated,
+
+            /// <summary>The downloading.</summary>
+            Downloading
         }
 
         #endregion
@@ -113,6 +118,20 @@
             set
             {
                 _executablePath = value;
+            }
+        }
+
+        /// <summary>The Package download path.</summary>
+        public string PackageDownloadPath
+        {
+            get
+            {
+                return _packageDownloadPath;
+            }
+
+            set
+            {
+                _packageDownloadPath = value;
             }
         }
 
@@ -193,10 +212,16 @@
         /// <summary>Download the update package.</summary>
         public void Download()
         {
-            string _fileName = Path.GetTempFileName();
-
             Package _package = new Package(_packagePath.ToString());
-            DefaultCommands.Download(_package.Download, _fileName);
+            _state = UpdateState.Downloading;
+
+            DefaultCommands.Download(_package.Download, _packageDownloadPath);
+        }
+
+        /// <summary>Extract the update package.</summary>
+        public void Extract()
+        {
+            DefaultCommands.Extract(_packageDownloadPath, _downloadPath);
         }
 
         /// <summary>Install the update package.</summary>
@@ -236,7 +261,8 @@
                     PrepareUpdate();
                     Download();
 
-                    // TODO: Extract and install.
+                    // Extract(); Wait for download to finish.
+
                     // TODO: Restart
                     // TODO: Success? Cleanup then.
                 }

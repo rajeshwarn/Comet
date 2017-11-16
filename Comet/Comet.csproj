@@ -59,7 +59,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Commands\DefaultCommands.cs" />
     <Compile Include="Localize\Descriptions.cs" />
+    <Compile Include="Managers\CompressionManager.cs" />
     <Compile Include="Managers\FileManager.cs" />
     <Compile Include="Exceptions\RemoteSourceNotFoundException.cs" />
     <Compile Include="Structure\ConsoleCommand.cs" />

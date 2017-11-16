@@ -31,7 +31,9 @@
                         "Open a local or remote package file.",
                         "Reads the loaded package from memory.",
                         "Saves the working package to a file.",
-                        "Unloads the working package."
+                        "Unloads the working package.",
+                        "Extract the archive to the directory.",
+                        "Compress the directory to a file."
                     };
 
                 return _listDescriptions;

@@ -4,6 +4,7 @@
 
     using System;
     using System.IO;
+    using System.IO.Compression;
     using System.Net;
     using System.Text;
     using System.Threading;
@@ -73,6 +74,51 @@
         public static void Clear()
         {
             Console.Clear();
+        }
+
+        /// <summary>Compress the directory.</summary>
+        /// <param name="directoryPath">The directory path.</param>
+        /// <param name="output">The output file.</param>
+        /// <returns>The <see cref="string" />.</returns>
+        public static string Compress(string directoryPath = "", string output = "")
+        {
+            if (string.IsNullOrEmpty(directoryPath) && string.IsNullOrEmpty(output))
+            {
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[16]);
+                ConsoleManager.WriteOutput("Usage: Compress [directoryPath] [output]");
+                Console.WriteLine();
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(directoryPath))
+                {
+                    ExceptionManager.ShowNullOrEmpty("The directory path is null or empty.");
+                }
+
+                if (!Directory.Exists(directoryPath))
+                {
+                    ExceptionManager.WriteException("The directory was not found.");
+                }
+
+                if (string.IsNullOrEmpty(output))
+                {
+                    ExceptionManager.ShowNullOrEmpty("The output is null or empty");
+                }
+
+                try
+                {
+                    CompressionManager.CompressDirectory(directoryPath, output, CompressionLevel.Optimal);
+                    ConsoleManager.WriteOutput("The directory has been compressed.");
+                    ConsoleManager.WriteOutput("Output: " + output);
+                    Console.WriteLine();
+                }
+                catch (Exception e)
+                {
+                    ExceptionManager.WriteException(e.Message);
+                }
+            }
+
+            return string.Empty;
         }
 
         /// <summary>Connects to a host.</summary>
@@ -224,6 +270,51 @@
         public static void Exit()
         {
             Environment.Exit(0);
+        }
+
+        /// <summary>Extract the archive to directory.</summary>
+        /// <param name="archivePath">The archive path.</param>
+        /// <param name="output">The output file.</param>
+        /// <returns>The <see cref="string" />.</returns>
+        public static string Extract(string archivePath = "", string output = "")
+        {
+            if (string.IsNullOrEmpty(archivePath) && string.IsNullOrEmpty(output))
+            {
+                ConsoleManager.WriteOutput(Descriptions.CommandDescriptions[15]);
+                ConsoleManager.WriteOutput("Usage: Extract [archivePath] [output]");
+                Console.WriteLine();
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(archivePath))
+                {
+                    ExceptionManager.ShowNullOrEmpty("The archive path is null or empty.");
+                }
+
+                if (!File.Exists(archivePath))
+                {
+                    ExceptionManager.WriteException("The archive was not found.");
+                }
+
+                if (string.IsNullOrEmpty(output))
+                {
+                    ExceptionManager.ShowNullOrEmpty("The output is null or empty");
+                }
+
+                try
+                {
+                    CompressionManager.ExtractToDirectory(archivePath, output);
+                    ConsoleManager.WriteOutput("The directory has been extracted.");
+                    ConsoleManager.WriteOutput("Output: " + output);
+                    Console.WriteLine();
+                }
+                catch (Exception e)
+                {
+                    ExceptionManager.WriteException(e.Message);
+                }
+            }
+
+            return string.Empty;
         }
 
         /// <summary>Get the status code from the url.</summary>
