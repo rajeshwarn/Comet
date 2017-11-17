@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comet", "Comet\Comet.csproj", "{5BFB058C-944E-45BE-9DD2-097C9CF171BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builder", "Builder\Builder.csproj", "{6C006A20-5391-4ECA-B0AC-031CB56FA14A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5BFB058C-944E-45BE-9DD2-097C9CF171BD} = {5BFB058C-944E-45BE-9DD2-097C9CF171BD}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +20,10 @@ Global
 		{5BFB058C-944E-45BE-9DD2-097C9CF171BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BFB058C-944E-45BE-9DD2-097C9CF171BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BFB058C-944E-45BE-9DD2-097C9CF171BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C006A20-5391-4ECA-B0AC-031CB56FA14A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C006A20-5391-4ECA-B0AC-031CB56FA14A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C006A20-5391-4ECA-B0AC-031CB56FA14A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C006A20-5391-4ECA-B0AC-031CB56FA14A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

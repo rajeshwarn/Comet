@@ -5,11 +5,11 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.IO;
     using System.Net;
     using System.Runtime.InteropServices;
     using System.Text;
-    using System.Windows.Forms;
     using System.Xml.Linq;
 
     using Comet.Managers;
@@ -30,7 +30,7 @@
         private string _filename;
         private string _name;
         private List<string> _packageList;
-        private string _release;
+        private DateTime _release;
         private Version _version;
 
         #endregion
@@ -59,7 +59,7 @@
         /// <summary>Initializes a new instance of the <see cref="Package" /> class.</summary>
         public Package()
         {
-            Update(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, new Version(0, 0, 0, 0));
+            Update(string.Empty, string.Empty, string.Empty, string.Empty, DateTime.Today.ToString(CultureInfo.CurrentCulture), new Version(0, 0, 0, 0));
         }
 
         /// <summary>Initializes a new instance of the <see cref="Package" /> class.</summary>
@@ -166,7 +166,7 @@
         {
             get
             {
-                return string.IsNullOrEmpty(_changeLog) && string.IsNullOrEmpty(_download) && string.IsNullOrEmpty(_filename) && string.IsNullOrEmpty(_name) && string.IsNullOrEmpty(_release);
+                return string.IsNullOrEmpty(_changeLog) && string.IsNullOrEmpty(_download) && string.IsNullOrEmpty(_filename) && string.IsNullOrEmpty(_name);
             }
         }
 
@@ -185,7 +185,7 @@
         }
 
         /// <summary>The <see cref="Release"></see> information.</summary>
-        public string Release
+        public DateTime Release
         {
             get
             {
@@ -211,7 +211,7 @@
                         _download,
                         _filename,
                         _name,
-                        _release,
+                        _release.ToString(CultureInfo.CurrentCulture),
                         _version.ToString()
                     };
                 return _list;
@@ -240,7 +240,7 @@
         /// <param name="package">The package to clone.</param>
         public void Clone(Package package)
         {
-            Update(package.ChangeLog, package.Download, package.Filename, package.Name, package.Release, package.Version);
+            Update(package.ChangeLog, package.Download, package.Filename, package.Name, package.Release.ToString(CultureInfo.CurrentCulture), package.Version);
         }
 
         /// <summary>Get the index by the item.</summary>
@@ -307,13 +307,20 @@
 
         /// <summary>Saves the package to file.</summary>
         /// <param name="path">The file path.</param>
+        public void Save(string path)
+        {
+            Save(path, SaveOptions.DisableFormatting);
+        }
+
+        /// <summary>Saves the package to file.</summary>
+        /// <param name="path">The file path.</param>
         /// <param name="saveOptions">The save options.</param>
         public void Save(string path, SaveOptions saveOptions)
         {
             try
             {
                 XDocument _packageFile = new XDocument(new XElement(
-                    Application.ProductName,
+                    @"Comet",
                     new XElement(Enum.GetName(typeof(PackageData), 0), _changeLog),
                     new XElement(Enum.GetName(typeof(PackageData), 1), _download),
                     new XElement(Enum.GetName(typeof(PackageData), 2), _filename),
@@ -325,7 +332,7 @@
             }
             catch (Exception e)
             {
-                ExceptionManager.WriteException(e.Message);
+                Console.WriteLine(e);
             }
         }
 
@@ -342,10 +349,10 @@
             _download = download;
             _filename = filename;
             _name = name;
-            _release = release;
+            _release = Convert.ToDateTime(release);
             _version = version;
 
-            _packageList = new List<string> { _changeLog, _download, _filename, _name, _release, _version.ToString() };
+            _packageList = new List<string> { _changeLog, _download, _filename, _name, _release.ToString(CultureInfo.CurrentCulture), _version.ToString() };
         }
 
         /// <summary>Deserialize the package.</summary>

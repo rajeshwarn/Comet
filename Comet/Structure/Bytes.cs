@@ -178,19 +178,6 @@
             }
         }
 
-        /// <summary>The <see cref="string"></see> of the <see cref="Bytes"></see>.</summary>
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        public new string ToString
-        {
-            get
-            {
-                long _bytesValue = _formatted ? FormatBytes(_totalSize) : _totalSize;
-                string _byteExtension = _abbreviated ? GetAbbreviations(_totalSize, _formatted).ToString() : GetFileSizeType(_totalSize, _formatted).ToString();
-                return _bytesValue.ToString("0.##") + " " + _byteExtension;
-            }
-        }
-
         /// <summary>The total amount of <see cref="long"></see> in the <see cref="Bytes"></see>.</summary>
         [DefaultValue(0)]
         public long TotalSize
@@ -393,6 +380,15 @@
             }
 
             return _count;
+        }
+
+        /// <inheritdoc />
+        /// <returns>The <see cref="string" />.</returns>
+        public override string ToString()
+        {
+            long _bytesValue = _formatted ? FormatBytes(_totalSize) : _totalSize;
+            string _byteExtension = _abbreviated ? GetAbbreviations(_totalSize, _formatted).ToString() : GetFileSizeType(_totalSize, _formatted).ToString();
+            return _bytesValue.ToString("0.##") + " " + _byteExtension;
         }
 
         /// <summary>Update the structure.</summary>

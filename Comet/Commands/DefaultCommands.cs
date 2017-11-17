@@ -236,7 +236,7 @@
 
                         case (int)Package.PackageData.Release:
                             {
-                                PackageManager.WorkingPackage.Release = data;
+                                PackageManager.WorkingPackage.Release = Convert.ToDateTime(data);
                                 break;
                             }
 
