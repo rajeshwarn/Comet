@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Builder.Forms
+﻿namespace Builder.Forms
 {
+    #region Namespace
+
+    using System.Windows.Forms;
+
+    #endregion
+
     public partial class About : Form
     {
+        #region Constructors
+
         public About()
         {
             InitializeComponent();
         }
+
+        #endregion
     }
 }

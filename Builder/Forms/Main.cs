@@ -3,7 +3,6 @@
     #region Namespace
 
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
@@ -15,6 +14,7 @@
 
     #endregion
 
+    /// <summary>The main.</summary>
     public partial class Main : Form
     {
         #region Constructors
@@ -22,6 +22,10 @@
         public Main()
         {
             InitializeComponent();
+
+            Settings.ArchiveFileTypes = @"ZIP File|*.zip";
+            Settings.PackageFileTypes = @"Package File|*.package";
+            Settings.MaxRecentProjects = 10;
         }
 
         #endregion
@@ -43,45 +47,6 @@
             {
                 CompressionManager.AddFile(Settings.ArchivePath, _openFileDialog.FileName);
                 UpdateArchive(Settings.ArchivePath);
-            }
-        }
-
-        /// <summary>Browse file archive.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void BtnArchiveLoad_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog _openFileDialog = new OpenFileDialog
-                {
-                    Title = @"Browse for an archive.",
-                    Filter = Settings.ArchiveFileTypes
-            };
-
-            if (_openFileDialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-
-            Settings.ArchivePath = _openFileDialog.FileName;
-            UpdateArchive(_openFileDialog.FileName);
-        }
-
-        /// <summary>Create an archive.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void BtnArchiveNew_Click(object sender, EventArgs e)
-        {
-            using (SaveFileDialog _saveFileDialog = new SaveFileDialog())
-            {
-                _saveFileDialog.Title = @"Save new archive";
-                _saveFileDialog.Filter = Settings.ArchiveFileTypes;
-                _saveFileDialog.FileName = string.Empty;
-
-                if (_saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    CompressionManager.CreateArchive(_saveFileDialog.FileName);
-                    Settings.ArchivePath = _saveFileDialog.FileName;
-                }
             }
         }
 
@@ -130,6 +95,45 @@
             }
         }
 
+        /// <summary>Browse file archive.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void BtnArchiveLoad_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog _openFileDialog = new OpenFileDialog
+                {
+                    Title = @"Browse for an archive.",
+                    Filter = Settings.ArchiveFileTypes
+                };
+
+            if (_openFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            Settings.ArchivePath = _openFileDialog.FileName;
+            UpdateArchive(_openFileDialog.FileName);
+        }
+
+        /// <summary>Create an archive.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void BtnArchiveNew_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog _saveFileDialog = new SaveFileDialog())
+            {
+                _saveFileDialog.Title = @"Save new archive";
+                _saveFileDialog.Filter = Settings.ArchiveFileTypes;
+                _saveFileDialog.FileName = string.Empty;
+
+                if (_saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    CompressionManager.CreateArchive(_saveFileDialog.FileName);
+                    Settings.ArchivePath = _saveFileDialog.FileName;
+                }
+            }
+        }
+
         /// <summary>Remove file from archive.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
@@ -143,6 +147,15 @@
             }
         }
 
+        /// <summary>Clears the recent files from history.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void ClearRecentFilesHistory_Click(object sender, EventArgs e)
+        {
+            recentHistoryToolStripMenuItem.DropDownItems.Clear();
+            ConstructClearRecentFilesMenuItem();
+        }
+
         /// <summary>Close Tool Strip Menu Item Click.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
@@ -152,11 +165,35 @@
             string _downloadLink = string.Empty;
             string _fileName = string.Empty;
             string _productName = string.Empty;
-            DateTime _dateTime = DateTime.Today;
+            DateTime _dateTime = new DateTime(2000, 1, 1);
             Version _version = new Version(0, 0, 0, 0);
             Package _newPackage = new Package(_changeLog, _downloadLink, _fileName, _productName, _dateTime.ToString(CultureInfo.CurrentCulture), _version);
             UpdatePackage(_newPackage);
             closeToolStripMenuItem.Enabled = false;
+        }
+
+        /// <summary>Construct clear recent files menu item.</summary>
+        private void ConstructClearRecentFilesMenuItem()
+        {
+            ToolStripMenuItem _clearRecentFilesHistory = new ToolStripMenuItem
+                {
+                    Name = "ClearRecentFilesHistoryMenuItem",
+                    Text = @"Empty Recent Files List"
+                };
+
+            _clearRecentFilesHistory.Click += ClearRecentFilesHistory_Click;
+            recentHistoryToolStripMenuItem.DropDownItems.Add(_clearRecentFilesHistory);
+
+            ToolStripSeparator _toolStripSeparator = new ToolStripSeparator();
+            recentHistoryToolStripMenuItem.DropDownItems.Add(_toolStripSeparator);
+        }
+
+        /// <summary>Constructs the recent files menu strip.</summary>
+        private void ConstructRecentFilesMenuStrip()
+        {
+            recentHistoryToolStripMenuItem.DropDownItems.Clear();
+            ConstructClearRecentFilesMenuItem();
+            PopulateRecentFilesHistory();
         }
 
         /// <summary>DateTime release value changed.</summary>
@@ -195,15 +232,14 @@
         /// <param name="e">The event.</param>
         private void Main_Load(object sender, EventArgs e)
         {
-            Settings.ArchiveFileTypes = @"ZIP File|*.zip";
-            Settings.PackageFileTypes = @"Package File|*.package";
-            
             newToolStripMenuItem.PerformClick();
 
             lvArchive.Columns[0].Width = 100;
             lvArchive.Columns[1].Width = 100;
             lvArchive.Columns[2].Width = 100;
             lvArchive.Columns[3].Width = 100;
+
+            ConstructRecentFilesMenuStrip();
         }
 
         /// <summary>New Tool Strip Menu Item Click.</summary>
@@ -245,10 +281,13 @@
             {
                 using (StreamReader _streamReader = new StreamReader(path))
                 {
-                    // string _line = _streamReader.ReadToEnd();
+                    string _line = _streamReader.ReadToEnd();
                     Settings.FileSaved = true;
                     Settings.FileName = Path.GetFileName(path);
                     Settings.FullPath = path;
+                    Settings.ManageHistoryLog(true);
+
+                    ConstructRecentFilesMenuStrip();
                 }
             }
             catch (Exception e)
@@ -273,6 +312,36 @@
                     closeToolStripMenuItem.Enabled = true;
                 }
             }
+        }
+
+        /// <summary>Populate the recent files history from the log.</summary>
+        private void PopulateRecentFilesHistory()
+        {
+            // Check for recent file updates
+            Settings.ManageHistoryLog();
+
+            for (var i = 0; i < Settings.FileHistory.Count; i++)
+            {
+                // Construct sub-item
+                ToolStripMenuItem _recentFileItem = new ToolStripMenuItem
+                    {
+                        Name = @"RecentFilesListToolStripMenuItem" + i,
+                        Tag = Settings.FileHistory[i],
+                        Text = i + @": " + Settings.FileHistory[i]
+                    };
+
+                _recentFileItem.Click += RecentHistoryItem_Click;
+                recentHistoryToolStripMenuItem.DropDownItems.Add(_recentFileItem);
+            }
+        }
+
+        /// <summary>Recent History Item Tool Strip Menu Item Click.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void RecentHistoryItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem _recentHistoryItemClicked = (ToolStripMenuItem)sender;
+            OpenFile(_recentHistoryItemClicked.Text);
         }
 
         /// <summary>Report A Problem Tool Strip Menu Item Click.</summary>
@@ -333,6 +402,9 @@
                 if (File.Exists(Settings.FullPath))
                 {
                     SavePackage(Settings.FullPath);
+
+                    ConstructRecentFilesMenuStrip();
+
                     Settings.FileSaved = true;
                 }
                 else
@@ -370,7 +442,7 @@
         {
             lvArchive.Items.Clear();
 
-            List<ArchiveData> _archiveList = CompressionManager.Open(path);
+            var _archiveList = CompressionManager.Open(path);
 
             foreach (ArchiveData _entry in _archiveList)
             {

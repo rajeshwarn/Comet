@@ -71,9 +71,6 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.recentHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.emptyRecentFilesListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.file0ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -506,30 +503,9 @@
             // 
             // recentHistoryToolStripMenuItem
             // 
-            this.recentHistoryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.emptyRecentFilesListToolStripMenuItem,
-            this.toolStripSeparator5,
-            this.file0ToolStripMenuItem});
             this.recentHistoryToolStripMenuItem.Name = "recentHistoryToolStripMenuItem";
             this.recentHistoryToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.recentHistoryToolStripMenuItem.Text = "Recent History";
-            // 
-            // emptyRecentFilesListToolStripMenuItem
-            // 
-            this.emptyRecentFilesListToolStripMenuItem.Name = "emptyRecentFilesListToolStripMenuItem";
-            this.emptyRecentFilesListToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.emptyRecentFilesListToolStripMenuItem.Text = "Empty Recent Files List";
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(191, 6);
-            // 
-            // file0ToolStripMenuItem
-            // 
-            this.file0ToolStripMenuItem.Name = "file0ToolStripMenuItem";
-            this.file0ToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.file0ToolStripMenuItem.Text = "file0";
             // 
             // toolStripSeparator4
             // 
@@ -647,9 +623,6 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recentHistoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem emptyRecentFilesListToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.ToolStripMenuItem file0ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;

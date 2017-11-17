@@ -325,7 +325,7 @@
                     new XElement(Enum.GetName(typeof(PackageData), 1), _download),
                     new XElement(Enum.GetName(typeof(PackageData), 2), _filename),
                     new XElement(Enum.GetName(typeof(PackageData), 3), _name),
-                    new XElement(Enum.GetName(typeof(PackageData), 4), _release),
+                    new XElement(Enum.GetName(typeof(PackageData), 4), _release.Date.ToShortDateString()),
                     new XElement(Enum.GetName(typeof(PackageData), 5), _version)));
 
                 _packageFile.Save(path, saveOptions);

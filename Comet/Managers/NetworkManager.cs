@@ -199,7 +199,7 @@
                     // _total = "?";
                 }
 
-                ConsoleManager.WriteOutput("(" + e.ProgressPercentage.ToString("0") + "%) " + _received.ToString() + " / " + _total.ToString());
+                ConsoleManager.WriteOutput("(" + e.ProgressPercentage.ToString("0") + "%) " + _received + " / " + _total);
             }
             catch (Exception ex)
             {
