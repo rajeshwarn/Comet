@@ -69,7 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\DefaultCommands.cs" />
-    <Compile Include="Structure\Archived.cs" />
+    <Compile Include="Structure\ArchiveData.cs" />
     <Compile Include="Localize\Descriptions.cs" />
     <Compile Include="Managers\CompressionManager.cs" />
     <Compile Include="Managers\FileManager.cs" />
