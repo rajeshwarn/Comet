@@ -445,13 +445,14 @@
             lvArchive.Items.Clear();
 
             Archive _archive = new Archive(path);
+            _archive.Read();
 
             for (var i = 0; i < _archive.Count; i++)
             {
                 ListViewItem _listViewItem = new ListViewItem
-                    {
-                        Text = _archive[i].FullName
-                    };
+                {
+                    Text = _archive[i].FullName
+                };
 
                 Bytes _size = new Bytes(_archive[i].Length);
 
@@ -462,7 +463,7 @@
                 }
 
                 _listViewItem.SubItems.Add(_size.ToString());
-                _listViewItem.SubItems.Add(_extension);
+               _listViewItem.SubItems.Add(_extension);
 
                 _listViewItem.SubItems.Add(_archive[i].LastWriteTime.ToString());
 

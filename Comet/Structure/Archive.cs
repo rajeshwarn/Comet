@@ -172,6 +172,24 @@
             }
         }
 
+        /// <summary>Gets a value indicating whether the archive is empty.</summary>
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public bool IsEmpty
+        {
+            get
+            {
+                if (_zipEntries[0] == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         /// <summary>Get a value indicating that this archive is a new one.</summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -193,7 +211,14 @@
         {
             get
             {
-                return _zipEntries[index];
+                if (IsEmpty)
+                {
+                    throw new ArgumentNullException($"The archive is empty.");
+                }
+                else
+                {
+                    return _zipEntries[index];
+                }
             }
         }
 
@@ -512,6 +537,9 @@
         /// </returns>
         public static int GetCount(string archivePath)
         {
+            ExceptionsManager.IsNullOrEmpty(archivePath);
+            ExceptionsManager.FileExists(archivePath);
+
             using (ZipArchive _archive = ZipFile.OpenRead(archivePath))
             {
                 return _archive.Entries.Count;
@@ -528,26 +556,20 @@
             ExceptionsManager.IsNullOrEmpty(archivePath);
             ExceptionsManager.FileExists(archivePath);
 
-            ZipArchiveEntry[] _entries = { };
+            var _entries = new ZipArchiveEntry[GetCount(archivePath)];
 
             try
             {
                 using (ZipArchive _archive = ZipFile.OpenRead(archivePath))
                 {
-                    if (_archive.Entries.Count > 0)
+                    for (var i = 0; i < _archive.Entries.Count; i++)
                     {
-                        for (var i = 0; i < _archive.Entries.Count; i++)
-                        {
-                            ZipArchiveEntry _archiveEntry = _archive.Entries[i];
-                            _entries[i] = _archiveEntry;
-                        }
+                        ZipArchiveEntry _archiveEntry = _archive.Entries[i];
 
-                        return _entries;
+                        _entries[i] = _archiveEntry;
                     }
-                    else
-                    {
-                        return null;
-                    }
+
+                    return _entries;
                 }
             }
             catch (Exception e)
