@@ -1,4 +1,4 @@
-﻿namespace Builder.Forms
+﻿namespace PackageManager.Forms
 {
     partial class Main
     {
@@ -565,7 +565,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStripMain;
             this.Name = "Main";
-            this.Text = "Comet - Builder";
+            this.Text = "[Comet] Package Manager";
             this.Load += new System.EventHandler(this.Main_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);

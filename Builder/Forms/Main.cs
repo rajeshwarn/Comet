@@ -1,4 +1,4 @@
-﻿namespace Builder.Forms
+﻿namespace PackageManager.Forms
 {
     #region Namespace
 
@@ -6,10 +6,10 @@
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
+    using System.IO.Compression;
     using System.Windows.Forms;
     using System.Xml.Linq;
 
-    using Comet.Managers;
     using Comet.Structure;
 
     #endregion
@@ -45,7 +45,7 @@
 
             if (_openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                CompressionManager.AddFile(Settings.ArchivePath, _openFileDialog.FileName);
+                Archive.CreateEntryFromFile(new Archive(Settings.ArchivePath), _openFileDialog.FileName, Path.GetFileName(_openFileDialog.FileName), CompressionLevel.Fastest);
                 UpdateArchive(Settings.ArchivePath);
             }
         }
@@ -67,7 +67,7 @@
 
                     if (_saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        CompressionManager.ExtractToFile(Settings.ArchivePath, _fileToExtract, _saveFileDialog.FileName);
+                        Archive.ExtractToFile(new Archive(Settings.ArchivePath), _fileToExtract, _saveFileDialog.FileName);
                     }
                 }
             }
@@ -90,7 +90,7 @@
                     return;
                 }
 
-                CompressionManager.ExtractToDirectory(Settings.ArchivePath, _folderBrowserDialog.SelectedPath);
+                Archive.ExtractToDirectory(new Archive(Settings.ArchivePath), _folderBrowserDialog.SelectedPath);
                 MessageBox.Show(@"The archive has been extracted!" + Environment.NewLine + @"Output: " + _folderBrowserDialog.SelectedPath);
             }
         }
@@ -128,7 +128,7 @@
 
                 if (_saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    CompressionManager.CreateArchive(_saveFileDialog.FileName);
+                    Archive.CreateEmptyArchive(_saveFileDialog.FileName);
                     Settings.ArchivePath = _saveFileDialog.FileName;
                 }
             }
@@ -142,7 +142,8 @@
             if (lvArchive.SelectedItems.Count > 0)
             {
                 string _fileToRemove = lvArchive.SelectedItems[0].Text;
-                CompressionManager.RemoveFile(Settings.ArchivePath, _fileToRemove);
+
+                Archive.DeleteEntry(new Archive(Settings.ArchivePath), _fileToRemove);
                 UpdateArchive(Settings.ArchivePath);
             }
         }
@@ -219,6 +220,7 @@
         /// </returns>
         private Version GetPackageVersion()
         {
+            // TODO: input UpDownControl/s
             int _major = Convert.ToInt32(nudMajor.Value);
             int _minor = Convert.ToInt32(nudMinor.Value);
             int _build = Convert.ToInt32(nudBuild.Value);
@@ -442,18 +444,27 @@
         {
             lvArchive.Items.Clear();
 
-            var _archiveList = CompressionManager.Open(path);
+            Archive _archive = new Archive(path);
 
-            foreach (ArchiveData _entry in _archiveList)
+            for (var i = 0; i < _archive.Count; i++)
             {
                 ListViewItem _listViewItem = new ListViewItem
                     {
-                        Text = _entry.FullName
+                        Text = _archive[i].FullName
                     };
 
-                _listViewItem.SubItems.Add(_entry.Size.ToString());
-                _listViewItem.SubItems.Add(_entry.Type);
-                _listViewItem.SubItems.Add(_entry.LastWriteTime.ToString());
+                Bytes _size = new Bytes(_archive[i].Length);
+
+                string _extension = Path.GetExtension(_archive[i].FullName);
+                if (string.IsNullOrEmpty(_extension))
+                {
+                    _extension = "Folder";
+                }
+
+                _listViewItem.SubItems.Add(_size.ToString());
+                _listViewItem.SubItems.Add(_extension);
+
+                _listViewItem.SubItems.Add(_archive[i].LastWriteTime.ToString());
 
                 lvArchive.Items.Add(_listViewItem);
             }

@@ -1,4 +1,4 @@
-﻿namespace Builder.Managers
+﻿namespace PackageManager.Managers
 {
     internal class ArchiveManager
     {

@@ -69,16 +69,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\DefaultCommands.cs" />
-    <Compile Include="Structure\ArchiveData.cs" />
+    <Compile Include="Managers\CompileInstaller.cs" />
+    <Compile Include="Structure\Archive.cs" />
     <Compile Include="Localize\Descriptions.cs" />
-    <Compile Include="Managers\CompressionManager.cs" />
     <Compile Include="Managers\FileManager.cs" />
     <Compile Include="Exceptions\RemoteSourceNotFoundException.cs" />
     <Compile Include="Structure\ConsoleCommand.cs" />
     <Compile Include="InterfaceTypes.cs" />
     <Compile Include="Managers\ApplicationManager.cs" />
     <Compile Include="Managers\ConsoleManager.cs" />
-    <Compile Include="Managers\ExceptionManager.cs" />
+    <Compile Include="Managers\ExceptionsManager.cs" />
     <Compile Include="Managers\NetworkManager.cs" />
     <Compile Include="Managers\PackageManager.cs" />
     <Compile Include="Managers\StringManager.cs" />

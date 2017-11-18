@@ -277,11 +277,11 @@
             }
             catch (WebException)
             {
-                ExceptionManager.ShowSourceNotFoundException(url);
+                ExceptionsManager.ShowSourceNotFoundException(url);
             }
             catch (Exception e)
             {
-                ExceptionManager.WriteException(e.Message);
+                ExceptionsManager.WriteException(e.Message);
             }
         }
 
@@ -297,11 +297,11 @@
             }
             catch (FileNotFoundException)
             {
-                ExceptionManager.ShowFileNotFoundException(path);
+                ExceptionsManager.ShowFileNotFoundException(path);
             }
             catch (Exception e)
             {
-                ExceptionManager.WriteException(e.Message);
+                ExceptionsManager.WriteException(e.Message);
             }
         }
 

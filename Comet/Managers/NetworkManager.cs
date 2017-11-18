@@ -84,7 +84,7 @@
             }
             catch (Exception e)
             {
-                ExceptionManager.WriteException(e.Message);
+                ExceptionsManager.WriteException(e.Message);
             }
         }
 
@@ -203,7 +203,7 @@
             }
             catch (Exception ex)
             {
-                ExceptionManager.WriteException(ex.Message);
+                ExceptionsManager.WriteException(ex.Message);
             }
         }
 

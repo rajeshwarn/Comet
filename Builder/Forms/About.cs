@@ -1,4 +1,4 @@
-﻿namespace Builder.Forms
+﻿namespace PackageManager.Forms
 {
     #region Namespace
 

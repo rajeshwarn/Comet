@@ -44,7 +44,7 @@
             }
             catch (Exception e)
             {
-                ExceptionManager.WriteException(e.Message);
+                ExceptionsManager.WriteException(e.Message);
             }
         }
 
@@ -360,14 +360,14 @@
             // Validate the command name:
             if (!_commandLibraries.ContainsKey(command.LibraryClassName))
             {
-                ExceptionManager.CommandNotRecognized(command);
+                ExceptionsManager.CommandNotRecognized(command);
                 return string.Empty;
             }
 
             var methodDictionary = _commandLibraries[command.LibraryClassName];
             if (!methodDictionary.ContainsKey(command.Name))
             {
-                ExceptionManager.CommandNotRecognized(command);
+                ExceptionsManager.CommandNotRecognized(command);
                 return string.Empty;
             }
 
@@ -383,7 +383,7 @@
             int providedCount = command.Arguments.Count();
             if (requiredCount > providedCount)
             {
-                ExceptionManager.WriteException(string.Format("Missing required argument. {0} required, {1} optional, {2} provided", requiredCount, optionalCount, providedCount));
+                ExceptionsManager.WriteException(string.Format("Missing required argument. {0} required, {1} optional, {2} provided", requiredCount, optionalCount, providedCount));
                 Console.Write(Environment.NewLine);
                 return string.Empty;
             }

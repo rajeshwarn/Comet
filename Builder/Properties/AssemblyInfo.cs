@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Comet - Builder")]
+[assembly: AssemblyTitle("Package Manager")]
 [assembly: AssemblyDescription("Build application update packages.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DarkByte7")]
-[assembly: AssemblyProduct("Comet - Builder")]
+[assembly: AssemblyProduct("Package Manager")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("https://darkbyte7.github.io/Comet/")]
 [assembly: AssemblyCulture("")]

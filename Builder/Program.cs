@@ -1,11 +1,11 @@
-﻿namespace Builder
+﻿namespace PackageManager
 {
     #region Namespace
 
     using System;
     using System.Windows.Forms;
 
-    using Builder.Forms;
+    using PackageManager.Forms;
 
     #endregion
 

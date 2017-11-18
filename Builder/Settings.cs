@@ -1,4 +1,4 @@
-﻿namespace Builder
+﻿namespace PackageManager
 {
     #region Namespace
 

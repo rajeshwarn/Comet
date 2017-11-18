@@ -61,7 +61,7 @@
                 }
                 catch (Exception e)
                 {
-                    ExceptionManager.WriteException(e.Message);
+                    ExceptionsManager.WriteException(e.Message);
                 }
 
                 return string.Empty;
@@ -92,29 +92,29 @@
             {
                 if (string.IsNullOrEmpty(directoryPath))
                 {
-                    ExceptionManager.ShowNullOrEmpty("The directory path is null or empty.");
+                    ExceptionsManager.ShowNullOrEmpty("The directory path is null or empty.");
                 }
 
                 if (!Directory.Exists(directoryPath))
                 {
-                    ExceptionManager.WriteException("The directory was not found.");
+                    ExceptionsManager.WriteException("The directory was not found.");
                 }
 
                 if (string.IsNullOrEmpty(output))
                 {
-                    ExceptionManager.ShowNullOrEmpty("The output is null or empty");
+                    ExceptionsManager.ShowNullOrEmpty("The output is null or empty");
                 }
 
                 try
                 {
-                    CompressionManager.CompressDirectory(directoryPath, output, CompressionLevel.Optimal);
+                    Archive.CompressDirectory(directoryPath, output, CompressionLevel.Optimal);
                     ConsoleManager.WriteOutput("The directory has been compressed.");
                     ConsoleManager.WriteOutput("Output: " + output);
                     Console.WriteLine();
                 }
                 catch (Exception e)
                 {
-                    ExceptionManager.WriteException(e.Message);
+                    ExceptionsManager.WriteException(e.Message);
                 }
             }
 
@@ -177,7 +177,7 @@
                 }
                 else
                 {
-                    ExceptionManager.WriteException("The url is not well formatted.");
+                    ExceptionsManager.WriteException("The url is not well formatted.");
                     Console.WriteLine();
                 }
             }
@@ -288,29 +288,29 @@
             {
                 if (string.IsNullOrEmpty(archivePath))
                 {
-                    ExceptionManager.ShowNullOrEmpty("The archive path is null or empty.");
+                    ExceptionsManager.ShowNullOrEmpty("The archive path is null or empty.");
                 }
 
                 if (!File.Exists(archivePath))
                 {
-                    ExceptionManager.WriteException("The archive was not found.");
+                    ExceptionsManager.WriteException("The archive was not found.");
                 }
 
                 if (string.IsNullOrEmpty(output))
                 {
-                    ExceptionManager.ShowNullOrEmpty("The output is null or empty");
+                    ExceptionsManager.ShowNullOrEmpty("The output is null or empty");
                 }
 
                 try
                 {
-                    CompressionManager.ExtractToDirectory(archivePath, output);
+                    Archive.ExtractToDirectory(new Archive(archivePath), output);
                     ConsoleManager.WriteOutput("The directory has been extracted.");
                     ConsoleManager.WriteOutput("Output: " + output);
                     Console.WriteLine();
                 }
                 catch (Exception e)
                 {
-                    ExceptionManager.WriteException(e.Message);
+                    ExceptionsManager.WriteException(e.Message);
                 }
             }
 
@@ -384,7 +384,7 @@
                 }
                 catch (Exception e)
                 {
-                    ExceptionManager.WriteException(e.Message);
+                    ExceptionsManager.WriteException(e.Message);
                 }
             }
 
@@ -440,7 +440,7 @@
                 }
                 catch (Exception e)
                 {
-                    ExceptionManager.WriteException(e.Message);
+                    ExceptionsManager.WriteException(e.Message);
                 }
 
                 return string.Empty;
@@ -466,7 +466,7 @@
                 }
                 catch (Exception e)
                 {
-                    ExceptionManager.WriteException(e.Message);
+                    ExceptionsManager.WriteException(e.Message);
                 }
             }
 
@@ -497,11 +497,11 @@
                 }
                 catch (NullReferenceException e)
                 {
-                    ExceptionManager.WriteException(e.Message);
+                    ExceptionsManager.WriteException(e.Message);
                 }
                 catch (Exception e)
                 {
-                    ExceptionManager.WriteException(e.Message);
+                    ExceptionsManager.WriteException(e.Message);
                 }
             }
 
@@ -529,7 +529,7 @@
                 }
                 catch (Exception e)
                 {
-                    ExceptionManager.WriteException(e.Message);
+                    ExceptionsManager.WriteException(e.Message);
                 }
             }
 
