@@ -134,7 +134,7 @@
             }
         }
 
-        /// <summary>Gets the archived entries.</summary>
+        /// <summary>Gets or sets the archived entries.</summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public ZipArchiveEntry[] Entries
@@ -142,6 +142,11 @@
             get
             {
                 return _zipEntries;
+            }
+
+            set
+            {
+                _zipEntries = value;
             }
         }
 
