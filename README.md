@@ -9,7 +9,7 @@
     <a href="https://gitter.im/Comet7/Lobby"><img alt="Gitter" src="https://img.shields.io/gitter/room/nwjs/nw.js.svg"></a>
     <a href="https://github.com/DarkByte7/Comet/Forks"><img alt="Forks" src="https://img.shields.io/github/forks/DarkByte7/Comet.svg?style=flat"></a>
     <a href="https://github.com/DarkByte7/Comet/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/DarkByte7/Comet.svg?style=flat"></a>
-    <a href="https://github.com/DarkByte7/Comet/blob/master/License.md"><img alt="Licence" src="https://img.shields.io/badge/GPL-3.0-blue.svg?style=flat"></a>
+    <a href="https://github.com/DarkByte7/Comet/blob/master/LICENSE.md"><img alt="Licence" src="https://img.shields.io/badge/GPL-3.0-blue.svg?style=flat"></a>
 </p >
 
 The Comet library provides integration into your .NET Windows Form and WPF applications for automatic updating functionality. You will be able to create packages and place them on local or remote servers that represent updates.
