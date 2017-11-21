@@ -107,6 +107,3 @@ BitCoin donations are also welcome: `1KKghRonJu6orcu7rf4r1wSnsnAPbnC8B7`
 ![Imgur](http://i.imgur.com/lvwo5D5.jpg)
 
 ![Imgur](http://i.imgur.com/0X0QULc.jpg)
-
-## License
-This repository is licensed with the [GPLv3](LICENSE) license.
