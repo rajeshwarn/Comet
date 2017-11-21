@@ -22,6 +22,8 @@
 
         public static string FullPath { get; set; }
 
+        public static string InstallerPath { get; set; }
+
         public static int MaxRecentProjects { get; set; }
 
         public static string PackageFileTypes { get; set; }

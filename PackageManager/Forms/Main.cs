@@ -3,6 +3,9 @@
     #region Namespace
 
     using System;
+    using System.CodeDom;
+    using System.CodeDom.Compiler;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
@@ -10,6 +13,7 @@
     using System.Windows.Forms;
     using System.Xml.Linq;
 
+    using Comet.Compiler;
     using Comet.Structure;
 
     #endregion
@@ -26,6 +30,9 @@
             Settings.ArchiveFileTypes = @"ZIP File|*.zip";
             Settings.PackageFileTypes = @"Package File|*.package";
             Settings.MaxRecentProjects = 10;
+            Settings.InstallerPath = "Installer.exe";
+
+            loadInstallerScriptToolStripMenuItem.PerformClick();
         }
 
         #endregion
@@ -148,6 +155,15 @@
             }
         }
 
+        private void buildToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var _references = new List<string> { "System.dll", "Comet.dll" };
+
+            CompilerResults _results = CodeDomCompiler.Build(_references, tbSource.Text, Settings.InstallerPath);
+
+            ProcessCompilerResults(_results);
+        }
+
         /// <summary>Clears the recent files from history.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
@@ -173,7 +189,7 @@
             closeToolStripMenuItem.Enabled = false;
         }
 
-        /// <summary>Construct clear recent files menu item.</summary>
+        /// <summary>CreateInstallerCode clear recent files menu item.</summary>
         private void ConstructClearRecentFilesMenuItem()
         {
             ToolStripMenuItem _clearRecentFilesHistory = new ToolStripMenuItem
@@ -229,6 +245,12 @@
             return new Version(_major, _minor, _build, _revision);
         }
 
+        private void loadEntryPointToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CodeCompileUnit _mainEntryPointUnit = CodeGeneration.CreateMainEntryPoint();
+            tbSource.Text = CodeDomCompiler.CompileUnitToSource(_mainEntryPointUnit);
+        }
+
         /// <summary>The main load.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
@@ -236,10 +258,16 @@
         {
             newToolStripMenuItem.PerformClick();
 
-            lvArchive.Columns[0].Width = 100;
+            lvArchive.Columns[0].Width = 230;
             lvArchive.Columns[1].Width = 100;
             lvArchive.Columns[2].Width = 100;
             lvArchive.Columns[3].Width = 100;
+
+            lvErrorList.Columns[0].Width = 50;
+            lvErrorList.Columns[1].Width = 230;
+            lvErrorList.Columns[2].Width = 150;
+            lvErrorList.Columns[3].Width = 50;
+            lvErrorList.Columns[4].Width = 50;
 
             ConstructRecentFilesMenuStrip();
         }
@@ -324,7 +352,7 @@
 
             for (var i = 0; i < Settings.FileHistory.Count; i++)
             {
-                // Construct sub-item
+                // CreateInstallerCode sub-item
                 ToolStripMenuItem _recentFileItem = new ToolStripMenuItem
                     {
                         Name = @"RecentFilesListToolStripMenuItem" + i,
@@ -334,6 +362,35 @@
 
                 _recentFileItem.Click += RecentHistoryItem_Click;
                 recentHistoryToolStripMenuItem.DropDownItems.Add(_recentFileItem);
+            }
+        }
+
+        /// <summary>Process the compiler results.</summary>
+        /// <param name="compilerResults">The compiler results.</param>
+        private void ProcessCompilerResults(CompilerResults compilerResults)
+        {
+            lvErrorList.Items.Clear();
+
+            if (compilerResults.Errors.Count > 0)
+            {
+                foreach (CompilerError _compileError in compilerResults.Errors)
+                {
+                    ListViewItem _listViewItem = new ListViewItem(_compileError.ErrorNumber);
+
+                    _listViewItem.SubItems.Add(_compileError.ErrorText);
+                    _listViewItem.SubItems.Add(_compileError.FileName);
+                    _listViewItem.SubItems.Add(_compileError.Line.ToString());
+                    _listViewItem.SubItems.Add(_compileError.Column.ToString());
+
+                    lvErrorList.Items.Add(_listViewItem);
+                }
+            }
+            else
+            {
+                if (RunAfterBuildtoolStripMenuItem1.Checked)
+                {
+                    Process.Start(Settings.InstallerPath);
+                }
             }
         }
 
@@ -352,6 +409,11 @@
         private void ReportAProblemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("https://github.com/DarkByte7/Comet/issues");
+        }
+
+        private void RunAfterBuildtoolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            RunAfterBuildtoolStripMenuItem1.Checked = !RunAfterBuildtoolStripMenuItem1.Checked;
         }
 
         /// <summary>SaveAs Tool Strip Menu Item Click.</summary>
@@ -450,9 +512,9 @@
             for (var i = 0; i < _archive.Count; i++)
             {
                 ListViewItem _listViewItem = new ListViewItem
-                {
-                    Text = _archive[i].FullName
-                };
+                    {
+                        Text = _archive[i].FullName
+                    };
 
                 Bytes _size = new Bytes(_archive[i].Length);
 
@@ -463,7 +525,7 @@
                 }
 
                 _listViewItem.SubItems.Add(_size.ToString());
-               _listViewItem.SubItems.Add(_extension);
+                _listViewItem.SubItems.Add(_extension);
 
                 _listViewItem.SubItems.Add(_archive[i].LastWriteTime.ToString());
 
@@ -522,5 +584,11 @@
         }
 
         #endregion
+
+        private void loadInstallerScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CodeCompileUnit _mainEntryPointUnit = CodeGeneration.CreateInstallerCode();
+            tbSource.Text = CodeDomCompiler.CompileUnitToSource(_mainEntryPointUnit);
+        }
     }
 }

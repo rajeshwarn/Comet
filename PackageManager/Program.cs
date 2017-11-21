@@ -3,6 +3,7 @@
     #region Namespace
 
     using System;
+    using System.Runtime.CompilerServices;
     using System.Windows.Forms;
 
     using PackageManager.Forms;

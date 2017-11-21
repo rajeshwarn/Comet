@@ -69,7 +69,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\DefaultCommands.cs" />
-    <Compile Include="Managers\CompileInstaller.cs" />
+    <Compile Include="Compiler\CodeExpressions\CodeAssignments.cs" />
+    <Compile Include="Compiler\CodeExpressions\CommentsExpressions.cs" />
+    <Compile Include="Compiler\MethodsHelper.cs" />
+    <Compile Include="Compiler\CodeGeneration.cs" />
+    <Compile Include="Compiler\CodeDomCompiler.cs" />
+    <Compile Include="Compiler\CodeExpressions\MethodInvoke.cs" />
+    <Compile Include="Compiler\CodeExpressions\EntryPoints.cs" />
+    <Compile Include="Compiler\CodeExpressions\ReferenceTypes.cs" />
     <Compile Include="Structure\Archive.cs" />
     <Compile Include="Localize\Descriptions.cs" />
     <Compile Include="Managers\FileManager.cs" />
