@@ -2,7 +2,7 @@
 <a href="https://github.com/DarkByte7/Comet"><img alt="Comet" width="100" heigth="100" src="https://i.imgur.com/ZQIJv3T.png"></a>
 </p >
 
-<h1  align="center">VisualPlus</h1>
+<h1  align="center">Comet</h1>
 
 <p align="center">
     <a href="https://github.com/DarkByte7/Comet/issues/"><img alt="Issues" src="https://img.shields.io/github/issues/DarkByte7/Comet.svg?style=flat"></a>
