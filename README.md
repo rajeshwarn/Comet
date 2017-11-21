@@ -44,19 +44,8 @@ The [`Comet`](https://github.com/DarkByte7/Comet) repository is where we do deve
 2. Add the `Comet.exe` as a reference to your project. [How to: Add or Remove References in Visual Studio](https://msdn.microsoft.com/en-us/library/wkze6zky(v=vs.100).aspx).
 3. Rebuild your project and it will now be available in the toolbox.
 
-## Creating a Package
-1. Compress all your files into a `.zip` archive and upload the archive to your server.
-2. Run the `new` command in the console.
-3. Use the `edit` command to change the package data.
-```C#
-edit 0 "Initial release"
-edit 1 "https://www.example.com/link"
-edit 2 "FileName.exe"
-edit 3 "ProductName"
-edit 4 "01/01/2017"
-edit 5 "1.0.0.0"
-```
-4. Use the `save` command to save the package. And upload it to your remote server.
+## Tutorial
+Coming...
 
 ## Using the UpdateManager
 Create a new UpdateManager object like this:
