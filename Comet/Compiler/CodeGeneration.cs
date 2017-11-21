@@ -68,11 +68,13 @@
 
             // if (false)
             // {
-            //    _class.BaseTypes.Add(new CodeTypeReference("Base"));
+            // _class.BaseTypes.Add(new CodeTypeReference("Base"));
             // }
 
             // Create entry point method
-            _class.Members.Add(EntryPoints.MainEntryPointMethod());
+            CodeEntryPointMethod _entryPointMethod = EntryPoints.MainEntryPointMethod();
+            _entryPointMethod.Statements.Add(MethodInvoke.InvokeMethod(ReferenceTypes.InstallerType(), "Initialize"));
+            _class.Members.Add(_entryPointMethod);
 
             // Create public variables
             _class.Members.Add(CreatePublicProperty("InstallPath", typeof(string)));

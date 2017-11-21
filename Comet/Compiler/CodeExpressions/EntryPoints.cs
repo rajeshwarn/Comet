@@ -28,10 +28,8 @@
 
             _codeEntryPointMethod.CustomAttributes.Add(new CodeAttributeDeclaration("STAThread"));
             _codeEntryPointMethod.Comments.Add(CommentsExpressions.CreateFlatSummaryTag("The main entry point for the application."));
-            
-            MethodsHelper.AddMethodStatements(codeMemberMethods, codeExpression, _codeEntryPointMethod);
 
-            _codeEntryPointMethod.Statements.Add(MethodInvoke.InvokeMethod(ReferenceTypes.InstallerType(), "Initialize"));
+            MethodsHelper.AddMethodStatements(codeMemberMethods, codeExpression, _codeEntryPointMethod);
 
             return _codeEntryPointMethod;
         }
