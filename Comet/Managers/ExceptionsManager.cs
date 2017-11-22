@@ -32,17 +32,6 @@
             Console.WriteLine();
         }
 
-        /// <summary>Throws a <see cref="ObjectDisposedException"/>.</summary>
-        /// <param name="value">The value.</param>
-        /// <param name="disposed">The disposed toggle.</param>
-        public static void ObjectDisposed(object value, bool disposed)
-        {
-            if (disposed)
-            {
-                throw new ObjectDisposedException(nameof(value));
-            }
-        }
-
         /// <summary>Throws a <see cref="FileNotFoundException" />.</summary>
         /// <param name="path">The file path.</param>
         public static void FileExists(string path)
@@ -70,6 +59,17 @@
             if (string.IsNullOrEmpty(value))
             {
                 throw new NoNullAllowedException(nameof(value));
+            }
+        }
+
+        /// <summary>Throws a <see cref="ObjectDisposedException" />.</summary>
+        /// <param name="value">The value.</param>
+        /// <param name="disposed">The disposed toggle.</param>
+        public static void ObjectDisposed(object value, bool disposed)
+        {
+            if (disposed)
+            {
+                throw new ObjectDisposedException(nameof(value));
             }
         }
 

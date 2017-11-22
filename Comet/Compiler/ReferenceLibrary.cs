@@ -1,4 +1,4 @@
-﻿namespace Comet.Compiler.CodeExpressions
+namespace Comet.Compiler.CodeExpressions
 {
     #region Namespace
 

@@ -1,4 +1,4 @@
-﻿namespace Comet.Compiler
+namespace Comet.Compiler
 {
     #region Namespace
 

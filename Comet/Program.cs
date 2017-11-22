@@ -2,7 +2,6 @@
 {
     #region Namespace
 
-    using System;
     using System.Collections.Generic;
 
     using Comet.Managers;
@@ -60,7 +59,6 @@
             }
         }
 
-
-       #endregion
+        #endregion
     }
 }

@@ -28,20 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnArchiveExtractFile = new System.Windows.Forms.Button();
-            this.btnArchiveNew = new System.Windows.Forms.Button();
-            this.btnArchiveRemove = new System.Windows.Forms.Button();
-            this.btnArchiveExtractToDirectory = new System.Windows.Forms.Button();
             this.lvArchive = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnArchiveAdd = new System.Windows.Forms.Button();
-            this.btnArchiveLoad = new System.Windows.Forms.Button();
+            this.cmsArchive = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.addFilesToArchiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extractToTheSpecifiedFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.deleteFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tbSource = new System.Windows.Forms.TextBox();
@@ -89,13 +91,19 @@
             this.RunAfterBuildtoolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.loadEntryPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadInstallerScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportAProblemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadInstallerScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.extractFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newArchiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadArchiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.cmsArchive.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -123,13 +131,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.btnArchiveExtractFile);
-            this.tabPage2.Controls.Add(this.btnArchiveNew);
-            this.tabPage2.Controls.Add(this.btnArchiveRemove);
-            this.tabPage2.Controls.Add(this.btnArchiveExtractToDirectory);
             this.tabPage2.Controls.Add(this.lvArchive);
-            this.tabPage2.Controls.Add(this.btnArchiveAdd);
-            this.tabPage2.Controls.Add(this.btnArchiveLoad);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -138,64 +140,20 @@
             this.tabPage2.Text = "Archive Editor";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // btnArchiveExtractFile
-            // 
-            this.btnArchiveExtractFile.Enabled = false;
-            this.btnArchiveExtractFile.Location = new System.Drawing.Point(329, 6);
-            this.btnArchiveExtractFile.Name = "btnArchiveExtractFile";
-            this.btnArchiveExtractFile.Size = new System.Drawing.Size(112, 23);
-            this.btnArchiveExtractFile.TabIndex = 8;
-            this.btnArchiveExtractFile.Text = "Extract To File";
-            this.btnArchiveExtractFile.UseVisualStyleBackColor = true;
-            this.btnArchiveExtractFile.Click += new System.EventHandler(this.BtnArchiveExtractFile_Click);
-            // 
-            // btnArchiveNew
-            // 
-            this.btnArchiveNew.Location = new System.Drawing.Point(3, 6);
-            this.btnArchiveNew.Name = "btnArchiveNew";
-            this.btnArchiveNew.Size = new System.Drawing.Size(75, 23);
-            this.btnArchiveNew.TabIndex = 7;
-            this.btnArchiveNew.Text = "New";
-            this.btnArchiveNew.UseVisualStyleBackColor = true;
-            this.btnArchiveNew.Click += new System.EventHandler(this.BtnArchiveNew_Click);
-            // 
-            // btnArchiveRemove
-            // 
-            this.btnArchiveRemove.Enabled = false;
-            this.btnArchiveRemove.Location = new System.Drawing.Point(246, 6);
-            this.btnArchiveRemove.Name = "btnArchiveRemove";
-            this.btnArchiveRemove.Size = new System.Drawing.Size(75, 23);
-            this.btnArchiveRemove.TabIndex = 6;
-            this.btnArchiveRemove.Text = "Remove";
-            this.btnArchiveRemove.UseVisualStyleBackColor = true;
-            this.btnArchiveRemove.Click += new System.EventHandler(this.BtnArchiveRemove_Click);
-            // 
-            // btnArchiveExtractToDirectory
-            // 
-            this.btnArchiveExtractToDirectory.Enabled = false;
-            this.btnArchiveExtractToDirectory.Location = new System.Drawing.Point(447, 6);
-            this.btnArchiveExtractToDirectory.Name = "btnArchiveExtractToDirectory";
-            this.btnArchiveExtractToDirectory.Size = new System.Drawing.Size(112, 23);
-            this.btnArchiveExtractToDirectory.TabIndex = 5;
-            this.btnArchiveExtractToDirectory.Text = "Extract To Directory";
-            this.btnArchiveExtractToDirectory.UseVisualStyleBackColor = true;
-            this.btnArchiveExtractToDirectory.Click += new System.EventHandler(this.BtnArchiveExtractToDirectory_Click);
-            // 
             // lvArchive
             // 
-            this.lvArchive.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvArchive.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
             this.columnHeader4});
+            this.lvArchive.ContextMenuStrip = this.cmsArchive;
+            this.lvArchive.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvArchive.FullRowSelect = true;
             this.lvArchive.GridLines = true;
-            this.lvArchive.Location = new System.Drawing.Point(3, 35);
+            this.lvArchive.Location = new System.Drawing.Point(3, 3);
             this.lvArchive.Name = "lvArchive";
-            this.lvArchive.Size = new System.Drawing.Size(556, 374);
+            this.lvArchive.Size = new System.Drawing.Size(559, 406);
             this.lvArchive.TabIndex = 4;
             this.lvArchive.UseCompatibleStateImageBehavior = false;
             this.lvArchive.View = System.Windows.Forms.View.Details;
@@ -216,26 +174,64 @@
             // 
             this.columnHeader4.Text = "Modified";
             // 
-            // btnArchiveAdd
+            // cmsArchive
             // 
-            this.btnArchiveAdd.Enabled = false;
-            this.btnArchiveAdd.Location = new System.Drawing.Point(165, 6);
-            this.btnArchiveAdd.Name = "btnArchiveAdd";
-            this.btnArchiveAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnArchiveAdd.TabIndex = 3;
-            this.btnArchiveAdd.Text = "Add";
-            this.btnArchiveAdd.UseVisualStyleBackColor = true;
-            this.btnArchiveAdd.Click += new System.EventHandler(this.BtnArchiveAdd_Click);
+            this.cmsArchive.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newArchiveToolStripMenuItem,
+            this.loadArchiveToolStripMenuItem,
+            this.toolStripSeparator12,
+            this.addFilesToArchiveToolStripMenuItem,
+            this.toolStripSeparator9,
+            this.selectAllToolStripMenuItem,
+            this.toolStripSeparator11,
+            this.extractFileToolStripMenuItem,
+            this.extractToTheSpecifiedFolderToolStripMenuItem,
+            this.toolStripSeparator10,
+            this.deleteFileToolStripMenuItem});
+            this.cmsArchive.Name = "cmsArchive";
+            this.cmsArchive.Size = new System.Drawing.Size(228, 204);
             // 
-            // btnArchiveLoad
+            // selectAllToolStripMenuItem
             // 
-            this.btnArchiveLoad.Location = new System.Drawing.Point(84, 6);
-            this.btnArchiveLoad.Name = "btnArchiveLoad";
-            this.btnArchiveLoad.Size = new System.Drawing.Size(75, 23);
-            this.btnArchiveLoad.TabIndex = 0;
-            this.btnArchiveLoad.Text = "Load";
-            this.btnArchiveLoad.UseVisualStyleBackColor = true;
-            this.btnArchiveLoad.Click += new System.EventHandler(this.BtnArchiveLoad_Click);
+            this.selectAllToolStripMenuItem.Enabled = false;
+            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.selectAllToolStripMenuItem.Text = "Select all";
+            this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.SelectAllToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(224, 6);
+            // 
+            // addFilesToArchiveToolStripMenuItem
+            // 
+            this.addFilesToArchiveToolStripMenuItem.Enabled = false;
+            this.addFilesToArchiveToolStripMenuItem.Name = "addFilesToArchiveToolStripMenuItem";
+            this.addFilesToArchiveToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.addFilesToArchiveToolStripMenuItem.Text = "Add files to archive";
+            this.addFilesToArchiveToolStripMenuItem.Click += new System.EventHandler(this.AddFilesToArchiveToolStripMenuItem_Click);
+            // 
+            // extractToTheSpecifiedFolderToolStripMenuItem
+            // 
+            this.extractToTheSpecifiedFolderToolStripMenuItem.Enabled = false;
+            this.extractToTheSpecifiedFolderToolStripMenuItem.Name = "extractToTheSpecifiedFolderToolStripMenuItem";
+            this.extractToTheSpecifiedFolderToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.extractToTheSpecifiedFolderToolStripMenuItem.Text = "Extract to the specified folder";
+            this.extractToTheSpecifiedFolderToolStripMenuItem.Click += new System.EventHandler(this.ExtractToTheSpecifiedFolderToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(224, 6);
+            // 
+            // deleteFileToolStripMenuItem
+            // 
+            this.deleteFileToolStripMenuItem.Enabled = false;
+            this.deleteFileToolStripMenuItem.Name = "deleteFileToolStripMenuItem";
+            this.deleteFileToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.deleteFileToolStripMenuItem.Text = "Delete file";
+            this.deleteFileToolStripMenuItem.Click += new System.EventHandler(this.DeleteFileToolStripMenuItem_Click);
             // 
             // tabPage3
             // 
@@ -644,7 +640,7 @@
             this.buildToolStripMenuItem.Name = "buildToolStripMenuItem";
             this.buildToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.buildToolStripMenuItem.Text = "Build";
-            this.buildToolStripMenuItem.Click += new System.EventHandler(this.buildToolStripMenuItem_Click);
+            this.buildToolStripMenuItem.Click += new System.EventHandler(this.BuildToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
@@ -670,7 +666,14 @@
             this.loadEntryPointToolStripMenuItem.Name = "loadEntryPointToolStripMenuItem";
             this.loadEntryPointToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.loadEntryPointToolStripMenuItem.Text = "Load Entry Point";
-            this.loadEntryPointToolStripMenuItem.Click += new System.EventHandler(this.loadEntryPointToolStripMenuItem_Click);
+            this.loadEntryPointToolStripMenuItem.Click += new System.EventHandler(this.LoadEntryPointToolStripMenuItem_Click);
+            // 
+            // loadInstallerScriptToolStripMenuItem
+            // 
+            this.loadInstallerScriptToolStripMenuItem.Name = "loadInstallerScriptToolStripMenuItem";
+            this.loadInstallerScriptToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.loadInstallerScriptToolStripMenuItem.Text = "Load Installer Script";
+            this.loadInstallerScriptToolStripMenuItem.Click += new System.EventHandler(this.LoadInstallerScriptToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -700,12 +703,37 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // loadInstallerScriptToolStripMenuItem
+            // toolStripSeparator11
             // 
-            this.loadInstallerScriptToolStripMenuItem.Name = "loadInstallerScriptToolStripMenuItem";
-            this.loadInstallerScriptToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.loadInstallerScriptToolStripMenuItem.Text = "Load Installer Script";
-            this.loadInstallerScriptToolStripMenuItem.Click += new System.EventHandler(this.loadInstallerScriptToolStripMenuItem_Click);
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(224, 6);
+            // 
+            // extractFileToolStripMenuItem
+            // 
+            this.extractFileToolStripMenuItem.Enabled = false;
+            this.extractFileToolStripMenuItem.Name = "extractFileToolStripMenuItem";
+            this.extractFileToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.extractFileToolStripMenuItem.Text = "Extract file";
+            this.extractFileToolStripMenuItem.Click += new System.EventHandler(this.ExtractFileToolStripMenuItem_Click);
+            // 
+            // newArchiveToolStripMenuItem
+            // 
+            this.newArchiveToolStripMenuItem.Name = "newArchiveToolStripMenuItem";
+            this.newArchiveToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.newArchiveToolStripMenuItem.Text = "New archive...";
+            this.newArchiveToolStripMenuItem.Click += new System.EventHandler(this.NewArchiveToolStripMenuItem_Click);
+            // 
+            // loadArchiveToolStripMenuItem
+            // 
+            this.loadArchiveToolStripMenuItem.Name = "loadArchiveToolStripMenuItem";
+            this.loadArchiveToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.loadArchiveToolStripMenuItem.Text = "Load archive...";
+            this.loadArchiveToolStripMenuItem.Click += new System.EventHandler(this.LoadArchiveToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(224, 6);
             // 
             // Main
             // 
@@ -722,6 +750,7 @@
             this.Load += new System.EventHandler(this.Main_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.cmsArchive.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -745,15 +774,11 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Button btnArchiveLoad;
-        private System.Windows.Forms.Button btnArchiveAdd;
         private System.Windows.Forms.ListView lvArchive;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.Button btnArchiveExtractToDirectory;
-        private System.Windows.Forms.Button btnArchiveRemove;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tbPackageName;
@@ -789,8 +814,6 @@
         private System.Windows.Forms.ToolStripMenuItem reportAProblemToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.Button btnArchiveNew;
-        private System.Windows.Forms.Button btnArchiveExtractFile;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TextBox tbSource;
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
@@ -807,6 +830,18 @@
         private System.Windows.Forms.ToolStripMenuItem RunAfterBuildtoolStripMenuItem1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem loadInstallerScriptToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip cmsArchive;
+        private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripMenuItem addFilesToArchiveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem extractToTheSpecifiedFolderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripMenuItem deleteFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+        private System.Windows.Forms.ToolStripMenuItem extractFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newArchiveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadArchiveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
     }
 }
 

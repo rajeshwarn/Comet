@@ -39,123 +39,33 @@
 
         #region Events
 
-        /// <summary>Add file for archive.</summary>
+        /// <summary>Add files to archive Tool Strip Menu Item Click.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
-        private void BtnArchiveAdd_Click(object sender, EventArgs e)
+        private void AddFilesToArchiveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog _openFileDialog = new OpenFileDialog
                 {
                     Title = @"Browse for a file to add",
-                    Filter = @"All Files|*.*"
+                    Filter = @"All Files|*.*",
+                    Multiselect = true
                 };
 
             if (_openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                Archive.CreateEntryFromFile(new Archive(Settings.ArchivePath), _openFileDialog.FileName, Path.GetFileName(_openFileDialog.FileName), CompressionLevel.Fastest);
+                foreach (string file in _openFileDialog.FileNames)
+                {
+                    Archive.CreateEntryFromFile(new Archive(Settings.ArchivePath), file, Path.GetFileName(file), CompressionLevel.Fastest);
+                }
+
                 UpdateArchive(Settings.ArchivePath);
             }
         }
 
-        /// <summary>Extract file from archive.</summary>
+        /// <summary>Build Tool Strip Menu Item Click.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
-        private void BtnArchiveExtractFile_Click(object sender, EventArgs e)
-        {
-            if (lvArchive.SelectedItems.Count > 0)
-            {
-                string _fileToExtract = lvArchive.SelectedItems[0].Text;
-
-                using (SaveFileDialog _saveFileDialog = new SaveFileDialog())
-                {
-                    _saveFileDialog.Title = @"Save extracted file";
-                    _saveFileDialog.Filter = @"All Files|*.*";
-                    _saveFileDialog.FileName = Path.GetFileName(_fileToExtract);
-
-                    if (_saveFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        Archive.ExtractToFile(new Archive(Settings.ArchivePath), _fileToExtract, _saveFileDialog.FileName);
-                    }
-                }
-            }
-        }
-
-        /// <summary>Extract archive to directory.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void BtnArchiveExtractToDirectory_Click(object sender, EventArgs e)
-        {
-            if (lvArchive.Items.Count > 0)
-            {
-                FolderBrowserDialog _folderBrowserDialog = new FolderBrowserDialog
-                    {
-                        ShowNewFolderButton = true
-                    };
-
-                if (_folderBrowserDialog.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
-
-                Archive.ExtractToDirectory(new Archive(Settings.ArchivePath), _folderBrowserDialog.SelectedPath);
-                MessageBox.Show(@"The archive has been extracted!" + Environment.NewLine + @"Output: " + _folderBrowserDialog.SelectedPath);
-            }
-        }
-
-        /// <summary>Browse file archive.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void BtnArchiveLoad_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog _openFileDialog = new OpenFileDialog
-                {
-                    Title = @"Browse for an archive.",
-                    Filter = Settings.ArchiveFileTypes
-                };
-
-            if (_openFileDialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-
-            Settings.ArchivePath = _openFileDialog.FileName;
-            UpdateArchive(_openFileDialog.FileName);
-        }
-
-        /// <summary>Create an archive.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void BtnArchiveNew_Click(object sender, EventArgs e)
-        {
-            using (SaveFileDialog _saveFileDialog = new SaveFileDialog())
-            {
-                _saveFileDialog.Title = @"Save new archive";
-                _saveFileDialog.Filter = Settings.ArchiveFileTypes;
-                _saveFileDialog.FileName = string.Empty;
-
-                if (_saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    Archive.CreateEmptyArchive(_saveFileDialog.FileName);
-                    Settings.ArchivePath = _saveFileDialog.FileName;
-                }
-            }
-        }
-
-        /// <summary>Remove file from archive.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void BtnArchiveRemove_Click(object sender, EventArgs e)
-        {
-            if (lvArchive.SelectedItems.Count > 0)
-            {
-                string _fileToRemove = lvArchive.SelectedItems[0].Text;
-
-                Archive.DeleteEntry(new Archive(Settings.ArchivePath), _fileToRemove);
-                UpdateArchive(Settings.ArchivePath);
-            }
-        }
-
-        private void buildToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BuildToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var _references = new List<string> { "System.dll", "Comet.dll" };
 
@@ -222,12 +132,71 @@
             ToggleSaveOption();
         }
 
+        /// <summary>Delete file Tool Strip Menu Item Click.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void DeleteFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lvArchive.SelectedItems.Count > 0)
+            {
+                string _fileToRemove = lvArchive.SelectedItems[0].Text;
+
+                Archive.DeleteEntry(new Archive(Settings.ArchivePath), _fileToRemove);
+                UpdateArchive(Settings.ArchivePath);
+            }
+        }
+
         /// <summary>Exit Tool Strip Menu Item Click.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        /// <summary>Extract File Tool Strip Menu Item Click.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void ExtractFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lvArchive.SelectedItems.Count > 0)
+            {
+                string _fileToExtract = lvArchive.SelectedItems[0].Text;
+
+                using (SaveFileDialog _saveFileDialog = new SaveFileDialog())
+                {
+                    _saveFileDialog.Title = @"Save extracted file";
+                    _saveFileDialog.Filter = @"All Files|*.*";
+                    _saveFileDialog.FileName = Path.GetFileName(_fileToExtract);
+
+                    if (_saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        Archive.ExtractToFile(new Archive(Settings.ArchivePath), _fileToExtract, _saveFileDialog.FileName);
+                    }
+                }
+            }
+        }
+
+        /// <summary>Extract To Specified Folder Tool Strip Menu Item Click.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void ExtractToTheSpecifiedFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lvArchive.Items.Count > 0)
+            {
+                FolderBrowserDialog _folderBrowserDialog = new FolderBrowserDialog
+                    {
+                        ShowNewFolderButton = true
+                    };
+
+                if (_folderBrowserDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                Archive.ExtractToDirectory(new Archive(Settings.ArchivePath), _folderBrowserDialog.SelectedPath);
+                MessageBox.Show(@"The archive has been extracted!" + Environment.NewLine + @"Output: " + _folderBrowserDialog.SelectedPath);
+            }
         }
 
         /// <summary>Get the package version.</summary>
@@ -245,9 +214,41 @@
             return new Version(_major, _minor, _build, _revision);
         }
 
-        private void loadEntryPointToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>Load archive Tool Strip Menu Item Click.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void LoadArchiveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog _openFileDialog = new OpenFileDialog
+                {
+                    Title = @"Browse for an archive.",
+                    Filter = Settings.ArchiveFileTypes
+                };
+
+            if (_openFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            Settings.ArchivePath = _openFileDialog.FileName;
+            UpdateArchive(_openFileDialog.FileName);
+        }
+
+        /// <summary>Load entry point Tool Strip Menu Item Click.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void LoadEntryPointToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CodeCompileUnit _mainEntryPointUnit = CompileUnits.CreateMainEntryPoint();
+            tbSource.Text = CodeDomCompiler.GenerateSource(_mainEntryPointUnit);
+        }
+
+        /// <summary>Load installer Tool Strip Menu Item Click.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void LoadInstallerScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CodeCompileUnit _mainEntryPointUnit = CompileUnits.CreateInstallerCode();
             tbSource.Text = CodeDomCompiler.GenerateSource(_mainEntryPointUnit);
         }
 
@@ -270,6 +271,27 @@
             lvErrorList.Columns[4].Width = 50;
 
             ConstructRecentFilesMenuStrip();
+        }
+
+        /// <summary>New Tool Strip Menu Item Click.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void NewArchiveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog _saveFileDialog = new SaveFileDialog())
+            {
+                _saveFileDialog.Title = @"Save new archive";
+                _saveFileDialog.Filter = Settings.ArchiveFileTypes;
+                _saveFileDialog.FileName = string.Empty;
+
+                if (_saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    Archive.CreateEmptyArchive(_saveFileDialog.FileName);
+                    Settings.ArchivePath = _saveFileDialog.FileName;
+
+                    UpdateArchive(Settings.ArchivePath);
+                }
+            }
         }
 
         /// <summary>New Tool Strip Menu Item Click.</summary>
@@ -478,6 +500,17 @@
             }
         }
 
+        /// <summary>Select all Tool Strip Menu Item Click.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void SelectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lvArchive.Items)
+            {
+                item.Selected = true;
+            }
+        }
+
         /// <summary>Text box data value changed.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
@@ -532,19 +565,21 @@
                 lvArchive.Items.Add(_listViewItem);
             }
 
-            btnArchiveAdd.Enabled = true;
+            addFilesToArchiveToolStripMenuItem.Enabled = true;
 
             if (lvArchive.Items.Count > 0)
             {
-                btnArchiveRemove.Enabled = true;
-                btnArchiveExtractFile.Enabled = true;
-                btnArchiveExtractToDirectory.Enabled = true;
+                deleteFileToolStripMenuItem.Enabled = true;
+                extractFileToolStripMenuItem.Enabled = true;
+                extractToTheSpecifiedFolderToolStripMenuItem.Enabled = true;
+                selectAllToolStripMenuItem.Enabled = true;
             }
             else
             {
-                btnArchiveRemove.Enabled = false;
-                btnArchiveExtractFile.Enabled = false;
-                btnArchiveExtractToDirectory.Enabled = false;
+                deleteFileToolStripMenuItem.Enabled = false;
+                extractFileToolStripMenuItem.Enabled = false;
+                extractToTheSpecifiedFolderToolStripMenuItem.Enabled = false;
+                selectAllToolStripMenuItem.Enabled = false;
             }
         }
 
@@ -584,11 +619,5 @@
         }
 
         #endregion
-
-        private void loadInstallerScriptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CodeCompileUnit _mainEntryPointUnit = CompileUnits.CreateInstallerCode();
-            tbSource.Text = CodeDomCompiler.GenerateSource(_mainEntryPointUnit);
-        }
     }
 }
