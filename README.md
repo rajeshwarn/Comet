@@ -17,16 +17,11 @@ The Comet library provides integration into your .NET Windows Form and WPF appli
 | Service | Stable | Beta |
 | :---- | :---- | :------ |
 AppVeyor | [ ![Stable build status][1]][2] | [![Beta build status][3]][4] |
-Travic Cl | [ ![Stable build status][5]][6] | [![Beta build status][7]][8] |
 
 [1]: https://img.shields.io/appveyor/ci/DarkByte7/Comet/master.svg?style=plastic
 [2]: https://ci.appveyor.com/project/DarkByte7/Comet
 [3]: https://img.shields.io/appveyor/ci/DarkByte7/Comet/beta.svg?style=plastic
 [4]: https://ci.appveyor.com/project/DarkByte7/Comet
-[5]: https://img.shields.io/travis/DarkByte7/Comet/master.svg?style=plastic
-[6]: https://travis-ci.org/DarkByte7/Comet
-[7]: https://img.shields.io/travis/DarkByte7/Comet/beta.svg?style=plastic
-[8]: https://travis-ci.org/DarkByte7/Comet
 
 To get the latest release, you can download a [`Fresh Build`](https://ci.appveyor.com/project/DarkByte7/Comet/build/artifacts) here.
 
