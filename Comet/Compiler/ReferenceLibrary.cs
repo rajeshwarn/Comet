@@ -6,7 +6,7 @@
 
     #endregion
 
-    public class ReferenceTypes
+    public class ReferenceLibrary
     {
         #region Events
 

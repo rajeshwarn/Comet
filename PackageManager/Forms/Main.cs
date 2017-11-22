@@ -247,8 +247,8 @@
 
         private void loadEntryPointToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CodeCompileUnit _mainEntryPointUnit = CodeGeneration.CreateMainEntryPoint();
-            tbSource.Text = CodeDomCompiler.CompileUnitToSource(_mainEntryPointUnit);
+            CodeCompileUnit _mainEntryPointUnit = CompileUnits.CreateMainEntryPoint();
+            tbSource.Text = CodeDomCompiler.GenerateSource(_mainEntryPointUnit);
         }
 
         /// <summary>The main load.</summary>
@@ -587,8 +587,8 @@
 
         private void loadInstallerScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CodeCompileUnit _mainEntryPointUnit = CodeGeneration.CreateInstallerCode();
-            tbSource.Text = CodeDomCompiler.CompileUnitToSource(_mainEntryPointUnit);
+            CodeCompileUnit _mainEntryPointUnit = CompileUnits.CreateInstallerCode();
+            tbSource.Text = CodeDomCompiler.GenerateSource(_mainEntryPointUnit);
         }
     }
 }
