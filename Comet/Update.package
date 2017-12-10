@@ -2,7 +2,7 @@
 
 <Comet>
 	<ChangeLog>Initial release.</ChangeLog>
-	<Download>http://example.com/</Download>
+	<Download>http://example.com/FileNotFound.zip</Download>
 	<Filename>Comet.exe</Filename>
 	<Name>Comet</Name>
 	<Release>January 1, 2017</Release>
