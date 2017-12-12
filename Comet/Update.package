@@ -2,7 +2,7 @@
 
 <Comet>
 	<ChangeLog>Initial release.</ChangeLog>
-	<Download>http://example.com/</Download>
+	<Download>https://raw.githubusercontent.com/DarkByte7/Comet/master/Comet/TestSample.zip</Download>
 	<Filename>Comet.exe</Filename>
 	<Name>Comet</Name>
 	<Release>January 1, 2017</Release>
