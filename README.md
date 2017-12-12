@@ -31,7 +31,7 @@ The [`Comet`](https://github.com/DarkByte7/Comet) repository is where we do deve
 - Review the [documentation](https://github.com/DarkByte7/Comet/wiki) and make pull requests for anything from typos to new content
 
 ## Build requirements
-- [.NET Framework 4.6.2](https://www.microsoft.com/en-us/download/details.aspx?id=53345)
+- [.NET Framework 4.5](https://www.microsoft.com/en-ca/download/details.aspx?id=30653)
 - [Visual Studio 2017](https://www.visualstudio.com/downloads/)
 
 ## Compiling
@@ -41,30 +41,6 @@ The [`Comet`](https://github.com/DarkByte7/Comet) repository is where we do deve
 
 ## Tutorial
 Coming...
-
-## Using the UpdateManager
-Create a new UpdateManager object like this:
-```C#
-Uri _packagePath = new Uri("https://raw.githubusercontent.com/DarkByte7/Comet/stable/Comet/Update.package");
-string _downloadPath = FileManager.CreateTempPath("Download");
-string _executablePath = Comet.Managers.ApplicationManager.GetMainModuleFileName();
-
-// Create update manager object
-UpdateManager _updateManager = new UpdateManager(_packagePath, _downloadPath, _executablePath, false);
-```
-Check for updates:
-```C#
-try
-{
-    // Check for updates.
-     _updateManager.CheckForUpdates();
-}
-     catch (Exception e)
-{
-     Console.WriteLine(e);
-     throw;
-}
-```
 
 ## Features
 * Windows Toolbox Control
@@ -88,6 +64,3 @@ BitCoin donations are also welcome: `1KKghRonJu6orcu7rf4r1wSnsnAPbnC8B7`
 - File a bug in [GitHub Issues](https://github.com/DarkByte7/Comet/issues?q=is:open+is:issue).
 
 ## Screenshots
-![Imgur](http://i.imgur.com/lvwo5D5.jpg)
-
-![Imgur](http://i.imgur.com/0X0QULc.jpg)
