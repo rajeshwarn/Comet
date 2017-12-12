@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Comet</RootNamespace>
     <AssemblyName>Comet</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <PublishUrl>publish\</PublishUrl>
@@ -26,6 +26,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,6 +49,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\Comet.ico</ApplicationIcon>
@@ -60,6 +63,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
@@ -68,41 +72,58 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\DefaultCommands.cs" />
     <Compile Include="Compiler\CompileUnits.cs" />
     <Compile Include="Compiler\CodeGeneration.cs" />
     <Compile Include="Compiler\CodeDomCompiler.cs" />
     <Compile Include="Compiler\ReferenceLibrary.cs" />
+    <Compile Include="Controls\Notification.cs" />
+    <Compile Include="Controls\VisualExceptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Events\Delegates.cs" />
+    <Compile Include="Events\UpdaterStateEventArgs.cs" />
+    <Compile Include="Managers\Downloader.cs" />
+    <Compile Include="Managers\LogManager.cs" />
+    <Compile Include="Managers\ResourcesManager.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Structure\Adler32.cs" />
     <Compile Include="Structure\Archive.cs" />
-    <Compile Include="Localize\Descriptions.cs" />
     <Compile Include="Managers\FileManager.cs" />
     <Compile Include="Exceptions\RemoteSourceNotFoundException.cs" />
-    <Compile Include="Structure\ConsoleCommand.cs" />
     <Compile Include="InterfaceTypes.cs" />
     <Compile Include="Managers\ApplicationManager.cs" />
-    <Compile Include="Managers\ConsoleManager.cs" />
     <Compile Include="Managers\ExceptionsManager.cs" />
     <Compile Include="Managers\NetworkManager.cs" />
     <Compile Include="Managers\PackageManager.cs" />
     <Compile Include="Managers\StringManager.cs" />
-    <Compile Include="Managers\CommandManager.cs" />
-    <Compile Include="UpdateManager.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Structure\DownloadData.cs" />
+    <Compile Include="CometUpdater.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ControlPanel.cs" />
     <Compile Include="Structure\Bytes.cs" />
     <Compile Include="Structure\Package.cs" />
-    <Compile Include="Enums\Updater.cs" />
+    <Compile Include="Enums\UpdaterState.cs" />
     <Compile Include="PInvoke\wininet.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensibility\" />
+    <Folder Include="Localize\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Comet.ico" />
+    <EmbeddedResource Include="Resources\Comet.ico" />
     <None Include="Update.package" />
   </ItemGroup>
   <ItemGroup>

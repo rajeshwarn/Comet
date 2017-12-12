@@ -9,7 +9,6 @@
     using System.Reflection;
     using System.Windows.Forms;
 
-    using Comet.Exceptions;
     using Comet.Structure;
 
     #endregion
@@ -20,22 +19,27 @@
         #region Events
 
         /// <summary>Checks for update.</summary>
-        /// <param name="executablePath">The executable path.</param>
+        /// <param name="assembly">The assembly.</param>
         /// <param name="url">The url to the package.</param>
         /// <returns>The <see cref="bool" />.</returns>
-        public static bool CheckForUpdate(string executablePath, string url)
+        public static bool CheckForUpdate(Assembly assembly, string url)
         {
-            if (!File.Exists(executablePath))
+            if (!File.Exists(assembly.Location))
             {
                 throw new FileNotFoundException("The executable file doesn't exist.");
             }
 
-            if (!NetworkManager.SourceExists(url))
-            {
-                throw new RemoteSourceNotFoundException("The remote package source doesn't exist");
-            }
+            return CompareVersion(assembly.Location, new Package(url));
+        }
 
-            return CompareVersion(executablePath, new Package(url));
+        /// <summary>Checks for update.</summary>
+        /// <param name="assemblyPath">The assembly path.</param>
+        /// <param name="url">The url to the package.</param>
+        /// <returns>The <see cref="bool" />.</returns>
+        public static bool CheckForUpdate(string assemblyPath, string url)
+        {
+            Assembly _assembly = Assembly.LoadFile(assemblyPath);
+            return CheckForUpdate(_assembly, url);
         }
 
         /// <summary>Compares the source version with the comparison.</summary>
@@ -88,7 +92,23 @@
         /// <returns>The <see cref="Version" />.</returns>
         public static Version GetFileVersion(string fileName)
         {
-            return AssemblyName.GetAssemblyName(fileName).Version;
+            if (!File.Exists(fileName))
+            {
+                throw new FileNotFoundException(StringManager.FileNotFound(fileName));
+            }
+
+            Version _version = null;
+
+            try
+            {
+                _version = AssemblyName.GetAssemblyName(fileName).Version;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return _version;
         }
 
         /// <summary>Get the main module file name.</summary>

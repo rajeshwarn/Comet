@@ -10,11 +10,16 @@
     using System.Globalization;
     using System.IO;
     using System.IO.Compression;
+    using System.Text;
     using System.Windows.Forms;
     using System.Xml.Linq;
 
+    using Comet;
     using Comet.Compiler;
+    using Comet.Managers;
     using Comet.Structure;
+
+    using PackageManager.Properties;
 
     #endregion
 
@@ -27,10 +32,12 @@
         {
             InitializeComponent();
 
-            Settings.ArchiveFileTypes = @"ZIP File|*.zip";
-            Settings.PackageFileTypes = @"Package File|*.package";
-            Settings.MaxRecentProjects = 10;
-            Settings.InstallerPath = "Installer.exe";
+            ControlPanel.ArchiveFileTypes = @"ZIP File|*.zip";
+            ControlPanel.PackageFileTypes = @"Package File|*.package";
+            ControlPanel.MaxRecentProjects = 10;
+            ControlPanel.InstallerPath = "Installer.exe";
+
+            ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/Comet/Update.package";
 
             loadInstallerScriptToolStripMenuItem.PerformClick();
         }
@@ -38,6 +45,19 @@
         #endregion
 
         #region Events
+
+        /// <summary>The about tool strip menu item.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            About _aboutForm = new About
+                {
+                    StartPosition = FormStartPosition.CenterParent
+                };
+
+            _aboutForm.ShowDialog();
+        }
 
         /// <summary>Add files to archive Tool Strip Menu Item Click.</summary>
         /// <param name="sender">The sender.</param>
@@ -55,10 +75,10 @@
             {
                 foreach (string file in _openFileDialog.FileNames)
                 {
-                    Archive.CreateEntryFromFile(new Archive(Settings.ArchivePath), file, Path.GetFileName(file), CompressionLevel.Fastest);
+                    Archive.CreateEntryFromFile(new Archive(ControlPanel.ArchivePath), file, Path.GetFileName(file), CompressionLevel.Fastest);
                 }
 
-                UpdateArchive(Settings.ArchivePath);
+                UpdateArchive(ControlPanel.ArchivePath);
             }
         }
 
@@ -67,11 +87,68 @@
         /// <param name="e">The event.</param>
         private void BuildToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var _references = new List<string> { "System.dll", "Comet.dll" };
+            var _references = new List<string>
+                {
+                    "System.dll",
+                    "System.Windows.Forms.dll"
+                };
 
-            CompilerResults _results = CodeDomCompiler.Build(_references, tbSource.Text, Settings.InstallerPath);
+            ResourcesManager.CreateSettingsResource(ControlPanel.ResourceSettingsPath);
+
+            var _resources = new List<string>
+                {
+                    ControlPanel.ResourceSettingsPath
+                };
+
+            string[] _sources;
+            if (false)
+            {
+                _sources = new[] { Resources.MainEntryPoint, Resources.Downloader };
+            }
+            else
+            {
+                _sources = new[] { tbSource.Text, Resources.Downloader };
+            }
+
+            CompilerResults _results = CodeDomCompiler.Build(_references, _sources, ControlPanel.InstallerPath, _resources);
 
             ProcessCompilerResults(_results);
+        }
+
+        /// <summary>The about tool strip menu item.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void CheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CometUpdater _updater = new CometUpdater(ControlPanel.UpdatePackageUrl, false);
+            _updater.CheckForUpdate();
+
+            string _message;
+            MessageBoxButtons _buttons;
+            MessageBoxIcon _icon;
+
+            if (_updater.UpdateAvailable)
+            {
+                StringBuilder _updateMessage = new StringBuilder();
+                _updateMessage.AppendLine("An update is available!");
+                _updateMessage.AppendLine("Latest version: " + _updater.GetLatestVersion);
+                _updateMessage.Append(Environment.NewLine);
+                _updateMessage.AppendLine("Would you like to update to the latest version?");
+                _message = _updateMessage.ToString();
+
+                _buttons = MessageBoxButtons.YesNo;
+                _icon = MessageBoxIcon.Exclamation;
+            }
+            else
+            {
+                _message = "You have the latest version!";
+
+                _buttons = MessageBoxButtons.OK;
+                _icon = MessageBoxIcon.Information;
+            }
+
+            // TODO: Add code
+            MessageBox.Show(_message, Application.ProductName, _buttons, _icon);
         }
 
         /// <summary>Clears the recent files from history.</summary>
@@ -128,7 +205,7 @@
         /// <param name="e">The event.</param>
         private void DateTimePickerRelease_ValueChanged(object sender, EventArgs e)
         {
-            Settings.FileSaved = false;
+            ControlPanel.FileSaved = false;
             ToggleSaveOption();
         }
 
@@ -141,8 +218,8 @@
             {
                 string _fileToRemove = lvArchive.SelectedItems[0].Text;
 
-                Archive.DeleteEntry(new Archive(Settings.ArchivePath), _fileToRemove);
-                UpdateArchive(Settings.ArchivePath);
+                Archive.DeleteEntry(new Archive(ControlPanel.ArchivePath), _fileToRemove);
+                UpdateArchive(ControlPanel.ArchivePath);
             }
         }
 
@@ -171,7 +248,7 @@
 
                     if (_saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        Archive.ExtractToFile(new Archive(Settings.ArchivePath), _fileToExtract, _saveFileDialog.FileName);
+                        Archive.ExtractToFile(new Archive(ControlPanel.ArchivePath), _fileToExtract, _saveFileDialog.FileName);
                     }
                 }
             }
@@ -194,7 +271,7 @@
                     return;
                 }
 
-                Archive.ExtractToDirectory(new Archive(Settings.ArchivePath), _folderBrowserDialog.SelectedPath);
+                Archive.ExtractToDirectory(new Archive(ControlPanel.ArchivePath), _folderBrowserDialog.SelectedPath);
                 MessageBox.Show(@"The archive has been extracted!" + Environment.NewLine + @"Output: " + _folderBrowserDialog.SelectedPath);
             }
         }
@@ -222,7 +299,7 @@
             OpenFileDialog _openFileDialog = new OpenFileDialog
                 {
                     Title = @"Browse for an archive.",
-                    Filter = Settings.ArchiveFileTypes
+                    Filter = ControlPanel.ArchiveFileTypes
                 };
 
             if (_openFileDialog.ShowDialog() != DialogResult.OK)
@@ -230,7 +307,7 @@
                 return;
             }
 
-            Settings.ArchivePath = _openFileDialog.FileName;
+            ControlPanel.ArchivePath = _openFileDialog.FileName;
             UpdateArchive(_openFileDialog.FileName);
         }
 
@@ -248,8 +325,9 @@
         /// <param name="e">The event.</param>
         private void LoadInstallerScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CodeCompileUnit _mainEntryPointUnit = CompileUnits.CreateInstallerCode();
-            tbSource.Text = CodeDomCompiler.GenerateSource(_mainEntryPointUnit);
+            // CodeCompileUnit _mainEntryPointUnit = CompileUnits.CreateInstallerCode();
+            // tbSource.Text = CodeDomCompiler.GenerateSource(_mainEntryPointUnit);
+            tbSource.Text = Resources.MainEntryPoint;
         }
 
         /// <summary>The main load.</summary>
@@ -281,16 +359,18 @@
             using (SaveFileDialog _saveFileDialog = new SaveFileDialog())
             {
                 _saveFileDialog.Title = @"Save new archive";
-                _saveFileDialog.Filter = Settings.ArchiveFileTypes;
+                _saveFileDialog.Filter = ControlPanel.ArchiveFileTypes;
                 _saveFileDialog.FileName = string.Empty;
 
-                if (_saveFileDialog.ShowDialog() == DialogResult.OK)
+                if (_saveFileDialog.ShowDialog() != DialogResult.OK)
                 {
-                    Archive.CreateEmptyArchive(_saveFileDialog.FileName);
-                    Settings.ArchivePath = _saveFileDialog.FileName;
-
-                    UpdateArchive(Settings.ArchivePath);
+                    return;
                 }
+
+                Archive.CreateEmptyArchive(_saveFileDialog.FileName);
+                ControlPanel.ArchivePath = _saveFileDialog.FileName;
+
+                UpdateArchive(ControlPanel.ArchivePath);
             }
         }
 
@@ -300,9 +380,9 @@
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             closeToolStripMenuItem.Enabled = true;
-            Settings.FileName = string.Empty;
-            Settings.FullPath = string.Empty;
-            Settings.FileSaved = false;
+            ControlPanel.FileName = string.Empty;
+            ControlPanel.FullPath = string.Empty;
+            ControlPanel.FileSaved = false;
 
             const string ChangeLog = "Initial release";
             const string DownloadLink = "https://www.example.com/link/";
@@ -319,7 +399,7 @@
         /// <param name="e">The event.</param>
         private void NudPackage_ValueChanged(object sender, EventArgs e)
         {
-            Settings.FileSaved = false;
+            ControlPanel.FileSaved = false;
             ToggleSaveOption();
         }
 
@@ -334,10 +414,10 @@
                 using (StreamReader _streamReader = new StreamReader(path))
                 {
                     string _line = _streamReader.ReadToEnd();
-                    Settings.FileSaved = true;
-                    Settings.FileName = Path.GetFileName(path);
-                    Settings.FullPath = path;
-                    Settings.ManageHistoryLog(true);
+                    ControlPanel.FileSaved = true;
+                    ControlPanel.FileName = Path.GetFileName(path);
+                    ControlPanel.FullPath = path;
+                    ControlPanel.ManageHistoryLog(true);
 
                     ConstructRecentFilesMenuStrip();
                 }
@@ -356,13 +436,15 @@
             using (OpenFileDialog _openFileDialog = new OpenFileDialog())
             {
                 _openFileDialog.Title = @"Open package...";
-                _openFileDialog.Filter = Settings.PackageFileTypes;
+                _openFileDialog.Filter = ControlPanel.PackageFileTypes;
 
-                if (_openFileDialog.ShowDialog() == DialogResult.OK)
+                if (_openFileDialog.ShowDialog() != DialogResult.OK)
                 {
-                    OpenFile(_openFileDialog.FileName);
-                    closeToolStripMenuItem.Enabled = true;
+                    return;
                 }
+
+                OpenFile(_openFileDialog.FileName);
+                closeToolStripMenuItem.Enabled = true;
             }
         }
 
@@ -370,16 +452,16 @@
         private void PopulateRecentFilesHistory()
         {
             // Check for recent file updates
-            Settings.ManageHistoryLog();
+            ControlPanel.ManageHistoryLog();
 
-            for (var i = 0; i < Settings.FileHistory.Count; i++)
+            for (var i = 0; i < ControlPanel.FileHistory.Count; i++)
             {
                 // CreateInstallerCode sub-item
                 ToolStripMenuItem _recentFileItem = new ToolStripMenuItem
                     {
                         Name = @"RecentFilesListToolStripMenuItem" + i,
-                        Tag = Settings.FileHistory[i],
-                        Text = i + @": " + Settings.FileHistory[i]
+                        Tag = ControlPanel.FileHistory[i],
+                        Text = i + @": " + ControlPanel.FileHistory[i]
                     };
 
                 _recentFileItem.Click += RecentHistoryItem_Click;
@@ -411,7 +493,7 @@
             {
                 if (RunAfterBuildtoolStripMenuItem1.Checked)
                 {
-                    Process.Start(Settings.InstallerPath);
+                    Process.Start(ControlPanel.InstallerPath);
                 }
             }
         }
@@ -433,7 +515,10 @@
             Process.Start("https://github.com/DarkByte7/Comet/issues");
         }
 
-        private void RunAfterBuildtoolStripMenuItem1_Click(object sender, EventArgs e)
+        /// <summary>Run after build Tool Strip Menu Item Click.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void RunAfterBuildToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             RunAfterBuildtoolStripMenuItem1.Checked = !RunAfterBuildtoolStripMenuItem1.Checked;
         }
@@ -446,15 +531,15 @@
             using (SaveFileDialog _saveFileDialog = new SaveFileDialog())
             {
                 _saveFileDialog.Title = @"Save package";
-                _saveFileDialog.Filter = Settings.PackageFileTypes;
+                _saveFileDialog.Filter = ControlPanel.PackageFileTypes;
 
                 if (_saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     SavePackage(_saveFileDialog.FileName);
 
-                    Settings.FullPath = _saveFileDialog.FileName;
-                    Settings.FileName = Path.GetFileName(_saveFileDialog.FileName);
-                    Settings.FileSaved = true;
+                    ControlPanel.FullPath = _saveFileDialog.FileName;
+                    ControlPanel.FileName = Path.GetFileName(_saveFileDialog.FileName);
+                    ControlPanel.FileSaved = true;
 
                     saveToolStripMenuItem.Enabled = false;
                 }
@@ -483,15 +568,15 @@
         /// <param name="e">The event.</param>
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Settings.FileSaved)
+            if (!ControlPanel.FileSaved)
             {
-                if (File.Exists(Settings.FullPath))
+                if (File.Exists(ControlPanel.FullPath))
                 {
-                    SavePackage(Settings.FullPath);
+                    SavePackage(ControlPanel.FullPath);
 
                     ConstructRecentFilesMenuStrip();
 
-                    Settings.FileSaved = true;
+                    ControlPanel.FileSaved = true;
                 }
                 else
                 {
@@ -516,14 +601,14 @@
         /// <param name="e">The event.</param>
         private void TbPackage_TextChanged(object sender, EventArgs e)
         {
-            Settings.FileSaved = false;
+            ControlPanel.FileSaved = false;
             ToggleSaveOption();
         }
 
         /// <summary>Toggles the save menu option.</summary>
         private void ToggleSaveOption()
         {
-            if (File.Exists(Settings.FullPath))
+            if (File.Exists(ControlPanel.FullPath))
             {
                 saveToolStripMenuItem.Enabled = true;
             }

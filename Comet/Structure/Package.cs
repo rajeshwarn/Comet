@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Data;
     using System.Globalization;
     using System.IO;
     using System.Net;
@@ -12,6 +13,7 @@
     using System.Text;
     using System.Xml.Linq;
 
+    using Comet.Controls;
     using Comet.Managers;
 
     #endregion
@@ -265,23 +267,46 @@
         {
             try
             {
+                if (string.IsNullOrEmpty(url))
+                {
+                    throw new NoNullAllowedException(StringManager.IsNullOrEmpty(url));
+                }
+
+                if (!NetworkManager.IsURLFormatted(url))
+                {
+                    throw new UriFormatException(StringManager.UrlNotWellFormatted(url));
+                }
+
+                if (NetworkManager.InternetAvailable)
+                {
+                    if (!NetworkManager.SourceExists(url))
+                    {
+                        throw new FileNotFoundException(StringManager.PackageNotFound(url));
+                    }
+                    else
+                    {
+                        // Load from url
+                        XDocument _xPackage = XDocument.Load(url);
+                        Deserialize(_xPackage);
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException(@"Unable to connect to the internet.");
+                }
+
                 // TODO: Tests not done using async method
                 // Load using async with WebClient.
                 // WebClient _webClient = new WebClient();
                 // string _packageString = await _webClient.DownloadStringTaskAsync(url);
-
-                // Load from url
-                XDocument _xPackage = XDocument.Load(url);
-
-                Deserialize(_xPackage);
             }
             catch (WebException)
             {
-                ExceptionsManager.ShowSourceNotFoundException(url);
+                ExceptionsManager.DisplayException(new FileNotFoundException(StringManager.RemoteFileNotFound(url)));
             }
             catch (Exception e)
             {
-                ExceptionsManager.WriteException(e.Message);
+                VisualExceptionDialog.Show(e);
             }
         }
 
@@ -290,18 +315,24 @@
         /// <param name="encoding">The encoding.</param>
         public void Load(string path, Encoding encoding)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new NoNullAllowedException(StringManager.IsNullOrEmpty(path));
+            }
+
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException(StringManager.FileNotFound(path));
+            }
+
             try
             {
                 XDocument _packageFile = XDocument.Parse(File.ReadAllText(path, encoding));
                 Deserialize(_packageFile);
             }
-            catch (FileNotFoundException)
-            {
-                ExceptionsManager.ShowFileNotFoundException(path);
-            }
             catch (Exception e)
             {
-                ExceptionsManager.WriteException(e.Message);
+                VisualExceptionDialog.Show(e);
             }
         }
 
@@ -332,7 +363,7 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                VisualExceptionDialog.Show(e);
             }
         }
 

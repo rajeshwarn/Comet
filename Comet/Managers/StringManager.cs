@@ -3,85 +3,118 @@
     #region Namespace
 
     using System;
-    using System.Collections.Generic;
     using System.Text;
-
-    using Comet.Structure;
 
     #endregion
 
-    internal class StringManager
+    public class StringManager
     {
         #region Events
 
-        /// <summary>Draws the text centered on the console.</summary>
-        /// <param name="text">The text to draw.</param>
-        public static void DrawCenterText(string text)
+        /// <summary>Create exception string.</summary>
+        /// <param name="e">The e.</param>
+        /// <returns>
+        ///     <see cref="string" />
+        /// </returns>
+        public static string ExceptionString(Exception e)
         {
-            Console.WriteLine("{0," + ((Console.WindowWidth / 2) + (text.Length / 2)) + "}", text);
+            StringBuilder _exception = new StringBuilder();
+            _exception.AppendLine("An unhandled exception has occurred in a component in your application.");
+            _exception.Append(Environment.NewLine);
+            _exception.AppendLine("Message: " + e.Message);
+            _exception.Append(Environment.NewLine);
+            _exception.AppendLine("Stack Trace: " + e.StackTrace);
+            _exception.Append(Environment.NewLine);
+            _exception.AppendLine("Help Link: " + e.HelpLink);
+            _exception.AppendLine("HResult: " + e.HResult);
+            _exception.AppendLine("Source: " + e.Source);
+            _exception.AppendLine("Target Site: " + e.TargetSite);
+            return _exception.ToString();
         }
 
-        /// <summary>Draws the table.</summary>
-        /// <param name="formatting">The formatting.</param>
-        /// <param name="commandsDictionary">The commands Dictionary.</param>
-        /// <returns>The <see cref="string" />.</returns>
-        public static string DrawDictionaryTable(string formatting, Dictionary<string, string> commandsDictionary)
+        /// <summary>Create file not found string.</summary>
+        /// <param name="path">The package path.</param>
+        /// <returns>
+        ///     <see cref="string" />
+        /// </returns>
+        public static string FileNotFound(string path)
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (var valuePair in commandsDictionary)
-            {
-                stringBuilder.AppendFormat(formatting, valuePair.Key, valuePair.Value);
-                stringBuilder.AppendLine();
-            }
-
-            return stringBuilder.ToString();
+            StringBuilder _fileNotFound = new StringBuilder();
+            _fileNotFound.AppendLine("Unable to locate the file using the following path.");
+            _fileNotFound.Append(Environment.NewLine);
+            _fileNotFound.AppendLine("Path: " + path);
+            return _fileNotFound.ToString();
         }
 
-        ///// <summary>Draws the table.</summary>
-        ///// <param name="list">The list.</param>
-        ///// <returns>The <see cref="string" />.</returns>
-        // public static string DrawListTable(List<string> list)
-        // {
-        // StringBuilder stringBuilder = new StringBuilder();
-        // foreach (string listItem in list)
-        // {
-        // stringBuilder.AppendFormat(listItem);
-        // stringBuilder.AppendLine();
-        // }
-
-        // return stringBuilder.ToString();
-        // }
-
-        /// <summary>Draws the package data table.</summary>
-        /// <param name="package">The package.</param>
-        public static void DrawPackageTable(Package package)
+        /// <summary>Create is null or empty string.</summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        ///     <see cref="string" />
+        /// </returns>
+        public static string IsNull(object value)
         {
-            if (package.IsEmpty)
-            {
-                package = new Package();
-            }
-
-            for (var i = 0; i < package.Count; i++)
-            {
-                Package.PackageData _packageData = (Package.PackageData)i;
-                string _package = _packageData.ToString().PadRight(10);
-                string _data = "-".PadRight(2) + package.ToList[i];
-
-                ConsoleManager.WriteOutput(_package + _data);
-            }
+            StringBuilder _isNullOrEmpty = new StringBuilder();
+            _isNullOrEmpty.AppendLine("The object is null.");
+            _isNullOrEmpty.Append(Environment.NewLine);
+            _isNullOrEmpty.AppendLine("Object: " + nameof(value));
+            _isNullOrEmpty.AppendLine("Type: " + value.GetType());
+            return _isNullOrEmpty.ToString();
         }
 
-        /// <summary>Uppercase the first letter of the input.</summary>
-        /// <param name="input">The input string.</param>
-        /// <returns>The <see cref="string" />.</returns>
-        public static string UppercaseFirst(string input)
+        /// <summary>Create is null or empty string.</summary>
+        /// <param name="text">The text.</param>
+        /// <returns>
+        ///     <see cref="string" />
+        /// </returns>
+        public static string IsNullOrEmpty(string text)
         {
-            if (string.IsNullOrEmpty(input))
-            {
-                return string.Empty;
-            }
+            StringBuilder _isNullOrEmpty = new StringBuilder();
+            _isNullOrEmpty.AppendLine("The string is null or empty.");
+            _isNullOrEmpty.Append(Environment.NewLine);
+            _isNullOrEmpty.AppendLine("String: " + nameof(text));
+            return _isNullOrEmpty.ToString();
+        }
 
-            return char.ToUpper(input[0]) + input.Substring(1);
+        /// <summary>Create package not found string.</summary>
+        /// <param name="path">The package path.</param>
+        /// <returns>
+        ///     <see cref="string" />
+        /// </returns>
+        public static string PackageNotFound(string path)
+        {
+            StringBuilder _packageNotFound = new StringBuilder();
+            _packageNotFound.AppendLine("Unable to locate the package using the following path.");
+            _packageNotFound.Append(Environment.NewLine);
+            _packageNotFound.AppendLine("Path: " + path);
+            return _packageNotFound.ToString();
+        }
+
+        /// <summary>Create remote file not found string.</summary>
+        /// <param name="url">The url.</param>
+        /// <returns>
+        ///     <see cref="string" />
+        /// </returns>
+        public static string RemoteFileNotFound(string url)
+        {
+            StringBuilder _remoteFileNotFound = new StringBuilder();
+            _remoteFileNotFound.AppendLine("Unable to locate the remote file using the following URL.");
+            _remoteFileNotFound.Append(Environment.NewLine);
+            _remoteFileNotFound.AppendLine("URL: " + url);
+            return _remoteFileNotFound.ToString();
+        }
+
+        /// <summary>Create URL is not well formatted string.</summary>
+        /// <param name="url">The url.</param>
+        /// <returns>
+        ///     <see cref="string" />
+        /// </returns>
+        public static string UrlNotWellFormatted(string url)
+        {
+            StringBuilder _urlNotWellFormatted = new StringBuilder();
+            _urlNotWellFormatted.AppendLine("The URL is not well formatted.");
+            _urlNotWellFormatted.Append(Environment.NewLine);
+            _urlNotWellFormatted.AppendLine("URL: " + url);
+            return _urlNotWellFormatted.ToString();
         }
 
         #endregion

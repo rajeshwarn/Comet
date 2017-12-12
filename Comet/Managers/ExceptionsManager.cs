@@ -5,12 +5,11 @@
     using System;
     using System.Data;
     using System.IO;
-
-    using Comet.Structure;
+    using System.Windows.Forms;
 
     #endregion
 
-    internal class ExceptionsManager
+    public class ExceptionsManager
     {
         #region Events
 
@@ -20,16 +19,15 @@
         {
             if (!stream.CanSeek)
             {
-                throw new ArgumentException("Stream is not seek able.", nameof(stream));
+                throw new ArgumentException(@"Stream is not seek able.", nameof(stream));
             }
         }
 
-        /// <summary>Creates an exception command not recognized message.</summary>
-        /// <param name="command">The command.</param>
-        public static void CommandNotRecognized(ConsoleCommand command)
+        /// <summary>Displays the exception.</summary>
+        /// <param name="e">The exception.</param>
+        public static void DisplayException(Exception e)
         {
-            WriteException($"\'{command.Name}\' is not recognized as a command. ");
-            Console.WriteLine();
+            MessageBox.Show(e.Message, @"Comet", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>Throws a <see cref="FileNotFoundException" />.</summary>
@@ -38,7 +36,7 @@
         {
             if (!File.Exists(path))
             {
-                throw new FileNotFoundException(nameof(path));
+                throw new FileNotFoundException(StringManager.FileNotFound(path));
             }
         }
 
@@ -48,7 +46,7 @@
         {
             if (value == null)
             {
-                throw new NoNullAllowedException(nameof(value));
+                throw new NoNullAllowedException(StringManager.IsNull(value));
             }
         }
 
@@ -58,7 +56,7 @@
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new NoNullAllowedException(nameof(value));
+                throw new NoNullAllowedException(StringManager.IsNullOrEmpty(value));
             }
         }
 
@@ -71,42 +69,6 @@
             {
                 throw new ObjectDisposedException(nameof(value));
             }
-        }
-
-        /// <summary>Creates an file not found exception.</summary>
-        /// <param name="file">The path to the file.</param>
-        public static void ShowFileNotFoundException(string file)
-        {
-            WriteException("The system cannot find the specified file.");
-            WriteException("Path: '" + file + "'");
-        }
-
-        /// <summary>Shows an exception null or empty exception message.</summary>
-        /// <param name="field">The field.</param>
-        public static void ShowNullOrEmpty(string field)
-        {
-            Console.ForegroundColor = Settings.ErrorColor;
-            Console.Write(Settings.ErrorCharacter + " ");
-            Console.ForegroundColor = Settings.ErrorTextColor;
-            Console.Write("The value is null or empty. The field '" + field + "' must contain a value.");
-        }
-
-        /// <summary>Creates a web exception file not found on remote server.</summary>
-        /// <param name="file">The path to the file.</param>
-        public static void ShowSourceNotFoundException(string file)
-        {
-            WriteException("The remote server cannot find the specified file.");
-            WriteException("Path: '" + file + "'");
-        }
-
-        /// <summary>Creates an exception message.</summary>
-        /// <param name="message">The message.</param>
-        public static void WriteException(string message)
-        {
-            Console.ForegroundColor = Settings.ErrorColor;
-            Console.Write(Settings.ErrorCharacter + " ");
-            Console.ForegroundColor = Settings.ErrorTextColor;
-            Console.WriteLine(message);
         }
 
         #endregion

@@ -5,10 +5,11 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Windows.Forms;
 
     #endregion
 
-    internal class Settings
+    internal class ControlPanel
     {
         #region Properties
 
@@ -27,6 +28,8 @@
         public static int MaxRecentProjects { get; set; }
 
         public static string PackageFileTypes { get; set; }
+
+        public static string UpdatePackageUrl { get; set; }
 
         #endregion
 
@@ -95,6 +98,8 @@
                 }
             }
         }
+
+        public static string ResourceSettingsPath = Application.StartupPath + @"\\CometSettings.resources";
 
         private const string FileHistoryLocation = @"Logs\History.log";
 

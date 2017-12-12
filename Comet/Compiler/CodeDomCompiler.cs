@@ -19,15 +19,32 @@
         /// <param name="references">The references.</param>
         /// <param name="sources">The source code.</param>
         /// <param name="output">The output file.</param>
+        /// <param name="embeddedResources">The embedded Resources.</param>
         /// <returns>The <see cref="CompilerResults" />.</returns>
-        public static CompilerResults Build(List<string> references, string sources, string output)
+        public static CompilerResults Build(List<string> references, string[] sources, string output, List<string> embeddedResources)
         {
             CSharpCodeProvider _codeProvider = ConstructCodeProvider();
 
-            CompilerParameters _compilerOptions = new CompilerParameters(references.ToArray(), output);
-            _compilerOptions.GenerateExecutable = true;
+            CompilerParameters _compilerParameters = new CompilerParameters
+                {
+                    GenerateExecutable = true,
+                    OutputAssembly = output,
+                    TreatWarningsAsErrors = false
 
-            return _codeProvider.CompileAssemblyFromSource(_compilerOptions, sources);
+                    // CompilerOptions = "/target:winexe"
+                };
+
+            foreach (string _reference in references)
+            {
+                _compilerParameters.ReferencedAssemblies.Add(_reference);
+            }
+
+            foreach (string _embeddedResource in embeddedResources)
+            {
+                _compilerParameters.EmbeddedResources.Add(_embeddedResource);
+            }
+
+            return _codeProvider.CompileAssemblyFromSource(_compilerParameters, sources);
         }
 
         /// <summary>Build the code unit into an executable.</summary>

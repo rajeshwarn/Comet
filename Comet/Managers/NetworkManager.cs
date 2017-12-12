@@ -5,10 +5,12 @@
     using System;
     using System.ComponentModel;
     using System.Net;
+    using System.Net.Cache;
     using System.Net.NetworkInformation;
     using System.Net.Sockets;
     using System.Threading;
 
+    using Comet.Controls;
     using Comet.PInvoke;
     using Comet.Structure;
 
@@ -53,6 +55,8 @@
 
         #region Events
 
+        [Obsolete]
+
         /// <summary>Download file.</summary>
         /// <param name="uri">The URI.</param>
         /// <param name="fileName">The filename output.</param>
@@ -84,7 +88,7 @@
             }
             catch (Exception e)
             {
-                ExceptionsManager.WriteException(e.Message);
+                Console.WriteLine(StringManager.ExceptionString(e));
             }
         }
 
@@ -136,13 +140,18 @@
                 _request.Timeout = timeout;
                 _request.AllowAutoRedirect = false;
 
+                // _request.ContentType = "application/zip";
+                // TODO: Package data seems to find a conflict in the link? Error 405
+                _request.UserAgent = UserAgent;
+
                 try
                 {
                     _response = (HttpWebResponse)_request.GetResponse();
                     return _response.StatusCode;
                 }
-                catch
+                catch (Exception e)
                 {
+                    VisualExceptionDialog.Show(e);
                     return HttpStatusCode.Conflict;
                 }
                 finally
@@ -161,6 +170,14 @@
         /// <returns>The <see cref="bool" />.</returns>
         public static bool IsURLFormatted(string url)
         {
+            Uri _uri = new Uri(url);
+
+            if (_uri.Scheme != Uri.UriSchemeHttps)
+            {
+                // TODO: Not recommended to download from such urls.
+                // throw new SecurityException("Using unsafe connections to update from is not allowed.");
+            }
+
             return Uri.IsWellFormedUriString(url, UriKind.Absolute);
         }
 
@@ -181,7 +198,7 @@
                 Monitor.Pulse(e.UserState);
             }
 
-            ConsoleManager.WriteOutput(e.Error?.Message ?? "The file download has completed.");
+            // ConsoleManager.WriteOutput(e.Error?.Message ?? "The file download has completed.");
         }
 
         private static void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -199,11 +216,87 @@
                     // _total = "?";
                 }
 
-                ConsoleManager.WriteOutput("(" + e.ProgressPercentage.ToString("0") + "%) " + _received + " / " + _total);
+                // ConsoleManager.WriteOutput("(" + e.ProgressPercentage.ToString("0") + "%) " + _received + " / " + _total);
             }
             catch (Exception ex)
             {
-                ExceptionsManager.WriteException(ex.Message);
+                Console.WriteLine(StringManager.ExceptionString(ex));
+            }
+        }
+
+        private static long GetFileSize(WebResponse response)
+        {
+            long _size = 0;
+
+            if (response == null)
+            {
+                return _size;
+            }
+
+            try
+            {
+                _size = response.ContentLength;
+            }
+            catch (Exception e)
+            {
+                _size = -1;
+            }
+
+            return _size;
+        }
+
+        private static WebRequest GetRequest(string url)
+        {
+            UriBuilder uri = new UriBuilder(url);
+            bool hasCredentials = !string.IsNullOrEmpty(uri.UserName) && !string.IsNullOrEmpty(uri.Password);
+            if (hasCredentials && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+            {
+                // get the URL without user/password
+                url = new UriBuilder(uri.Scheme, uri.Host, uri.Port, uri.Path, uri.Fragment).ToString();
+            }
+
+            WebRequest request = WebRequest.Create(url);
+            request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
+
+            if (request is HttpWebRequest)
+            {
+                request.Credentials = hasCredentials ? new NetworkCredential(uri.UserName, uri.Password) : CredentialCache.DefaultCredentials;
+
+                // Some servers explode if the user agent is missing.
+                // Some servers explode if the user agent is "non-standard" (e.g. "wyUpdate / " + VersionTools.FromExecutingAssembly())
+
+                // Thus we're forced to mimic IE 9 User agent
+                ((HttpWebRequest)request).UserAgent = UserAgent;
+            }
+            else if (request is FtpWebRequest)
+            {
+                // set to binary mode (should fix crummy servers that need this spelled out to them)
+                // namely ProFTPd that chokes if you request the file size without first setting "TYPE I" (binary mode)
+                (request as FtpWebRequest).UseBinary = true;
+            }
+
+            return request;
+        }
+
+        private static string UserAgent = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 6.1; en-US; Comet)";
+
+        private static void ValidateHTTPResponse(WebResponse response, string url)
+        {
+            if (response is HttpWebResponse)
+            {
+                HttpWebResponse _httpResponse = (HttpWebResponse)response;
+
+                if (_httpResponse.StatusCode == HttpStatusCode.NotFound || _httpResponse.ContentType.Contains("text/html"))
+                {
+                    throw new Exception($"Could not download \"{url}\"- a web page was returned from the web server.");
+                }
+            }
+            else if (response is FtpWebResponse)
+            {
+                if (((FtpWebResponse)response).StatusCode == FtpStatusCode.ConnectionClosed)
+                {
+                    throw new Exception($"Could not download \"{url}\" - FTP server closed the connection.");
+                }
             }
         }
 

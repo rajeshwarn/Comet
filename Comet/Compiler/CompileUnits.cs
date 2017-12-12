@@ -3,6 +3,7 @@ namespace Comet.Compiler
     #region Namespace
 
     using System.CodeDom;
+    using System.Collections.Generic;
 
     using Comet.Compiler.CodeExpressions;
 
@@ -71,14 +72,20 @@ namespace Comet.Compiler
 
             // References
             _codeUnit.ReferencedAssemblies.Add("System.dll");
-            _codeUnit.ReferencedAssemblies.Add("Comet.dll");
+            _codeUnit.ReferencedAssemblies.Add("System.Windows.Forms.dll");
 
             // Namespace
             CodeNamespace _namespace = new CodeNamespace("Installer");
 
             // Using/s
             _namespace.Imports.Add(new CodeNamespaceImport("System"));
-            _namespace.Imports.Add(new CodeNamespaceImport("Comet"));
+            _namespace.Imports.Add(new CodeNamespaceImport("System.Collections.Generic"));
+            _namespace.Imports.Add(new CodeNamespaceImport("System.Diagnostics"));
+            _namespace.Imports.Add(new CodeNamespaceImport("System.Globalization"));
+            _namespace.Imports.Add(new CodeNamespaceImport("System.IO"));
+            _namespace.Imports.Add(new CodeNamespaceImport("System.Reflection"));
+            _namespace.Imports.Add(new CodeNamespaceImport("System.Resources"));
+            _namespace.Imports.Add(new CodeNamespaceImport("System.Windows.Forms"));
 
             _codeUnit.Namespaces.Add(_namespace);
 
@@ -90,7 +97,12 @@ namespace Comet.Compiler
             _class.Comments.Add(CodeGeneration.CreateFlatSummaryTag("The main class."));
 
             // Create entry point method
-            _class.Members.Add(CodeGeneration.MainEntryPointMethod());
+            var _list = new List<CodeExpression>
+                {
+                    CodeGeneration.ReadLineExpression()
+                };
+
+            _class.Members.Add(CodeGeneration.MainEntryPointMethod(null, _list));
 
             _namespace.Types.Add(_class);
             return _codeUnit;

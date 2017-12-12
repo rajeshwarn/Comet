@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PackageManager.Properties {
+namespace Comet.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace PackageManager.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PackageManager.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Comet.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,65 +61,12 @@ namespace PackageManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to namespace Comet
-        ///{
-        ///    #region Namespace
-        ///
-        ///    using System;
-        ///    using System.Net;
-        ///
-        ///    #endregion
-        ///
-        ///    public class Downloader
-        ///    {
-        ///        #region Events
-        ///
-        ///        public static void DownloadData()
-        ///        {
-        ///            // Verify internet connection
-        ///
-        ///            // Todo: Download file or multiple packages?
-        ///        }
-        ///
-        ///        /// &lt;summary&gt;Get the url status code.&lt;/summary&gt;
-        ///        /// &lt;param name=&quot;url&quot;&gt;The url.&lt;/param&gt;
-        ///        /// &lt;param name=&quot;timeout&quot;&gt;The timeout.&lt;/param&gt;
-        ///        ///  [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static string Downloader {
+        internal static System.Drawing.Icon Comet {
             get {
-                return ResourceManager.GetString("Downloader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to namespace Comet
-        ///{
-        ///    #region Namespace
-        ///
-        ///    using System;
-        ///    using System.Collections.Generic;
-        ///    using System.Diagnostics;
-        ///    using System.Globalization;
-        ///    using System.IO;
-        ///    using System.Reflection;
-        ///    using System.Resources;
-        ///    using System.Windows.Forms;
-        ///
-        ///    #endregion
-        ///
-        ///    // TODO: Download data
-        ///    // TODO: extract data, and install.
-        ///    // TODO: Restart app.
-        ///    public class MainEntryPoint
-        ///    {
-        ///        #region Properties
-        ///
-        ///        private static string DownloadLink {  [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string MainEntryPoint {
-            get {
-                return ResourceManager.GetString("MainEntryPoint", resourceCulture);
+                object obj = ResourceManager.GetObject("Comet", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }
