@@ -103,11 +103,11 @@
             string[] _sources;
             if (false)
             {
-                _sources = new[] { Resources.MainEntryPoint, Resources.Downloader };
+                _sources = new[] { Resources.MainEntryPoint, Resources.Installer };
             }
             else
             {
-                _sources = new[] { tbSource.Text, Resources.Downloader };
+                _sources = new[] { tbSource.Text, Resources.Installer };
             }
 
             CompilerResults _results = CodeDomCompiler.Build(_references, _sources, ControlPanel.InstallerPath, _resources);

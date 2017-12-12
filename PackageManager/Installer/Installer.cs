@@ -7,7 +7,7 @@
 
     #endregion
 
-    public class Downloader
+    public class Installer
     {
         #region Events
 

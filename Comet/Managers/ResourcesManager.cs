@@ -14,10 +14,10 @@
         {
             using (ResourceWriter _resourceWriter = new ResourceWriter(filename))
             {
-                _resourceWriter.AddResource("Logging", false); // TODO: On true it won't display the contents like download link in the console.
-                _resourceWriter.AddResource("DownloadLink", "https://raw.githubusercontent.com/DarkByte7/Comet/master/Comet/Update.package");
-                _resourceWriter.AddResource("ExtractFolder", "DATA");
-
+                _resourceWriter.AddResource("Logging", false); // TODO: On true it won't display the contents like ExtractFolder in the console.
+                _resourceWriter.AddResource("ProductName", "AppName");
+                _resourceWriter.AddResource("InstallFolder", "%AppInstallationFolder%");
+            
                 _resourceWriter.Generate();
                 _resourceWriter.Close();
             }

@@ -65,8 +65,8 @@
     <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Installer\Downloader.cs" />
-    <EmbeddedResource Include="Installer\MainEntryPoint.cs" />
+    <Compile Include="Installer\Installer.cs" />
+    <Content Include="Installer\MainEntryPoint.cs" />
     <Compile Include="Managers\ArchiveManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

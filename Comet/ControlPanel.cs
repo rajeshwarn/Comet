@@ -3,7 +3,6 @@
     #region Namespace
 
     using System;
-    using System.Data;
     using System.IO;
     using System.Windows.Forms;
 
@@ -21,36 +20,23 @@
 
         #region Properties
 
-        public static string BatchFullPath { get; set; }
-
-        public static string ConfigFullPath { get; set; }
-
-        public static ConnectionState Connection { get; set; }
-
-        public static Version CurrentVersion { get; set; }
-
         public static string DownloadFolder { get; set; }
 
-        public static char ErrorCharacter { get; set; }
-
-        public static string ExecutingAssemblyLocation { get; set; }
-
-        public static string ExecutingDirectory { get; set; }
-
-        public static char InputCharacter { get; set; }
-
-        public static string PackageFullPath { get; set; }
-
-        public static string ProductName { get; set; }
+        public static string InstallFilesFolder { get; set; }
 
         public static string TemporaryFolder { get; set; }
+
+        public static string WorkingFolder { get; set; } // Temp + AppName + \Updater\
 
         #endregion
 
         #region Events
 
+        public static string SettingsFilePath = WorkingFolder + "Comet.cfg";
+
         public const string UpdaterFolderName = "CometUpdater";
 
+        [Obsolete]
         /// <summary>Checks if new version is available for download.</summary>
         /// <returns>The <see cref="bool" />.</returns>
         public bool CheckForUpdate()

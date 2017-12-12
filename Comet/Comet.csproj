@@ -106,6 +106,7 @@
     </Compile>
     <Compile Include="ControlPanel.cs" />
     <Compile Include="Structure\Bytes.cs" />
+    <Compile Include="Structure\InstallerOptions.cs" />
     <Compile Include="Structure\Package.cs" />
     <Compile Include="Enums\UpdaterState.cs" />
     <Compile Include="PInvoke\wininet.cs" />

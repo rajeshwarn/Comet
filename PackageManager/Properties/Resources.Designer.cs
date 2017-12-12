@@ -70,7 +70,7 @@ namespace PackageManager.Properties {
         ///
         ///    #endregion
         ///
-        ///    public class Downloader
+        ///    public class Installer
         ///    {
         ///        #region Events
         ///
@@ -84,11 +84,11 @@ namespace PackageManager.Properties {
         ///        /// &lt;summary&gt;Get the url status code.&lt;/summary&gt;
         ///        /// &lt;param name=&quot;url&quot;&gt;The url.&lt;/param&gt;
         ///        /// &lt;param name=&quot;timeout&quot;&gt;The timeout.&lt;/param&gt;
-        ///        ///  [rest of string was truncated]&quot;;.
+        ///        /// &lt; [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Downloader {
+        internal static string Installer {
             get {
-                return ResourceManager.GetString("Downloader", resourceCulture);
+                return ResourceManager.GetString("Installer", resourceCulture);
             }
         }
         

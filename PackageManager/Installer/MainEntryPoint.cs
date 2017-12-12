@@ -3,131 +3,129 @@
     #region Namespace
 
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Reflection;
     using System.Resources;
+    using System.Text;
     using System.Windows.Forms;
 
     #endregion
 
-    // TODO: Download data
-    // TODO: extract data, and install.
+    // TODO: Install app.
     // TODO: Restart app.
-    public class MainEntryPoint
+    public class CometInstaller
     {
         #region Properties
 
-        private static string DownloadLink { get; set; }
+        private static bool Installed { get; set; }
+
+        private static string InstallFiles { get; set; }
 
         private static string InstallFolder { get; set; }
 
         private static bool Logging { get; set; }
 
-        private static List<string> ProcessList { get; set; }
-
         private static ProcessWindowStyle ProcessWindowStyle { get; set; }
 
-        private static bool RunMainFile { get; set; }
+        private static string ProductName { get; set; }
 
-        private static bool RunWindowNormal { get; set; }
-
-        private static string SubFolder { get; set; }
+        private static string WorkingFolder { get; set; }
 
         #endregion
 
         #region Events
 
-        private static void Cleanup()
+        /// <summary>Draws a line across the console.</summary>
+        /// <param name="symbol">The symbol to draw.</param>
+        private static void DrawLine(string symbol = "-")
         {
+            for (var i = 0; i < Console.WindowWidth; i++)
+            {
+                Console.Write(symbol);
+            }
         }
 
-        private static void DownloadData()
-        {
-//            Downloader.DownloadData();
-        }
-
-        private static void ExtractData()
-        {
-        }
-
+        /// <summary>Install the data.</summary>
         private static void InstallData()
         {
+            Console.WriteLine(@"Installing...");
+            DrawLine();
+
+            // Verify process closed before data overwrite.
+            // File.Copy(InstallFiles, InstallFolder, true);
         }
 
-        /// <summary>Load the settings.</summary>
+        /// <summary>Loads the installer setting from the resource.</summary>
+        /// <typeparam name="T">The type.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <param name="ignoreCase">Indicates whether the case of the specified name should be ignored.</param>
+        /// <returns>
+        ///     <see cref="object" />
+        /// </returns>
+        private static T LoadInstallerSetting<T>(string name, bool ignoreCase = false)
+        {
+            ResourceManager _settingsResourceManager = new ResourceManager("CometSettings", Assembly.GetExecutingAssembly());
+            ResourceSet _settingsResourceSet = _settingsResourceManager.GetResourceSet(CultureInfo.CurrentCulture, true, true);
+
+            object _settingValue = _settingsResourceSet.GetObject(name, ignoreCase);
+            T _settingType = (T)Convert.ChangeType(_settingValue, typeof(T));
+
+            StringBuilder _loadedSetting = new StringBuilder();
+            _loadedSetting.AppendLine("Name: " + name);
+            _loadedSetting.AppendLine("Value: " + _settingValue);
+            _loadedSetting.AppendLine("Type: " + typeof(T));
+            Console.WriteLine(_loadedSetting.ToString());
+
+            return (T)_settingValue;
+        }
+
+        /// <summary>Load the installer settings.</summary>
         private static void LoadSettings()
         {
+            Installed = false;
+
             try
             {
-                Console.WriteLine(@"Loading resource settings...");
-                ResourceManager _settingsResourceManager = new ResourceManager("CometSettings", Assembly.GetExecutingAssembly());
-                ResourceSet _settingsResourceSet = _settingsResourceManager.GetResourceSet(CultureInfo.CurrentCulture, true, true);
-                Console.WriteLine(@"-----------------------------");
+                DrawLine();
+                Console.WriteLine(@"Loading settings...");
+                DrawLine();
 
-                Logging = (bool)_settingsResourceSet.GetObject("Logging");
+                Logging = LoadInstallerSetting<bool>("Logging");
+                InstallFolder = LoadInstallerSetting<string>("InstallFolder");
+                ProductName = LoadInstallerSetting<string>("ProductName");
 
-                if (Logging)
-                {
-                    FileStream _fileStreamLogger = new FileStream("Fusion.log", FileMode.Create);
-                    StreamWriter _streamWriterLogger = new StreamWriter(_fileStreamLogger)
-                        {
-                            AutoFlush = true
-                        };
+                DrawLine();
+                Console.WriteLine(@"Initializing");
+                DrawLine();
 
-                    Console.SetOut(_streamWriterLogger);
-                    Console.SetError(_streamWriterLogger);
-                }
+                WorkingFolder = Path.GetTempPath() + ProductName + @"\Updater\";
+                Console.WriteLine(@"Working Folder: " + WorkingFolder);
 
-                DownloadLink = _settingsResourceSet.GetString("DownloadLink");
-                Console.WriteLine(@"Download Link: " + DownloadLink);
-                Console.WriteLine(@"-----------------------------");
+                InstallFiles = WorkingFolder + @"InstallFiles\";
+                Console.WriteLine(@"Install Files: " + InstallFiles);
+
+                DrawLine();
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
-
-            // MainExecutable = _settingsResourceSet.GetString("MainExecutable");
-            // Console.WriteLine(@"Main executable: " + MainExecutable);
-
-            // SubFolder = _settingsResourceSet.GetString("InstallFolder");
-            // Console.WriteLine(@"Install Sub-Folder: " + SubFolder);
-
-            // InstallFolder = Path.GetTempPath() + SubFolder + @"\";
-            // Console.WriteLine(@"Install folder: " + InstallFolder);
-
-            // RunMainFile = (bool)_settingsResourceSet.GetObject("RunMainFile");
-            // Console.WriteLine(@"Run main file: " + RunMainFile);
-
-            // RunWindowNormal = (bool)_settingsResourceSet.GetObject("RunWindowNormal");
-
-            // ProcessWindowStyle = RunWindowNormal ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
-            // Console.WriteLine(@"Process Window Style: " + ProcessWindowStyle);
         }
 
         /// <summary>The main application entry point.</summary>
-        static void Main()
+        private static void Main()
         {
-            Console.Title = "Comet";
+            Console.Title = @"Comet";
+
+            DrawLine();
+            Console.WriteLine(@"Comet Installer");
 
             try
             {
                 LoadSettings();
-                NetworkCheckup();
-
-                // if (!Directory.Exists(InstallFolder))
-                // {
-                // Directory.CreateDirectory(InstallFolder);
-                // Console.WriteLine(@"Created install folder: " + InstallFolder);
-                // Console.WriteLine(@"-----------------------------");
-                // }
-
-                //DownloadData();
-                //ExtractData();
-                //InstallData();
+                InstallData();
             }
             catch (Exception e)
             {
@@ -135,18 +133,6 @@
             }
 
             Console.ReadLine();
-        }
-
-        private static void NetworkCheckup()
-        {
-            if (Downloader.SourceExists(DownloadLink))
-            {
-                Console.WriteLine(@"The source file exists.");
-            }
-            else
-            {
-                Console.WriteLine(@"The source does not exist!");
-            }
         }
 
         /// <summary>Start the executable application.</summary>
