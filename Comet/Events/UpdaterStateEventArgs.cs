@@ -17,14 +17,14 @@
 
         /// <summary>Initializes a new instance of the <see cref="UpdaterStateEventArgs" /> class.</summary>
         /// <param name="assembly">The assembly.</param>
-        /// <param name="downloadLocation">The download location.</param>
+        /// <param name="installOptions">The install Options.</param>
         /// <param name="packagePath">The package path.</param>
         /// <param name="state">The update state.</param>
-        public UpdaterStateEventArgs(Assembly assembly, string downloadLocation, string packagePath, UpdaterState state)
+        public UpdaterStateEventArgs(Assembly assembly, InstallOptions installOptions, string packagePath, UpdaterState state)
         {
             Assembly = assembly;
             AssemblyLocation = assembly.Location;
-            DownloadLocation = downloadLocation;
+            InstallOptions = installOptions;
             PackagePath = packagePath;
             Package = new Package(packagePath);
             State = state;
@@ -42,8 +42,8 @@
         /// <summary>Gets the assembly location.</summary>
         public string AssemblyLocation { get; }
 
-        /// <summary>Gets the download location.</summary>
-        public string DownloadLocation { get; }
+        /// <summary>Gets the install options.</summary>
+        public InstallOptions InstallOptions { get; }
 
         /// <summary>Gets the package.</summary>
         public Package Package { get; }

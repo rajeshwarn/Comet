@@ -10,6 +10,7 @@
     using System.Net;
     using System.Security.Cryptography;
 
+    using Comet.Events;
     using Comet.Structure;
 
     #endregion
@@ -31,23 +32,27 @@
 
         #region Variables
 
-        private readonly BackgroundWorker _backgroundWorker = new BackgroundWorker();
+        private readonly BackgroundWorker _backgroundWorker;
 
-        private readonly string _destinationFolder;
+        private readonly Adler32 _downloaderAdler32;
 
-        private readonly Adler32 _downloaderAdler32 = new Adler32();
+        private readonly Stopwatch _stopWatch;
 
-        private readonly Stopwatch _stopWatch = new Stopwatch();
+        private string _currentUrl;
+
+        private bool _downloadComplete;
+
+        private string _downloadFolder;
 
         private string _downloadSpeed;
+
+        private int _progressPercentage;
 
         private long _sentSinceLastCalc;
 
         private Bytes _units;
 
-        private string _url;
-
-        private List<string> _urlList = new List<string>();
+        private List<string> _urlList;
 
         private bool _waitingForResponse;
 
@@ -55,28 +60,45 @@
 
         #region Constructors
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Downloader" /> class.
+        /// </summary>
+        /// <param name="url">The url list.</param>
+        /// <param name="downloadFolder">The download folder.</param>
         public Downloader(List<string> url, string downloadFolder)
         {
-            _urlList = url;
-            _destinationFolder = downloadFolder;
+            _downloadComplete = false;
+            _downloaderAdler32 = new Adler32();
+            _stopWatch = new Stopwatch();
 
-            _backgroundWorker.WorkerReportsProgress = true;
-            _backgroundWorker.WorkerSupportsCancellation = true;
+            _urlList = url;
+            _downloadFolder = downloadFolder;
+
+            _backgroundWorker = new BackgroundWorker
+                {
+                    WorkerReportsProgress = true,
+                    WorkerSupportsCancellation = true
+                };
 
             _backgroundWorker.DoWork += BackgroundWorkerDoWork;
             _backgroundWorker.ProgressChanged += BackgroundWorkerProgressChanged;
             _backgroundWorker.RunWorkerCompleted += BackgroundWorkerRunWorkerCompleted;
         }
 
-        public delegate void ProgressChangedHandler(int percentDone, int unweightedPercent, string extraStatus, ProgressStatus status, object payload);
-
-        public event ProgressChangedHandler ProgressChanged;
+        public event Delegates.DownloaderProgressChangedEventHandler ProgressChanged;
 
         public enum ProgressStatus
         {
+            /// <summary>The none.</summary>
             None,
+
+            /// <summary>The success.</summary>
             Success,
+
+            /// <summary>The failure.</summary>
             Failure,
+
+            /// <summary>The sharing violation.</summary>
             SharingViolation
         }
 
@@ -84,7 +106,57 @@
 
         #region Properties
 
+        public string CurrentUrl
+        {
+            get
+            {
+                return _currentUrl;
+            }
+        }
+
+        public bool DownloadComplete
+        {
+            get
+            {
+                return _downloadComplete;
+            }
+        }
+
+        public string DownloadFolder
+        {
+            get
+            {
+                return _downloadFolder;
+            }
+
+            set
+            {
+                _downloadFolder = value;
+            }
+        }
+
         public string DownloadingTo { get; private set; }
+
+        public int ProgressPercentage
+        {
+            get
+            {
+                return _progressPercentage;
+            }
+        }
+
+        public List<string> UrlList
+        {
+            get
+            {
+                return _urlList;
+            }
+
+            set
+            {
+                _urlList = value;
+            }
+        }
 
         #endregion
 
@@ -113,7 +185,7 @@
                 BackgroundWorkerRunWorkerCompleted(null, null);
 
                 // Notify user that updates must be signed.
-                ProgressChanged(-1, -1, string.Empty, ProgressStatus.Failure, new Exception("The update is not signed. All updates must be signed in order to be installed."));
+                ProgressChanged(new DownloaderEventArgs(-1, -1, string.Empty, ProgressStatus.Failure, new Exception("The update is not signed. All updates must be signed in order to be installed.")));
             }
             else
             {
@@ -123,10 +195,12 @@
 
         private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
+            _downloadComplete = false;
+
             // validate input
-            if (_urlList == null || _urlList.Count == 0)
+            if ((_urlList == null) || (_urlList.Count == 0))
             {
-                if (string.IsNullOrEmpty(_url))
+                if (string.IsNullOrEmpty(_currentUrl))
                 {
                     // no sites specified, bail out
                     if (!_backgroundWorker.CancellationPending)
@@ -138,7 +212,7 @@
                 }
 
                 // single site specified, add it to the list
-                _urlList = new List<string> { _url };
+                _urlList = new List<string> { _currentUrl };
             }
 
             // use the custom proxy if provided
@@ -166,7 +240,7 @@
                 ex = null;
                 try
                 {
-                    _url = s;
+                    _currentUrl = s;
                     BeginDownload();
                     ValidateDownload();
                 }
@@ -181,7 +255,7 @@
                 }
 
                 // If we got through that without an exception, we found a good url
-                if (ex == null || _backgroundWorker.CancellationPending)
+                if ((ex == null) || _backgroundWorker.CancellationPending)
                 {
                     allFailedWaitingForResponse = false;
                     break;
@@ -193,7 +267,7 @@
              internet connection is shot, or the Proxy is shot. Either way it can't 
              hurt to try downloading without the proxy:
             */
-            if (allFailedWaitingForResponse && WebRequest.DefaultWebProxy != null)
+            if (allFailedWaitingForResponse && (WebRequest.DefaultWebProxy != null))
             {
                 // try the sites again without a proxy
                 WebRequest.DefaultWebProxy = null;
@@ -203,7 +277,7 @@
                     ex = null;
                     try
                     {
-                        _url = s;
+                        _currentUrl = s;
                         BeginDownload();
                         ValidateDownload();
                     }
@@ -213,7 +287,7 @@
                     }
 
                     // If we got through that without an exception, we found a good url
-                    if (ex == null || _backgroundWorker.CancellationPending)
+                    if ((ex == null) || _backgroundWorker.CancellationPending)
                     {
                         break;
                     }
@@ -221,7 +295,7 @@
             }
 
             // Process complete (either successfully or failed), report back
-            if (_backgroundWorker.CancellationPending || ex != null)
+            if (_backgroundWorker.CancellationPending || (ex != null))
             {
                 _backgroundWorker.ReportProgress(0, new object[] { -1, -1, string.Empty, ProgressStatus.Failure, ex });
             }
@@ -231,18 +305,31 @@
             }
         }
 
+        /// <summary>
+        ///     The background worker progress changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
         private void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            var arr = (object[])e.UserState;
+            var _percentDone = (object[])e.UserState;
+            var _unWeightPercent = (object[])e.UserState;
+            var _extraStatus = (object[])e.UserState;
+            var _progressStatus = (object[])e.UserState;
+            var _userStateData = (object[])e.UserState;
 
             if (ProgressChanged != null)
             {
-                ProgressChanged((int)arr[0], (int)arr[1], (string)arr[2], (ProgressStatus)arr[3], arr[4]);
+                // ProgressChanged(new DownloaderEventArgs((int)_percentDone[0], _02, (string)_extraStatus[2], (ProgressStatus)_progressStatus[3], _userStateData[4]));
             }
+
+            // _progressPercentage = e.ProgressPercentage;
         }
 
         private void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            _downloadComplete = true;
+
             _backgroundWorker.DoWork -= BackgroundWorkerDoWork;
             _backgroundWorker.ProgressChanged -= BackgroundWorkerProgressChanged;
             _backgroundWorker.RunWorkerCompleted -= BackgroundWorkerRunWorkerCompleted;
@@ -260,7 +347,7 @@
 
                 // get download details 
                 _waitingForResponse = true;
-                data = DownloadData.Create(_url, _destinationFolder);
+                data = DownloadData.Create(_currentUrl, _downloadFolder);
                 _waitingForResponse = false;
 
                 // reset the adler
@@ -281,7 +368,7 @@
                         GetAdler32(DownloadingTo);
                     }
 
-                    // apend to an existing file (resume)
+                    // Append to an existing file (resume)
                     fs = File.Open(DownloadingTo, FileMode.Append, FileAccess.Write);
                 }
 
@@ -321,7 +408,7 @@
                     CalculateBps(data.StartPoint, data.TotalDownloadSize);
 
                     // send progress info
-                    if (!_backgroundWorker.CancellationPending && data.PercentDone > LastProgress)
+                    if (!_backgroundWorker.CancellationPending && (data.PercentDone > LastProgress))
                     {
                         _backgroundWorker.ReportProgress(0, new object[]
                             {
@@ -347,7 +434,7 @@
             }
             catch (UriFormatException e)
             {
-                throw new Exception(string.Format("Could not parse the URL \"{0}\" - it's either malformed or is an unknown protocol.", _url), e);
+                throw new Exception(string.Format("Could not parse the URL \"{0}\" - it's either malformed or is an unknown protocol.", _currentUrl), e);
             }
             catch (Exception e)
             {
@@ -385,7 +472,7 @@
 
             // Calculcate transfer speed.
             long bytes = BytesReceived - _sentSinceLastCalc;
-            double bps = bytes * 1000.0 / _stopWatch.Elapsed.TotalMilliseconds;
+            double bps = (bytes * 1000.0) / _stopWatch.Elapsed.TotalMilliseconds;
             _downloadSpeed = BytesReceived + " / " + (TotalBytes == 0 ? "unknown" : TotalBytes + "   (" + bps + "/sec)");
 
             // Estimated seconds remaining based on the current transfer speed.
@@ -426,7 +513,7 @@
             // if an Adler32 checksum is provided, check the file
             if (!_backgroundWorker.CancellationPending)
             {
-                if (Adler32 != 0 && Adler32 != _downloaderAdler32.Value)
+                if ((Adler32 != 0) && (Adler32 != _downloaderAdler32.Value))
                 {
                     // file failed to vaildate, throw an error
                     throw new Exception("The downloaded file \"" + Path.GetFileName(DownloadingTo) + "\" failed the Adler32 validation.");

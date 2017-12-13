@@ -5,7 +5,6 @@
     using System;
     using System.Data;
     using System.IO;
-    using System.Windows.Forms;
 
     #endregion
 
@@ -21,13 +20,6 @@
             {
                 throw new ArgumentException(@"Stream is not seek able.", nameof(stream));
             }
-        }
-
-        /// <summary>Displays the exception.</summary>
-        /// <param name="e">The exception.</param>
-        public static void DisplayException(Exception e)
-        {
-            MessageBox.Show(e.Message, @"Comet", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>Throws a <see cref="FileNotFoundException" />.</summary>

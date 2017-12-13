@@ -4,13 +4,13 @@
 
     using System;
     using System.ComponentModel;
+    using System.Data;
     using System.Net;
     using System.Net.Cache;
     using System.Net.NetworkInformation;
     using System.Net.Sockets;
     using System.Threading;
 
-    using Comet.Controls;
     using Comet.PInvoke;
     using Comet.Structure;
 
@@ -55,43 +55,6 @@
 
         #region Events
 
-        [Obsolete]
-
-        /// <summary>Download file.</summary>
-        /// <param name="uri">The URI.</param>
-        /// <param name="fileName">The filename output.</param>
-        public static void Download(Uri uri, string fileName)
-        {
-            try
-            {
-                using (WebClient _client = new WebClient())
-                {
-                    _client.Headers.Add("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0)");
-                    _client.Proxy = null;
-                    _client.DownloadProgressChanged += Client_DownloadProgressChanged;
-                    _client.DownloadFileCompleted += Client_DownloadFileCompleted;
-
-                    // _client.DownloadFileAsync(uri, fileName);
-                    object _syncObject = new object();
-                    lock (_syncObject)
-                    {
-                        _client.DownloadFileAsync(uri, fileName, _syncObject);
-
-                        while (_client.IsBusy)
-                        {
-                        }
-
-                        // This would block the thread until download completes
-                        Monitor.Wait(_syncObject);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(StringManager.ExceptionString(e));
-            }
-        }
-
         /// <summary>Gets the connection state using DNS.</summary>
         /// <param name="hostname">The hostname.</param>
         /// <returns>The <see cref="bool" />.</returns>
@@ -135,13 +98,10 @@
             if (IsURLFormatted(url))
             {
                 HttpWebResponse _response = null;
-                HttpWebRequest _request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebRequest _request = (HttpWebRequest)CreateWebRequest(url);
                 _request.Method = "HEAD";
                 _request.Timeout = timeout;
                 _request.AllowAutoRedirect = false;
-
-                // _request.ContentType = "application/zip";
-                // TODO: Package data seems to find a conflict in the link? Error 405
                 _request.UserAgent = UserAgent;
 
                 try
@@ -149,9 +109,8 @@
                     _response = (HttpWebResponse)_request.GetResponse();
                     return _response.StatusCode;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    VisualExceptionDialog.Show(e);
                     return HttpStatusCode.Conflict;
                 }
                 finally
@@ -170,15 +129,32 @@
         /// <returns>The <see cref="bool" />.</returns>
         public static bool IsURLFormatted(string url)
         {
-            Uri _uri = new Uri(url);
-
-            if (_uri.Scheme != Uri.UriSchemeHttps)
+            if (string.IsNullOrEmpty(url))
             {
-                // TODO: Not recommended to download from such urls.
-                // throw new SecurityException("Using unsafe connections to update from is not allowed.");
+                throw new NoNullAllowedException("The URL is null or empty.");
             }
 
-            return Uri.IsWellFormedUriString(url, UriKind.Absolute);
+            bool _formatted;
+
+            try
+            {
+                Uri _uri = new Uri(url, UriKind.Absolute);
+
+                // _uri.Scheme == Uri.UriSchemeHttp || _uri.Scheme == Uri.UriSchemeHttps;
+                if (_uri.Scheme != Uri.UriSchemeHttps)
+                {
+                    // TODO: Notify user not recommended to download from such urls ask to continue.
+                    // throw new SecurityException("Using unsafe connections to update from is not allowed.");
+                }
+
+                _formatted = Uri.IsWellFormedUriString(url, UriKind.Absolute);
+            }
+            catch (UriFormatException)
+            {
+                _formatted = false;
+            }
+
+            return _formatted;
         }
 
         /// <summary>Determines whether the url source is ok.</summary>
@@ -190,6 +166,7 @@
             return GetStatusCode(url, timeout) == HttpStatusCode.OK;
         }
 
+        [Obsolete]
         private static void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             lock (e.UserState)
@@ -201,6 +178,7 @@
             // ConsoleManager.WriteOutput(e.Error?.Message ?? "The file download has completed.");
         }
 
+        [Obsolete]
         private static void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             try
@@ -220,39 +198,25 @@
             }
             catch (Exception ex)
             {
-                Console.WriteLine(StringManager.ExceptionString(ex));
+                // Console.WriteLine(StringManager.ExceptionString(ex));
             }
         }
 
-        private static long GetFileSize(WebResponse response)
+        /// <summary>
+        ///     Create a web request.
+        /// </summary>
+        /// <param name="url">The url.</param>
+        /// <returns>
+        ///     <see cref="WebRequest" />
+        /// </returns>
+        private static WebRequest CreateWebRequest(string url)
         {
-            long _size = 0;
-
-            if (response == null)
+            UriBuilder _uriBuilder = new UriBuilder(url);
+            bool _hasCredentials = !string.IsNullOrEmpty(_uriBuilder.UserName) && !string.IsNullOrEmpty(_uriBuilder.Password);
+            if (_hasCredentials && ((_uriBuilder.Scheme == Uri.UriSchemeHttp) || _uriBuilder.Scheme == Uri.UriSchemeHttps))
             {
-                return _size;
-            }
-
-            try
-            {
-                _size = response.ContentLength;
-            }
-            catch (Exception e)
-            {
-                _size = -1;
-            }
-
-            return _size;
-        }
-
-        private static WebRequest GetRequest(string url)
-        {
-            UriBuilder uri = new UriBuilder(url);
-            bool hasCredentials = !string.IsNullOrEmpty(uri.UserName) && !string.IsNullOrEmpty(uri.Password);
-            if (hasCredentials && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
-            {
-                // get the URL without user/password
-                url = new UriBuilder(uri.Scheme, uri.Host, uri.Port, uri.Path, uri.Fragment).ToString();
+                // Receive the URL without user/password
+                url = new UriBuilder(_uriBuilder.Scheme, _uriBuilder.Host, _uriBuilder.Port, _uriBuilder.Path, _uriBuilder.Fragment).ToString();
             }
 
             WebRequest request = WebRequest.Create(url);
@@ -260,18 +224,14 @@
 
             if (request is HttpWebRequest)
             {
-                request.Credentials = hasCredentials ? new NetworkCredential(uri.UserName, uri.Password) : CredentialCache.DefaultCredentials;
+                request.Credentials = _hasCredentials ? new NetworkCredential(_uriBuilder.UserName, _uriBuilder.Password) : CredentialCache.DefaultCredentials;
 
-                // Some servers explode if the user agent is missing.
-                // Some servers explode if the user agent is "non-standard" (e.g. "wyUpdate / " + VersionTools.FromExecutingAssembly())
-
-                // Thus we're forced to mimic IE 9 User agent
+                // TODO: Some servers explode if the user agent is missing.
+                // TODO: Some servers explode if the user agent is "non-standard"
                 ((HttpWebRequest)request).UserAgent = UserAgent;
             }
             else if (request is FtpWebRequest)
             {
-                // set to binary mode (should fix crummy servers that need this spelled out to them)
-                // namely ProFTPd that chokes if you request the file size without first setting "TYPE I" (binary mode)
                 (request as FtpWebRequest).UseBinary = true;
             }
 
@@ -280,6 +240,11 @@
 
         private static string UserAgent = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 6.1; en-US; Comet)";
 
+        /// <summary>
+        ///     Validates the http response.
+        /// </summary>
+        /// <param name="response">The response.</param>
+        /// <param name="url">The url.</param>
         private static void ValidateHTTPResponse(WebResponse response, string url)
         {
             if (response is HttpWebResponse)

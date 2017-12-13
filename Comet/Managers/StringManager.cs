@@ -11,27 +11,6 @@
     {
         #region Events
 
-        /// <summary>Create exception string.</summary>
-        /// <param name="e">The e.</param>
-        /// <returns>
-        ///     <see cref="string" />
-        /// </returns>
-        public static string ExceptionString(Exception e)
-        {
-            StringBuilder _exception = new StringBuilder();
-            _exception.AppendLine("An unhandled exception has occurred in a component in your application.");
-            _exception.Append(Environment.NewLine);
-            _exception.AppendLine("Message: " + e.Message);
-            _exception.Append(Environment.NewLine);
-            _exception.AppendLine("Stack Trace: " + e.StackTrace);
-            _exception.Append(Environment.NewLine);
-            _exception.AppendLine("Help Link: " + e.HelpLink);
-            _exception.AppendLine("HResult: " + e.HResult);
-            _exception.AppendLine("Source: " + e.Source);
-            _exception.AppendLine("Target Site: " + e.TargetSite);
-            return _exception.ToString();
-        }
-
         /// <summary>Create file not found string.</summary>
         /// <param name="path">The package path.</param>
         /// <returns>
@@ -40,9 +19,7 @@
         public static string FileNotFound(string path)
         {
             StringBuilder _fileNotFound = new StringBuilder();
-            _fileNotFound.AppendLine("Unable to locate the file using the following path.");
-            _fileNotFound.Append(Environment.NewLine);
-            _fileNotFound.AppendLine("Path: " + path);
+            _fileNotFound.AppendLine("Unable to locate the file using the following path." + path);
             return _fileNotFound.ToString();
         }
 
@@ -97,9 +74,7 @@
         public static string RemoteFileNotFound(string url)
         {
             StringBuilder _remoteFileNotFound = new StringBuilder();
-            _remoteFileNotFound.AppendLine("Unable to locate the remote file using the following URL.");
-            _remoteFileNotFound.Append(Environment.NewLine);
-            _remoteFileNotFound.AppendLine("URL: " + url);
+            _remoteFileNotFound.AppendLine("Unable to locate the remote file using the following URL." + url);
             return _remoteFileNotFound.ToString();
         }
 

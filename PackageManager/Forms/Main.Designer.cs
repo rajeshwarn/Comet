@@ -72,7 +72,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.NewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -102,16 +102,22 @@
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.CbUrlScheme = new System.Windows.Forms.ComboBox();
+            this.PbDownloadLinkConnection = new System.Windows.Forms.PictureBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.tabPage12 = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.LUpdateStats = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.TUpdate = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.cometUpdater1 = new Comet.CometUpdater(this.components);
             this.cmsArchive.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -123,9 +129,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudMajor)).BeginInit();
             this.tabControl2.SuspendLayout();
             this.tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PbDownloadLinkConnection)).BeginInit();
             this.tabPage9.SuspendLayout();
             this.tabPage12.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
@@ -138,11 +146,12 @@
             this.columnHeader3,
             this.columnHeader4});
             this.lvArchive.ContextMenuStrip = this.cmsArchive;
+            this.lvArchive.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvArchive.FullRowSelect = true;
             this.lvArchive.GridLines = true;
-            this.lvArchive.Location = new System.Drawing.Point(75, 36);
+            this.lvArchive.Location = new System.Drawing.Point(3, 3);
             this.lvArchive.Name = "lvArchive";
-            this.lvArchive.Size = new System.Drawing.Size(339, 251);
+            this.lvArchive.Size = new System.Drawing.Size(586, 407);
             this.lvArchive.TabIndex = 4;
             this.lvArchive.UseCompatibleStateImageBehavior = false;
             this.lvArchive.View = System.Windows.Forms.View.Details;
@@ -268,7 +277,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.lvErrorList);
-            this.splitContainer1.Size = new System.Drawing.Size(624, 407);
+            this.splitContainer1.Size = new System.Drawing.Size(586, 407);
             this.splitContainer1.SplitterDistance = 286;
             this.splitContainer1.TabIndex = 6;
             // 
@@ -279,7 +288,7 @@
             this.tbSource.Multiline = true;
             this.tbSource.Name = "tbSource";
             this.tbSource.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbSource.Size = new System.Drawing.Size(624, 286);
+            this.tbSource.Size = new System.Drawing.Size(586, 286);
             this.tbSource.TabIndex = 0;
             this.tbSource.WordWrap = false;
             // 
@@ -296,7 +305,7 @@
             this.lvErrorList.GridLines = true;
             this.lvErrorList.Location = new System.Drawing.Point(0, 0);
             this.lvErrorList.Name = "lvErrorList";
-            this.lvErrorList.Size = new System.Drawing.Size(624, 117);
+            this.lvErrorList.Size = new System.Drawing.Size(586, 117);
             this.lvErrorList.TabIndex = 5;
             this.lvErrorList.UseCompatibleStateImageBehavior = false;
             this.lvErrorList.View = System.Windows.Forms.View.Details;
@@ -384,7 +393,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dtpRelease.Location = new System.Drawing.Point(97, 121);
             this.dtpRelease.Name = "dtpRelease";
-            this.dtpRelease.Size = new System.Drawing.Size(492, 20);
+            this.dtpRelease.Size = new System.Drawing.Size(454, 20);
             this.dtpRelease.TabIndex = 18;
             this.dtpRelease.ValueChanged += new System.EventHandler(this.DateTimePickerRelease_ValueChanged);
             // 
@@ -412,7 +421,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbPackageName.Location = new System.Drawing.Point(97, 95);
             this.tbPackageName.Name = "tbPackageName";
-            this.tbPackageName.Size = new System.Drawing.Size(494, 20);
+            this.tbPackageName.Size = new System.Drawing.Size(456, 20);
             this.tbPackageName.TabIndex = 13;
             this.tbPackageName.TextChanged += new System.EventHandler(this.TbPackage_TextChanged);
             // 
@@ -431,7 +440,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbPackageFilename.Location = new System.Drawing.Point(97, 69);
             this.tbPackageFilename.Name = "tbPackageFilename";
-            this.tbPackageFilename.Size = new System.Drawing.Size(494, 20);
+            this.tbPackageFilename.Size = new System.Drawing.Size(456, 20);
             this.tbPackageFilename.TabIndex = 11;
             this.tbPackageFilename.TextChanged += new System.EventHandler(this.TbPackage_TextChanged);
             // 
@@ -448,9 +457,9 @@
             // 
             this.tbPackageDownloadLink.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbPackageDownloadLink.Location = new System.Drawing.Point(97, 43);
+            this.tbPackageDownloadLink.Location = new System.Drawing.Point(165, 43);
             this.tbPackageDownloadLink.Name = "tbPackageDownloadLink";
-            this.tbPackageDownloadLink.Size = new System.Drawing.Size(494, 20);
+            this.tbPackageDownloadLink.Size = new System.Drawing.Size(388, 20);
             this.tbPackageDownloadLink.TabIndex = 9;
             this.tbPackageDownloadLink.TextChanged += new System.EventHandler(this.TbPackage_TextChanged);
             // 
@@ -469,7 +478,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbPackageChangeLog.Location = new System.Drawing.Point(97, 17);
             this.tbPackageChangeLog.Name = "tbPackageChangeLog";
-            this.tbPackageChangeLog.Size = new System.Drawing.Size(494, 20);
+            this.tbPackageChangeLog.Size = new System.Drawing.Size(456, 20);
             this.tbPackageChangeLog.TabIndex = 7;
             this.tbPackageChangeLog.TextChanged += new System.EventHandler(this.TbPackage_TextChanged);
             // 
@@ -486,14 +495,14 @@
             // 
             this.statusStripMain.Location = new System.Drawing.Point(0, 495);
             this.statusStripMain.Name = "statusStripMain";
-            this.statusStripMain.Size = new System.Drawing.Size(652, 22);
+            this.statusStripMain.Size = new System.Drawing.Size(614, 22);
             this.statusStripMain.TabIndex = 4;
             this.statusStripMain.Text = "statusStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripMenuItem,
+            this.NewToolStripMenuItem,
             this.toolStripSeparator1,
             this.openToolStripMenuItem,
             this.toolStripSeparator2,
@@ -509,13 +518,13 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "&File";
             // 
-            // newToolStripMenuItem
+            // NewToolStripMenuItem
             // 
-            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.newToolStripMenuItem.Text = "New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
+            this.NewToolStripMenuItem.Name = "NewToolStripMenuItem";
+            this.NewToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.NewToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.NewToolStripMenuItem.Text = "New";
+            this.NewToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -700,7 +709,7 @@
             this.tabControl2.Multiline = true;
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(638, 439);
+            this.tabControl2.Size = new System.Drawing.Size(600, 439);
             this.tabControl2.TabIndex = 6;
             // 
             // tabPage5
@@ -708,7 +717,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(630, 413);
+            this.tabPage5.Size = new System.Drawing.Size(592, 413);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "General";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -718,7 +727,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(630, 413);
+            this.tabPage6.Size = new System.Drawing.Size(592, 413);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Style";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -728,13 +737,15 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(630, 413);
+            this.tabPage7.Size = new System.Drawing.Size(592, 413);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Language";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.CbUrlScheme);
+            this.tabPage8.Controls.Add(this.PbDownloadLinkConnection);
             this.tabPage8.Controls.Add(this.nudRevision);
             this.tabPage8.Controls.Add(this.label3);
             this.tabPage8.Controls.Add(this.nudBuild);
@@ -753,10 +764,33 @@
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(630, 413);
+            this.tabPage8.Size = new System.Drawing.Size(592, 413);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "Update Information";
             this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // CbUrlScheme
+            // 
+            this.CbUrlScheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CbUrlScheme.FormattingEnabled = true;
+            this.CbUrlScheme.Items.AddRange(new object[] {
+            "http://",
+            "https://"});
+            this.CbUrlScheme.Location = new System.Drawing.Point(97, 42);
+            this.CbUrlScheme.Name = "CbUrlScheme";
+            this.CbUrlScheme.Size = new System.Drawing.Size(62, 21);
+            this.CbUrlScheme.TabIndex = 25;
+            // 
+            // PbDownloadLinkConnection
+            // 
+            this.PbDownloadLinkConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.PbDownloadLinkConnection.Image = ((System.Drawing.Image)(resources.GetObject("PbDownloadLinkConnection.Image")));
+            this.PbDownloadLinkConnection.Location = new System.Drawing.Point(557, 38);
+            this.PbDownloadLinkConnection.Name = "PbDownloadLinkConnection";
+            this.PbDownloadLinkConnection.Size = new System.Drawing.Size(32, 32);
+            this.PbDownloadLinkConnection.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.PbDownloadLinkConnection.TabIndex = 23;
+            this.PbDownloadLinkConnection.TabStop = false;
             // 
             // tabPage9
             // 
@@ -764,7 +798,7 @@
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(630, 413);
+            this.tabPage9.Size = new System.Drawing.Size(592, 413);
             this.tabPage9.TabIndex = 4;
             this.tabPage9.Text = "Files and Folders";
             this.tabPage9.UseVisualStyleBackColor = true;
@@ -774,7 +808,7 @@
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage10.Size = new System.Drawing.Size(630, 413);
+            this.tabPage10.Size = new System.Drawing.Size(592, 413);
             this.tabPage10.TabIndex = 5;
             this.tabPage10.Text = "Registry";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -784,7 +818,7 @@
             this.tabPage11.Location = new System.Drawing.Point(4, 22);
             this.tabPage11.Name = "tabPage11";
             this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage11.Size = new System.Drawing.Size(630, 413);
+            this.tabPage11.Size = new System.Drawing.Size(592, 413);
             this.tabPage11.TabIndex = 6;
             this.tabPage11.Text = "Download Sites";
             this.tabPage11.UseVisualStyleBackColor = true;
@@ -795,7 +829,7 @@
             this.tabPage12.Location = new System.Drawing.Point(4, 22);
             this.tabPage12.Name = "tabPage12";
             this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage12.Size = new System.Drawing.Size(630, 413);
+            this.tabPage12.Size = new System.Drawing.Size(592, 413);
             this.tabPage12.TabIndex = 7;
             this.tabPage12.Text = "Build";
             this.tabPage12.UseVisualStyleBackColor = true;
@@ -808,18 +842,29 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(652, 471);
+            this.tabControl1.Size = new System.Drawing.Size(614, 471);
             this.tabControl1.TabIndex = 7;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Controls.Add(this.LUpdateStats);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(644, 445);
+            this.tabPage1.Size = new System.Drawing.Size(606, 445);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Start Page";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // LUpdateStats
+            // 
+            this.LUpdateStats.AutoSize = true;
+            this.LUpdateStats.Location = new System.Drawing.Point(8, 3);
+            this.LUpdateStats.Name = "LUpdateStats";
+            this.LUpdateStats.Size = new System.Drawing.Size(141, 13);
+            this.LUpdateStats.TabIndex = 0;
+            this.LUpdateStats.Text = "Update Status: NotChecked";
             // 
             // tabPage2
             // 
@@ -827,7 +872,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(644, 445);
+            this.tabPage2.Size = new System.Drawing.Size(606, 445);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Untitled";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -842,7 +887,7 @@
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.MdiWindowListItem = this.fileToolStripMenuItem;
             this.menuStripMain.Name = "menuStripMain";
-            this.menuStripMain.Size = new System.Drawing.Size(652, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(614, 24);
             this.menuStripMain.TabIndex = 5;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -856,11 +901,34 @@
             this.toolStripSeparator13.Name = "toolStripSeparator13";
             this.toolStripSeparator13.Size = new System.Drawing.Size(111, 6);
             // 
+            // TUpdate
+            // 
+            this.TUpdate.Enabled = true;
+            this.TUpdate.Interval = 3000;
+            this.TUpdate.Tick += new System.EventHandler(this.TUpdate_Tick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(8, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(33, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Other";
+            // 
+            // cometUpdater1
+            // 
+            this.cometUpdater1.AutoUpdate = false;
+            this.cometUpdater1.NotifyUpdateAvailable = true;
+            this.cometUpdater1.NotifyUpdateReadyToInstall = true;
+            this.cometUpdater1.NotifyUser = true;
+            this.cometUpdater1.PackagePath = null;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(652, 517);
+            this.ClientSize = new System.Drawing.Size(614, 517);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStripMain);
             this.Controls.Add(this.statusStripMain);
@@ -882,9 +950,12 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PbDownloadLinkConnection)).EndInit();
             this.tabPage9.ResumeLayout(false);
             this.tabPage12.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
@@ -916,7 +987,7 @@
         private System.Windows.Forms.NumericUpDown nudMajor;
         private System.Windows.Forms.StatusStrip statusStripMain;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem NewToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -976,6 +1047,12 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
+        private System.Windows.Forms.Label LUpdateStats;
+        private System.Windows.Forms.PictureBox PbDownloadLinkConnection;
+        private System.Windows.Forms.Timer TUpdate;
+        private System.Windows.Forms.ComboBox CbUrlScheme;
+        private System.Windows.Forms.Label label1;
+        private Comet.CometUpdater cometUpdater1;
     }
 }
 

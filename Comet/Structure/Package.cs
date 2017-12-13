@@ -302,7 +302,7 @@
             }
             catch (WebException)
             {
-                ExceptionsManager.DisplayException(new FileNotFoundException(StringManager.RemoteFileNotFound(url)));
+                VisualExceptionDialog.Show(new FileNotFoundException(StringManager.RemoteFileNotFound(url)));
             }
             catch (Exception e)
             {

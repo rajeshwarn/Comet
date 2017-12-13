@@ -33,7 +33,7 @@
         /// <summary>The package data does not exist.</summary>
         PackageDataNotFound,
 
-        /// <summary>The update ready state.</summary>
-        UpdateReady
+        /// <summary>The downloaded state.</summary>
+        Downloaded
     }
 }

@@ -81,6 +81,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Events\Delegates.cs" />
+    <Compile Include="Events\DownloaderEventArgs.cs" />
     <Compile Include="Events\UpdaterStateEventArgs.cs" />
     <Compile Include="Managers\Downloader.cs" />
     <Compile Include="Managers\LogManager.cs" />
@@ -104,9 +105,8 @@
     <Compile Include="CometUpdater.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ControlPanel.cs" />
     <Compile Include="Structure\Bytes.cs" />
-    <Compile Include="Structure\InstallerOptions.cs" />
+    <Compile Include="Structure\InstallOptions.cs" />
     <Compile Include="Structure\Package.cs" />
     <Compile Include="Enums\UpdaterState.cs" />
     <Compile Include="PInvoke\wininet.cs" />

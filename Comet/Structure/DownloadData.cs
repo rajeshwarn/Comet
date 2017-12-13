@@ -135,6 +135,8 @@
                     downloadData._webResponse = req.GetResponse();
                     downloadData.GetFileSize();
                 }
+
+                // downloadData._size = GetFileSize(downloadData._webResponse);
             }
             catch (Exception e)
             {
@@ -262,6 +264,50 @@
             }
 
             return downloadData;
+        }
+
+        // private void GetFileSize()
+        // {
+        // if (_webResponse != null)
+        // {
+        // try
+        // {
+        // _size = _webResponse.ContentLength;
+        // }
+        // catch
+        // {
+        // // file size couldn't be determined
+        // _size = -1;
+        // }
+        // }
+        // }
+
+        /// <summary>
+        ///     Get the file size.
+        /// </summary>
+        /// <param name="response">The web response.</param>
+        /// <returns>
+        ///     <see cref="long" />
+        /// </returns>
+        public static long GetFileSize(WebResponse response)
+        {
+            long _size = -1;
+
+            if (response == null)
+            {
+                return _size;
+            }
+
+            try
+            {
+                _size = response.ContentLength;
+            }
+            catch (Exception e)
+            {
+                _size = -1;
+            }
+
+            return _size;
         }
 
         public void Close()

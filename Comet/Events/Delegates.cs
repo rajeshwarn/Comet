@@ -4,6 +4,8 @@
     {
         #region Constructors
 
+        public delegate void DownloaderProgressChangedEventHandler(DownloaderEventArgs e);
+
         public delegate void UpdaterStateChangedEventHandler(UpdaterStateEventArgs e);
 
         #endregion

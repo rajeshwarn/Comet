@@ -10,12 +10,14 @@
     using System.Globalization;
     using System.IO;
     using System.IO.Compression;
-    using System.Text;
+    using System.Reflection;
     using System.Windows.Forms;
     using System.Xml.Linq;
 
     using Comet;
     using Comet.Compiler;
+    using Comet.Enums;
+    using Comet.Events;
     using Comet.Managers;
     using Comet.Structure;
 
@@ -37,9 +39,15 @@
             ControlPanel.MaxRecentProjects = 10;
             ControlPanel.InstallerPath = "Installer.exe";
 
+            CbUrlScheme.SelectedIndex = 0;
+
             ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/Comet/Update.package";
 
             loadInstallerScriptToolStripMenuItem.PerformClick();
+            cometUpdater1 = new CometUpdater(ControlPanel.UpdatePackageUrl, Assembly.GetExecutingAssembly().Location, false);
+            cometUpdater1.UpdaterStateChanged += CometUpdater1_UpdaterStateChanged;
+
+            cometUpdater1.DownloadUpdate();
         }
 
         #endregion
@@ -120,35 +128,8 @@
         /// <param name="e">The event.</param>
         private void CheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CometUpdater _updater = new CometUpdater(ControlPanel.UpdatePackageUrl, false);
+            CometUpdater _updater = new CometUpdater(ControlPanel.UpdatePackageUrl, Assembly.GetExecutingAssembly().Location, false);
             _updater.CheckForUpdate();
-
-            string _message;
-            MessageBoxButtons _buttons;
-            MessageBoxIcon _icon;
-
-            if (_updater.UpdateAvailable)
-            {
-                StringBuilder _updateMessage = new StringBuilder();
-                _updateMessage.AppendLine("An update is available!");
-                _updateMessage.AppendLine("Latest version: " + _updater.GetLatestVersion);
-                _updateMessage.Append(Environment.NewLine);
-                _updateMessage.AppendLine("Would you like to update to the latest version?");
-                _message = _updateMessage.ToString();
-
-                _buttons = MessageBoxButtons.YesNo;
-                _icon = MessageBoxIcon.Exclamation;
-            }
-            else
-            {
-                _message = "You have the latest version!";
-
-                _buttons = MessageBoxButtons.OK;
-                _icon = MessageBoxIcon.Information;
-            }
-
-            // TODO: Add code
-            MessageBox.Show(_message, Application.ProductName, _buttons, _icon);
         }
 
         /// <summary>Clears the recent files from history.</summary>
@@ -174,6 +155,74 @@
             Package _newPackage = new Package(_changeLog, _downloadLink, _fileName, _productName, _dateTime.ToString(CultureInfo.CurrentCulture), _version);
             UpdatePackage(_newPackage);
             closeToolStripMenuItem.Enabled = false;
+        }
+
+        private void CometUpdater1_UpdaterStateChanged(UpdaterStateEventArgs e)
+        {
+            if (LUpdateStats.InvokeRequired)
+            {
+                LUpdateStats.BeginInvoke((MethodInvoker)delegate
+                    {
+                        LUpdateStats.Text = @"Update Status: " + e.State;
+                    });
+            }
+            else
+            {
+                LUpdateStats.Text = @"Update Status: " + e.State;
+            }
+
+            switch (e.State)
+            {
+                case UpdaterState.NotChecked:
+                    {
+                        break;
+                    }
+
+                case UpdaterState.Checking:
+                    {
+                        break;
+                    }
+
+                case UpdaterState.Updated:
+                    {
+                        break;
+                    }
+
+                case UpdaterState.Outdated:
+                    {
+                        break;
+                    }
+
+                case UpdaterState.Downloading:
+                    {
+                        break;
+                    }
+
+                case UpdaterState.NoConnection:
+                    {
+                        break;
+                    }
+
+                case UpdaterState.PackageNotFound:
+                    {
+                        break;
+                    }
+
+                case UpdaterState.PackageDataNotFound:
+                    {
+                        break;
+                    }
+
+                case UpdaterState.Downloaded:
+                    {
+                        break;
+                    }
+
+                default:
+                    {
+                        throw new ArgumentOutOfRangeException();
+                    }
+            }
         }
 
         /// <summary>CreateInstallerCode clear recent files menu item.</summary>
@@ -335,7 +384,7 @@
         /// <param name="e">The event.</param>
         private void Main_Load(object sender, EventArgs e)
         {
-            newToolStripMenuItem.PerformClick();
+            NewToolStripMenuItem.PerformClick();
 
             lvArchive.Columns[0].Width = 230;
             lvArchive.Columns[1].Width = 100;
@@ -385,7 +434,7 @@
             ControlPanel.FileSaved = false;
 
             const string ChangeLog = "Initial release";
-            const string DownloadLink = "https://www.example.com/link/";
+            const string DownloadLink = "www.example.com/";
             const string FileName = "Filename.exe";
             const string PackageProductName = "ProductName";
             DateTime _dateTime = DateTime.Today;
@@ -615,6 +664,35 @@
             else
             {
                 saveToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        ///     Tick Update
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void TUpdate_Tick(object sender, EventArgs e)
+        {
+            if (tbPackageDownloadLink.TextLength >= 1)
+            {
+                string _source = CbUrlScheme.Text + tbPackageDownloadLink.Text;
+
+                if (NetworkManager.IsURLFormatted(_source))
+                {
+                    if (NetworkManager.SourceExists(_source))
+                    {
+                        PbDownloadLinkConnection.Visible = false;
+                    }
+                    else
+                    {
+                        PbDownloadLinkConnection.Visible = true;
+                    }
+                }
+                else
+                {
+                    PbDownloadLinkConnection.Visible = true;
+                }
             }
         }
 

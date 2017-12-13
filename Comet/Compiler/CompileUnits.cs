@@ -17,50 +17,50 @@ namespace Comet.Compiler
         ///// <returns>
         /////     <see cref="CodeCompileUnit" />
         ///// </returns>
-        //public static CodeCompileUnit CreateInstallerCode()
-        //{
-        //    CodeCompileUnit _codeUnit = new CodeCompileUnit();
+        // public static CodeCompileUnit CreateInstallerCode()
+        // {
+        // CodeCompileUnit _codeUnit = new CodeCompileUnit();
 
-        //    // References
-        //    _codeUnit.ReferencedAssemblies.Add("System.dll");
-        //    _codeUnit.ReferencedAssemblies.Add("Comet.dll");
+        // // References
+        // _codeUnit.ReferencedAssemblies.Add("System.dll");
+        // _codeUnit.ReferencedAssemblies.Add("Comet.dll");
 
-        //    // Namespace
-        //    CodeNamespace _namespace = new CodeNamespace("Installer");
+        // // Namespace
+        // CodeNamespace _namespace = new CodeNamespace("Installer");
 
-        //    // Using/s
-        //    _namespace.Imports.Add(new CodeNamespaceImport("System"));
-        //    _namespace.Imports.Add(new CodeNamespaceImport("System.Diagnostics"));
-        //    _namespace.Imports.Add(new CodeNamespaceImport("Comet"));
+        // // Using/s
+        // _namespace.Imports.Add(new CodeNamespaceImport("System"));
+        // _namespace.Imports.Add(new CodeNamespaceImport("System.Diagnostics"));
+        // _namespace.Imports.Add(new CodeNamespaceImport("Comet"));
 
-        //    _codeUnit.Namespaces.Add(_namespace);
+        // _codeUnit.Namespaces.Add(_namespace);
 
-        //    // Class
-        //    CodeTypeDeclaration _class = new CodeTypeDeclaration("CometInstall");
-        //    _class.Attributes = MemberAttributes.Public;
-        //    _class.Comments.Add(CodeGeneration.CreateFlatSummaryTag("The main class."));
+        // // Class
+        // CodeTypeDeclaration _class = new CodeTypeDeclaration("CometInstall");
+        // _class.Attributes = MemberAttributes.Public;
+        // _class.Comments.Add(CodeGeneration.CreateFlatSummaryTag("The main class."));
 
-        //    // if (false)
-        //    // {
-        //    // _class.BaseTypes.Add(new CodeTypeReference("Base"));
-        //    // }
+        // // if (false)
+        // // {
+        // // _class.BaseTypes.Add(new CodeTypeReference("Base"));
+        // // }
 
-        //    // Create entry point method
-        //    CodeEntryPointMethod _entryPointMethod = CodeGeneration.MainEntryPointMethod();
-        //    _entryPointMethod.Statements.Add(CodeGeneration.InvokeMethod(ReferenceLibrary.InstallerType(), "Initialize"));
-        //    _class.Members.Add(_entryPointMethod);
+        // // Create entry point method
+        // CodeEntryPointMethod _entryPointMethod = CodeGeneration.MainEntryPointMethod();
+        // _entryPointMethod.Statements.Add(CodeGeneration.InvokeMethod(ReferenceLibrary.InstallerType(), "Initialize"));
+        // _class.Members.Add(_entryPointMethod);
 
-        //    // Create public variables
-        //    _class.Members.Add(CodeGeneration.CreatePublicProperty("InstallPath", typeof(string)));
-        //    _class.Members.Add(CodeGeneration.CreatePublicProperty("DownloadLink", typeof(string)));
+        // // Create public variables
+        // _class.Members.Add(CodeGeneration.CreatePublicProperty("InstallPath", typeof(string)));
+        // _class.Members.Add(CodeGeneration.CreatePublicProperty("DownloadLink", typeof(string)));
 
-        //    CodeMemberMethod _initializeMethod = InitializeMethod();
-        //    _class.Members.Add(_initializeMethod);
+        // CodeMemberMethod _initializeMethod = InitializeMethod();
+        // _class.Members.Add(_initializeMethod);
 
-        //    _namespace.Types.Add(_class);
+        // _namespace.Types.Add(_class);
 
-        //    return _codeUnit;
-        //}
+        // return _codeUnit;
+        // }
 
         /// <summary>Create a main entry point code unit to compile.</summary>
         /// <returns>

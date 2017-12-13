@@ -2,11 +2,15 @@
 {
     #region Namespace
 
+    #region Namespace
+
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Drawing;
     using System.IO;
     using System.Reflection;
+    using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading;
     using System.Windows.Forms;
@@ -20,12 +24,24 @@
 
     #endregion
 
+    #endregion
+
     /// <summary>The <see cref="CometUpdater" />.</summary>
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    [ComVisible(true)]
+    [DefaultEvent("Click")]
+    [DefaultProperty("Text")]
+    [Description("The Comet Updater")]
+    [ToolboxBitmap(typeof(CometUpdater), "Resources.Comet.bmp")]
+    [ToolboxItem(true)]
     public class CometUpdater : Component
     {
         #region Variables
 
         private bool _autoUpdate;
+
+        private Downloader _downloader;
+        private InstallOptions _installOptions;
         private bool _notifyUpdateAvailable;
         private bool _notifyUpdateReadyToInstall;
         private bool _notifyUser;
@@ -45,26 +61,14 @@
         }
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
-        /// <param name="autoUpdate">The auto update toggle.</param>
-        public CometUpdater(bool autoUpdate)
-        {
-            _autoUpdate = autoUpdate;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
         /// <param name="packagePath">The package path.</param>
+        /// <param name="installPath">The install Path.</param>
         /// <param name="autoUpdate">Auto update the application.</param>
-        public CometUpdater(string packagePath, bool autoUpdate) : this()
+        public CometUpdater(string packagePath, string installPath, bool autoUpdate) : this()
         {
             _autoUpdate = autoUpdate;
             _packagePath = packagePath;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
-        /// <param name="packagePath">The package path.</param>
-        public CometUpdater(string packagePath) : this()
-        {
-            _packagePath = packagePath;
+            _installOptions = new InstallOptions(installPath);
         }
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
@@ -74,8 +78,9 @@
             _autoUpdate = false;
             _notifyUpdateAvailable = true;
             _notifyUpdateReadyToInstall = true;
-            _notifyUser = false;
+            _notifyUser = true;
             _state = UpdaterState.NotChecked;
+            _installOptions = new InstallOptions(string.Empty);
         }
 
         [Category("UpdaterState")]
@@ -141,18 +146,7 @@
         {
             get
             {
-                return UpdaterPath + @"Download\";
-            }
-        }
-
-        /// <summary>Gets the extracted path.</summary>
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        public string ExtractedPath
-        {
-            get
-            {
-                return UpdaterPath + @"Extracted\";
+                return _installOptions.DownloadFolder;
             }
         }
 
@@ -214,6 +208,39 @@
                 {
                     return new Version(0, 0, 0, 0);
                 }
+            }
+        }
+
+        /// <summary>Gets the install files path.</summary>
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public string InstallFilesFolder
+        {
+            get
+            {
+                return _installOptions.InstallFilesFolder;
+            }
+        }
+
+        /// <summary>Gets the current install options.</summary>
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public InstallOptions InstallOptions
+        {
+            get
+            {
+                return _installOptions;
+            }
+        }
+
+        /// <summary>Gets the install path.</summary>
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public string InstallPath
+        {
+            get
+            {
+                return _installOptions.InstallPath;
             }
         }
 
@@ -354,11 +381,11 @@
         /// <summary>Gets the updater path.</summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Always)]
-        public string UpdaterPath
+        public string WorkingPath
         {
             get
             {
-                return Path.GetTempPath() + ProductName + @"\" + ControlPanel.UpdaterFolderName + @"\";
+                return _installOptions.WorkingFolder;
             }
         }
 
@@ -373,23 +400,17 @@
             {
                 if (NetworkManager.SourceExists(_packagePath))
                 {
-                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, DownloadPath, _packagePath, UpdaterState.Checking));
+                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.Checking));
                 }
                 else
                 {
-                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, DownloadPath, _packagePath, UpdaterState.PackageNotFound));
+                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.PackageNotFound));
                 }
             }
             else
             {
-                OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, DownloadPath, _packagePath, UpdaterState.NoConnection));
+                OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.NoConnection));
             }
-        }
-
-        /// <summary>Cleanup temporary files.</summary>
-        public void Cleanup()
-        {
-            FileManager.DeleteDirectory(UpdaterPath);
         }
 
         /// <summary>Download the update package.</summary>
@@ -403,19 +424,18 @@
 
             if (_updateAvailable)
             {
-                // TODO: Apparently not finding the file?
                 if (NetworkManager.SourceExists(Package.Download))
                 {
-                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, DownloadPath, _packagePath, UpdaterState.Downloading));
+                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.Downloading));
                 }
                 else
                 {
-                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, DownloadPath, _packagePath, UpdaterState.PackageDataNotFound));
+                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.PackageDataNotFound));
                 }
             }
             else
             {
-                OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, DownloadPath, _packagePath, UpdaterState.Updated));
+                OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.Updated));
             }
         }
 
@@ -429,11 +449,11 @@
 
             if (_updateAvailable)
             {
-                OnUpdaterStateChanged(new UpdaterStateEventArgs(e.Assembly, e.DownloadLocation, e.PackagePath, UpdaterState.Outdated));
+                OnUpdaterStateChanged(new UpdaterStateEventArgs(e.Assembly, _installOptions, e.PackagePath, UpdaterState.Outdated));
             }
             else
             {
-                OnUpdaterStateChanged(new UpdaterStateEventArgs(e.Assembly, e.DownloadLocation, e.PackagePath, UpdaterState.Updated));
+                OnUpdaterStateChanged(new UpdaterStateEventArgs(e.Assembly, _installOptions, e.PackagePath, UpdaterState.Updated));
             }
         }
 
@@ -441,24 +461,27 @@
         /// <param name="e">The event args.</param>
         protected virtual void OnDownloadUpdate(UpdaterStateEventArgs e)
         {
-            FileManager.CreateDirectory(e.DownloadLocation);
+            var _urls = new List<string>
+                {
+                    e.Package.Download
+                };
 
-            string _contentsDownloadLink = e.Package.Download;
+            _downloader = new Downloader(_urls, e.InstallOptions.DownloadFolder);
 
-            var _urls = new List<string>();
-            _urls.Add(e.Package.Download);
-
-            // NetworkManager.Download(new Uri(e.DownloadLocation), e.PackagePath);
-            Downloader _d = new Downloader(_urls, e.DownloadLocation);
-            _d.Download();
-
-            // TODO: Download 
+            // _downloader.ProgressChanged += Downloader_ProgressChanged;
+            _downloader.Download();
             DownloadingUpdate?.Invoke(e);
 
-            // TODO: OnCompleteDownload
-            // OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, DownloadPath, _packagePath, UpdaterState.UpdateReady));
+            while (!_downloader.DownloadComplete)
+            {
+                // Wait for downloader to finish.
+                Thread.Sleep(1000);
+            }
 
-            // TODO: Notify user before installing update!
+            _installOptions.DownloadedFile = _downloader.DownloadingTo;
+
+            // MessageBox.Show(_installOptions.DownloadedFile);
+            OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.Downloaded));
         }
 
         /// <summary>The on updater state changed event.</summary>
@@ -466,6 +489,11 @@
         protected virtual void OnUpdaterStateChanged(UpdaterStateEventArgs e)
         {
             _state = e.State;
+
+            if (UpdaterStateChanged != null)
+            {
+                UpdaterStateChanged.Invoke(e);
+            }
 
             switch (e.State)
             {
@@ -482,6 +510,7 @@
 
                 case UpdaterState.Updated:
                     {
+                        _updateAvailable = false;
                         break;
                     }
 
@@ -498,26 +527,6 @@
                         else
                         {
                             NotificationUpdateAvailable();
-
-                            if (_notifyUser)
-                            {
-                                StringBuilder _askToUpdateString = new StringBuilder();
-                                _askToUpdateString.AppendLine($"A new version ({GetLatestVersion}) is available for download.");
-                                _askToUpdateString.Append(Environment.NewLine);
-                                _askToUpdateString.AppendLine($"Would you like to download it now?");
-
-                                new Thread(() =>
-                                    {
-                                        Thread.CurrentThread.IsBackground = true;
-
-                                        DialogResult _result = MessageBox.Show(_askToUpdateString.ToString(), Application.ProductName + @" Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-
-                                        if (_result == DialogResult.Yes)
-                                        {
-                                            DownloadUpdate();
-                                        }
-                                    }).Start();
-                            }
                         }
 
                         break;
@@ -541,23 +550,16 @@
                         break;
                     }
 
-                case UpdaterState.UpdateReady:
+                case UpdaterState.Downloaded:
                     {
-                        if (_notifyUpdateReadyToInstall)
-                        {
-                            StringBuilder _updateReadyToInstall = new StringBuilder();
-                            _updateReadyToInstall.AppendLine($"The update (v.{GetLatestVersion}) is ready to install.");
-                            Notification.DisplayNotification(Resources.Comet, "Update Ready", _updateReadyToInstall.ToString(), ToolTipIcon.Info);
-                        }
-
-                        // TODO: Install update.
+                        NotificationUpdateReadyToInstall();
                         break;
                     }
 
                 case UpdaterState.PackageDataNotFound:
                     {
                         _updateAvailable = false;
-                        ExceptionsManager.DisplayException(new FileNotFoundException(StringManager.RemoteFileNotFound(Package.Download)));
+                        VisualExceptionDialog.Show(new FileNotFoundException(StringManager.RemoteFileNotFound(Package.Download)));
                         break;
                     }
 
@@ -566,11 +568,13 @@
                         throw new ArgumentOutOfRangeException();
                     }
             }
+        }
 
-            if (UpdaterStateChanged != null)
-            {
-                UpdaterStateChanged.Invoke(e);
-            }
+        private void CompileInstaller(InstallOptions installOptions)
+        {
+            // TODO: Set resource install folder option and compile with it.
+
+            // Ask to close and restart to update files with installer
         }
 
         /// <summary>Verify the connection.</summary>
@@ -589,6 +593,21 @@
             }
         }
 
+        /// <summary>
+        ///     Extract the update to the install files folder.
+        /// </summary>
+        /// <param name="installOptions">The install options.</param>
+        private void ExtractUpdate(InstallOptions installOptions)
+        {
+            Archive.ExtractToDirectory(new Archive(installOptions.DownloadedFile), installOptions.InstallFilesFolder);
+            MessageBox.Show(@"Done extracting files!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            CompileInstaller(_installOptions);
+        }
+
+        /// <summary>
+        ///     Notify the user an update is available.
+        /// </summary>
         private void NotificationUpdateAvailable()
         {
             if (_notifyUpdateAvailable)
@@ -596,6 +615,61 @@
                 StringBuilder _updateAvailableString = new StringBuilder();
                 _updateAvailableString.AppendLine($"The update (v.{GetLatestVersion}) is available for download.");
                 Notification.DisplayNotification(Resources.Comet, "Update Available", _updateAvailableString.ToString(), ToolTipIcon.Info);
+            }
+
+            if (_notifyUser)
+            {
+                StringBuilder _askToUpdateString = new StringBuilder();
+                _askToUpdateString.AppendLine($"A new version ({GetLatestVersion}) is available for download.");
+                _askToUpdateString.Append(Environment.NewLine);
+                _askToUpdateString.AppendLine($"Would you like to download it now?");
+
+                new Thread(() =>
+                    {
+                        Thread.CurrentThread.IsBackground = true;
+
+                        DialogResult _result = MessageBox.Show(_askToUpdateString.ToString(), Application.ProductName + @" Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                        if (_result == DialogResult.Yes)
+                        {
+                            DownloadUpdate();
+                        }
+                    }).Start();
+            }
+        }
+
+        /// <summary>
+        ///     Notify the user the update is ready to install.
+        /// </summary>
+        private void NotificationUpdateReadyToInstall()
+        {
+            if (_notifyUpdateReadyToInstall)
+            {
+                StringBuilder _updateReadyToInstall = new StringBuilder();
+                _updateReadyToInstall.AppendLine($"The update (v.{GetLatestVersion}) is ready to install.");
+                Notification.DisplayNotification(Resources.Comet, "Update Ready", _updateReadyToInstall.ToString(), ToolTipIcon.Info);
+            }
+
+            if (_notifyUser)
+            {
+                StringBuilder _askToInstall = new StringBuilder();
+                _askToInstall.AppendLine($"The update (v.{GetLatestVersion}) is ready to install.");
+                _askToInstall.Append(Environment.NewLine);
+                _askToInstall.AppendLine($"Would you like to install it now?");
+
+                new Thread(() =>
+                    {
+                        Thread.CurrentThread.IsBackground = true;
+
+                        DialogResult _result = MessageBox.Show(_askToInstall.ToString(), Application.ProductName + @" Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                        if (_result == DialogResult.Yes)
+                        {
+                            ExtractUpdate(_installOptions);
+
+                            // TODO: Install update.
+                        }
+                    }).Start();
             }
         }
 
