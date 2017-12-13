@@ -45,9 +45,9 @@
 
             loadInstallerScriptToolStripMenuItem.PerformClick();
             cometUpdater1 = new CometUpdater(ControlPanel.UpdatePackageUrl, Assembly.GetExecutingAssembly().Location, false);
-            cometUpdater1.UpdaterStateChanged += CometUpdater1_UpdaterStateChanged;
+            cometUpdater1.UpdaterStateChanged += CometUpdater_UpdaterStateChanged;
 
-            cometUpdater1.DownloadUpdate();
+            cometUpdater1.CheckForUpdate();
         }
 
         #endregion
@@ -157,71 +157,38 @@
             closeToolStripMenuItem.Enabled = false;
         }
 
-        private void CometUpdater1_UpdaterStateChanged(UpdaterStateEventArgs e)
+        /// <summary>
+        /// The updater state changed.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        private void CometUpdater_UpdaterStateChanged(UpdaterStateEventArgs e)
         {
+            string _updateStatus = @"Update status: " + e.State;
+
             if (LUpdateStats.InvokeRequired)
             {
                 LUpdateStats.BeginInvoke((MethodInvoker)delegate
                     {
-                        LUpdateStats.Text = @"Update Status: " + e.State;
+                        LUpdateStats.Text = _updateStatus;
                     });
             }
             else
             {
-                LUpdateStats.Text = @"Update Status: " + e.State;
+                LUpdateStats.Text = _updateStatus;
             }
 
-            switch (e.State)
+            var _s = e.AssemblyLocation;
+
+            if (label1.InvokeRequired)
             {
-                case UpdaterState.NotChecked:
+                label1.BeginInvoke((MethodInvoker)delegate
                     {
-                        break;
-                    }
-
-                case UpdaterState.Checking:
-                    {
-                        break;
-                    }
-
-                case UpdaterState.Updated:
-                    {
-                        break;
-                    }
-
-                case UpdaterState.Outdated:
-                    {
-                        break;
-                    }
-
-                case UpdaterState.Downloading:
-                    {
-                        break;
-                    }
-
-                case UpdaterState.NoConnection:
-                    {
-                        break;
-                    }
-
-                case UpdaterState.PackageNotFound:
-                    {
-                        break;
-                    }
-
-                case UpdaterState.PackageDataNotFound:
-                    {
-                        break;
-                    }
-
-                case UpdaterState.Downloaded:
-                    {
-                        break;
-                    }
-
-                default:
-                    {
-                        throw new ArgumentOutOfRangeException();
-                    }
+                        label1.Text = _s;
+                    });
+            }
+            else
+            {
+                label1.Text = _s;
             }
         }
 

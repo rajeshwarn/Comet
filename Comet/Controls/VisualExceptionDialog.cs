@@ -3,13 +3,23 @@
     #region Namespace
 
     using System;
+    using System.ComponentModel;
     using System.Drawing;
     using System.IO;
+    using System.Runtime.InteropServices;
     using System.Text;
     using System.Windows.Forms;
 
     #endregion
 
+    /// <summary>The <see cref="VisualExceptionDialog" />.</summary>
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
+    [ComVisible(true)]
+    [DefaultEvent("Click")]
+    [DefaultProperty("Text")]
+    [Description("The Visual Exception Dialog")]
+    [ToolboxBitmap(typeof(CometUpdater), "Resources.VisualExceptionDialog.bmp")]
+    [ToolboxItem(false)]
     public class VisualExceptionDialog : Form
     {
         #region Variables
@@ -83,7 +93,8 @@
         {
             VisualExceptionDialog _exceptionDialog = new VisualExceptionDialog(exception)
                 {
-                    Text = caption
+                    Text = caption,
+                    StartPosition = FormStartPosition.CenterParent
                 };
 
             if (dialogWindow)

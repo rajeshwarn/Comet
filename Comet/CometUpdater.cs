@@ -46,6 +46,8 @@
         private bool _notifyUpdateReadyToInstall;
         private bool _notifyUser;
         private string _packagePath;
+
+        private ProgressDialog _progressDialog;
         private UpdaterState _state;
         private bool _updateAvailable;
 
@@ -81,6 +83,7 @@
             _notifyUser = true;
             _state = UpdaterState.NotChecked;
             _installOptions = new InstallOptions(string.Empty);
+            _progressDialog = new ProgressDialog { StartPosition = FormStartPosition.CenterParent };
         }
 
         [Category("UpdaterState")]
@@ -461,6 +464,8 @@
         /// <param name="e">The event args.</param>
         protected virtual void OnDownloadUpdate(UpdaterStateEventArgs e)
         {
+            // _progressDialog.ShowDialog();
+             
             var _urls = new List<string>
                 {
                     e.Package.Download
@@ -489,11 +494,7 @@
         protected virtual void OnUpdaterStateChanged(UpdaterStateEventArgs e)
         {
             _state = e.State;
-
-            if (UpdaterStateChanged != null)
-            {
-                UpdaterStateChanged.Invoke(e);
-            }
+            UpdaterStateChanged?.Invoke(e);
 
             switch (e.State)
             {
