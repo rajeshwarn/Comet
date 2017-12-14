@@ -916,12 +916,11 @@
             this.TUpdate.Interval = 3000;
             this.TUpdate.Tick += new System.EventHandler(this.TUpdate_Tick);
             // 
-            // cometUpdater1
+            // _updater
             // 
             this._updater.AutoUpdate = false;
             this._updater.NotifyUpdateAvailable = true;
             this._updater.NotifyUpdateReadyToInstall = true;
-            this._updater.NotifyUser = true;
             this._updater.PackagePath = null;
             // 
             // Main

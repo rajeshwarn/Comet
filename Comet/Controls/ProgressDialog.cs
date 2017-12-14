@@ -27,14 +27,21 @@
         #region Variables
 
         private Button _cancelButton;
-        private Button _updateButton;
+
+        private ChangeLog _changeLog;
+
+        private Label _comet;
+
+        private Download _downData;
         private Package _package;
+        private Separator _separator;
+        private Button _updateButton;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="ProgressDialog"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="ProgressDialog" /> class.</summary>
         /// <param name="installOptions">The install Options.</param>
         /// <param name="package">The package.</param>
         /// <param name="currentVersion">The current Version.</param>
@@ -58,20 +65,22 @@
             _changeLog = new ChangeLog(installOptions, package, currentVersion);
             _changeLog.Location = new Point(40, 60);
             _changeLog.Size = new Size(400, 280);
-             Controls.Add(_changeLog);
+            Controls.Add(_changeLog);
         }
 
-        private ChangeLog _changeLog;
         #endregion
 
+        #region Events
+
+        /// <summary>
+        ///     The on paint event.
+        /// </summary>
+        /// <param name="e">The event args.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-
             Banner.DrawBanner(e.Graphics, "Update Information", "Changes in the latest version of " + _package.Name, Padding);
         }
-
-        #region Events
 
         /// <summary>The cancel button is clicked.</summary>
         /// <param name="sender">The sender.</param>
@@ -112,6 +121,28 @@
             _updateButton.Click += UpdateButtonClick;
 
             Controls.Add(_updateButton);
+
+            _comet = new Label
+                {
+                    Location = new Point(0, _cancelButton.Location.Y - 10),
+                    Size = new Size(39, 20),
+                    Text = @"Comet",
+                    ForeColor = Color.DarkGray
+                };
+
+            Controls.Add(_comet);
+
+            _separator = new Separator
+                {
+                    Orientation = Orientation.Horizontal,
+                    Location = new Point(_comet.Right, _comet.Location.Y + 5),
+                    Size = new Size(Width, 0),
+                    Line = Color.FromArgb(224, 222, 220),
+                    Shadow = Color.FromArgb(250, 249, 249),
+                    ShadowVisible = true
+            };
+
+            Controls.Add(_separator);
         }
 
         /// <summary>The update button is clicked.</summary>
@@ -121,9 +152,12 @@
         {
             _changeLog.Visible = false;
 
-            Download _downData = new Download();
-            _downData.Location = new Point(40, 60);
-            _downData.Size = new Size(400, 280);
+            _downData = new Download
+                {
+                    Location = new Point(40, 60),
+                    Size = new Size(400, 280)
+                };
+
             Controls.Add(_downData);
         }
 

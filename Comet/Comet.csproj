@@ -81,6 +81,9 @@
     <Compile Include="Controls\ProgressDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\Separator.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\VisualExceptionDialog.cs">
       <SubType>Form</SubType>
     </Compile>

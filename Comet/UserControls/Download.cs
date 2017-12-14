@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Comet.UserControls
+﻿namespace Comet.UserControls
 {
+    #region Namespace
+
+    using System.ComponentModel;
+    using System.Windows.Forms;
+
+    #endregion
+
+    /// <summary>The download.</summary>
+    [ToolboxItem(false)]
     public partial class Download : UserControl
     {
+        #region Constructors
+
         public Download()
         {
             InitializeComponent();
         }
+
+        #endregion
     }
 }

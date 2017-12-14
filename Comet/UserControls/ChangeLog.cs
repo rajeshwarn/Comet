@@ -3,6 +3,7 @@
     #region Namespace
 
     using System;
+    using System.ComponentModel;
     using System.Text;
     using System.Windows.Forms;
 
@@ -11,6 +12,7 @@
     #endregion
 
     /// <summary>The change log.</summary>
+    [ToolboxItem(false)]
     public partial class ChangeLog : UserControl
     {
         #region Constructors

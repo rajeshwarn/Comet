@@ -44,7 +44,8 @@
             ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Update.package";
 
             loadInstallerScriptToolStripMenuItem.PerformClick();
-            _updater = new CometUpdater(ControlPanel.UpdatePackageUrl, Assembly.GetExecutingAssembly().Location, false);
+            _updater = new CometUpdater(ControlPanel.UpdatePackageUrl, Assembly.GetExecutingAssembly().Location);
+            _updater.AutoUpdate = false;
             _updater.UpdaterStateChanged += CometUpdater_UpdaterStateChanged;
 
            // cometUpdater1.CheckForUpdate();
