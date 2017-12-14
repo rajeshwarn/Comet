@@ -23,6 +23,8 @@
     using Comet.Structure;
 
     #endregion
+     
+    // TODO: Catch timeout to package connection exception.
 
     #endregion
 
@@ -39,14 +41,12 @@
         #region Variables
 
         private bool _autoUpdate;
-
         private Downloader _downloader;
         private InstallOptions _installOptions;
         private bool _notifyUpdateAvailable;
         private bool _notifyUpdateReadyToInstall;
         private bool _notifyUser;
         private string _packagePath;
-
         private ProgressDialog _progressDialog;
         private UpdaterState _state;
         private bool _updateAvailable;
@@ -83,7 +83,35 @@
             _notifyUser = true;
             _state = UpdaterState.NotChecked;
             _installOptions = new InstallOptions(string.Empty);
-            _progressDialog = new ProgressDialog { StartPosition = FormStartPosition.CenterParent };
+
+            _bw = new BackgroundWorker();
+            _bw.WorkerSupportsCancellation = true;
+            _bw.DoWork += BW_DoWork;
+
+        }
+
+        private void BW_DoWork(object sender, DoWorkEventArgs e)
+        {
+            
+            CheckForUpdate();
+
+            if (NetworkManager.InternetAvailable)
+            {
+                if (NetworkManager.SourceExists(_packagePath))
+                {
+                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.Checking));
+                }
+                else
+                {
+                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.PackageNotFound));
+                }
+            }
+            else
+            {
+                OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.NoConnection));
+            }
+
+
         }
 
         [Category("UpdaterState")]
@@ -396,24 +424,16 @@
 
         #region Events
 
+        private BackgroundWorker _bw;
+
         /// <summary>Checks the application for updates.</summary>
         public void CheckForUpdate()
         {
-            if (NetworkManager.InternetAvailable)
+            if (!_bw.IsBusy)
             {
-                if (NetworkManager.SourceExists(_packagePath))
-                {
-                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.Checking));
-                }
-                else
-                {
-                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.PackageNotFound));
-                }
+                _bw.RunWorkerAsync();
             }
-            else
-            {
-                OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.NoConnection));
-            }
+            
         }
 
         /// <summary>Download the update package.</summary>
@@ -464,8 +484,7 @@
         /// <param name="e">The event args.</param>
         protected virtual void OnDownloadUpdate(UpdaterStateEventArgs e)
         {
-            // _progressDialog.ShowDialog();
-             
+            // TODO: Move to progress dialog to do tasks there to call.
             var _urls = new List<string>
                 {
                     e.Package.Download
@@ -512,6 +531,7 @@
                 case UpdaterState.Updated:
                     {
                         _updateAvailable = false;
+                        _bw.CancelAsync();
                         break;
                     }
 
@@ -542,12 +562,14 @@
                 case UpdaterState.NoConnection:
                     {
                         _updateAvailable = false;
+                        _bw.CancelAsync();
                         break;
                     }
 
                 case UpdaterState.PackageNotFound:
                     {
                         _updateAvailable = false;
+                        _bw.CancelAsync();
                         break;
                     }
 
@@ -560,6 +582,7 @@
                 case UpdaterState.PackageDataNotFound:
                     {
                         _updateAvailable = false;
+                        _bw.CancelAsync();
                         VisualExceptionDialog.Show(new FileNotFoundException(StringManager.RemoteFileNotFound(Package.Download)));
                         break;
                     }
@@ -625,17 +648,29 @@
                 _askToUpdateString.Append(Environment.NewLine);
                 _askToUpdateString.AppendLine($"Would you like to download it now?");
 
-                new Thread(() =>
+                _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion)
                     {
-                        Thread.CurrentThread.IsBackground = true;
+                        StartPosition = FormStartPosition.CenterParent
+                    };
 
-                        DialogResult _result = MessageBox.Show(_askToUpdateString.ToString(), Application.ProductName + @" Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                _progressDialog.ShowDialog();
 
-                        if (_result == DialogResult.Yes)
-                        {
-                            DownloadUpdate();
-                        }
-                    }).Start();
+
+                //new Thread(() =>
+                //    {
+                //        Thread.CurrentThread.IsBackground = true;
+
+                //        //DialogResult _result = MessageBox.Show(_askToUpdateString.ToString(), Application.ProductName + @" Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                //        //if (_result == DialogResult.Yes)
+                //        //{
+                //        //    DownloadUpdate();
+                //        //}
+
+                //        // Display progress dialog
+         
+
+                //    }).Start();
             }
         }
 
@@ -658,19 +693,19 @@
                 _askToInstall.Append(Environment.NewLine);
                 _askToInstall.AppendLine($"Would you like to install it now?");
 
-                new Thread(() =>
-                    {
-                        Thread.CurrentThread.IsBackground = true;
+                //new Thread(() =>
+                //    {
+                //        Thread.CurrentThread.IsBackground = true;
 
-                        DialogResult _result = MessageBox.Show(_askToInstall.ToString(), Application.ProductName + @" Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                //        DialogResult _result = MessageBox.Show(_askToInstall.ToString(), Application.ProductName + @" Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
-                        if (_result == DialogResult.Yes)
-                        {
-                            ExtractUpdate(_installOptions);
+                //        if (_result == DialogResult.Yes)
+                //        {
+                //            ExtractUpdate(_installOptions);
 
-                            // TODO: Install update.
-                        }
-                    }).Start();
+                //            // TODO: Install update.
+                //        }
+                //    }).Start();
             }
         }
 

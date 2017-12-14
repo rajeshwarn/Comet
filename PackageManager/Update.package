@@ -3,8 +3,8 @@
 <Comet>
 	<ChangeLog>Initial release.</ChangeLog>
 	<Download>https://raw.githubusercontent.com/DarkByte7/Comet/master/Comet/TestSample.zip</Download>
-	<Filename>Comet.exe</Filename>
-	<Name>Comet</Name>
+	<Filename>PackageManager.exe</Filename>
+	<Name>Package Manager</Name>
 	<Release>January 1, 2017</Release>
 	<Version>1.0.0.1</Version>
 </Comet>

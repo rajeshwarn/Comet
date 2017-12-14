@@ -46,9 +46,7 @@
         public static string IsNullOrEmpty(string text)
         {
             StringBuilder _isNullOrEmpty = new StringBuilder();
-            _isNullOrEmpty.AppendLine("The string is null or empty.");
-            _isNullOrEmpty.Append(Environment.NewLine);
-            _isNullOrEmpty.AppendLine("String: " + nameof(text));
+            _isNullOrEmpty.AppendLine("The string is null or empty." + nameof(text));
             return _isNullOrEmpty.ToString();
         }
 
@@ -60,9 +58,7 @@
         public static string PackageNotFound(string path)
         {
             StringBuilder _packageNotFound = new StringBuilder();
-            _packageNotFound.AppendLine("Unable to locate the package using the following path.");
-            _packageNotFound.Append(Environment.NewLine);
-            _packageNotFound.AppendLine("Path: " + path);
+            _packageNotFound.AppendLine("Unable to locate the package using the following path. " + path);
             return _packageNotFound.ToString();
         }
 
@@ -74,7 +70,7 @@
         public static string RemoteFileNotFound(string url)
         {
             StringBuilder _remoteFileNotFound = new StringBuilder();
-            _remoteFileNotFound.AppendLine("Unable to locate the remote file using the following URL." + url);
+            _remoteFileNotFound.AppendLine("Unable to locate the remote file using the following URL. " + url);
             return _remoteFileNotFound.ToString();
         }
 
@@ -86,9 +82,7 @@
         public static string UrlNotWellFormatted(string url)
         {
             StringBuilder _urlNotWellFormatted = new StringBuilder();
-            _urlNotWellFormatted.AppendLine("The URL is not well formatted.");
-            _urlNotWellFormatted.Append(Environment.NewLine);
-            _urlNotWellFormatted.AppendLine("URL: " + url);
+            _urlNotWellFormatted.AppendLine("The URL is not well formatted. " + url);
             return _urlNotWellFormatted.ToString();
         }
 

@@ -117,7 +117,7 @@
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.TUpdate = new System.Windows.Forms.Timer(this.components);
-            this.cometUpdater1 = new Comet.CometUpdater(this.components);
+            this._updater = new Comet.CometUpdater(this.components);
             this.cmsArchive.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -918,11 +918,11 @@
             // 
             // cometUpdater1
             // 
-            this.cometUpdater1.AutoUpdate = false;
-            this.cometUpdater1.NotifyUpdateAvailable = true;
-            this.cometUpdater1.NotifyUpdateReadyToInstall = true;
-            this.cometUpdater1.NotifyUser = true;
-            this.cometUpdater1.PackagePath = null;
+            this._updater.AutoUpdate = false;
+            this._updater.NotifyUpdateAvailable = true;
+            this._updater.NotifyUpdateReadyToInstall = true;
+            this._updater.NotifyUser = true;
+            this._updater.PackagePath = null;
             // 
             // Main
             // 
@@ -1052,7 +1052,7 @@
         private System.Windows.Forms.Timer TUpdate;
         private System.Windows.Forms.ComboBox CbUrlScheme;
         private System.Windows.Forms.Label label1;
-        private Comet.CometUpdater cometUpdater1;
+        private Comet.CometUpdater _updater;
     }
 }
 

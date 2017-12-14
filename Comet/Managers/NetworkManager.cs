@@ -166,42 +166,6 @@
             return GetStatusCode(url, timeout) == HttpStatusCode.OK;
         }
 
-        [Obsolete]
-        private static void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            lock (e.UserState)
-            {
-                // Releases blocked thread.
-                Monitor.Pulse(e.UserState);
-            }
-
-            // ConsoleManager.WriteOutput(e.Error?.Message ?? "The file download has completed.");
-        }
-
-        [Obsolete]
-        private static void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            try
-            {
-                long _bytesReceived = e.BytesReceived;
-                long _totalBytes = e.TotalBytesToReceive;
-
-                Bytes _received = new Bytes(_bytesReceived) { Abbreviated = true };
-                Bytes _total = new Bytes(_totalBytes) { Abbreviated = true };
-
-                if (_totalBytes == -1)
-                {
-                    // _total = "?";
-                }
-
-                // ConsoleManager.WriteOutput("(" + e.ProgressPercentage.ToString("0") + "%) " + _received + " / " + _total);
-            }
-            catch (Exception ex)
-            {
-                // Console.WriteLine(StringManager.ExceptionString(ex));
-            }
-        }
-
         /// <summary>
         ///     Create a web request.
         /// </summary>

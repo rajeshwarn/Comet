@@ -41,13 +41,13 @@
 
             CbUrlScheme.SelectedIndex = 0;
 
-            ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/Comet/Update.package";
+            ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Update.package";
 
             loadInstallerScriptToolStripMenuItem.PerformClick();
-            cometUpdater1 = new CometUpdater(ControlPanel.UpdatePackageUrl, Assembly.GetExecutingAssembly().Location, false);
-            cometUpdater1.UpdaterStateChanged += CometUpdater_UpdaterStateChanged;
+            _updater = new CometUpdater(ControlPanel.UpdatePackageUrl, Assembly.GetExecutingAssembly().Location, false);
+            _updater.UpdaterStateChanged += CometUpdater_UpdaterStateChanged;
 
-            cometUpdater1.CheckForUpdate();
+           // cometUpdater1.CheckForUpdate();
         }
 
         #endregion
@@ -128,7 +128,6 @@
         /// <param name="e">The event.</param>
         private void CheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CometUpdater _updater = new CometUpdater(ControlPanel.UpdatePackageUrl, Assembly.GetExecutingAssembly().Location, false);
             _updater.CheckForUpdate();
         }
 
