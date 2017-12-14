@@ -5,7 +5,6 @@
     #region Namespace
 
     using System;
-    using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Drawing;
@@ -16,7 +15,6 @@
     using System.Threading;
     using System.Windows.Forms;
 
-    using Comet.Compiler;
     using Comet.Controls;
     using Comet.Enums;
     using Comet.Events;
@@ -500,19 +498,7 @@
 
                 case UpdaterState.Outdated:
                     {
-                        if (_autoUpdate)
-                        {
-                            DownloadUpdate();
-
-                            // Download and install later.
-                            // Download and install.
-                            // Manually update.
-                        }
-                        else
-                        {
-                            NotificationUpdateAvailable();
-                        }
-
+                        NotificationUpdateAvailable();
                         break;
                     }
 
@@ -561,6 +547,8 @@
         {
             CheckForUpdate();
 
+            _installOptions.Verify();
+
             if (NetworkManager.InternetAvailable)
             {
                 if (NetworkManager.SourceExists(_packagePath))
@@ -583,24 +571,23 @@
             // TODO: Set resource install folder option and compile with it.
 
             // Ask to close and restart to update files with installer
-            //var _references = new List<string>
-            //    {
-            //        "System.dll",
-            //        "System.Windows.Forms.dll"
-            //    };
+            // var _references = new List<string>
+            // {
+            // "System.dll",
+            // "System.Windows.Forms.dll"
+            // };
 
-            //ResourcesManager.CreateSettingsResource(ControlPanel.ResourceSettingsPath);
+            // ResourcesManager.CreateSettingsResource(ControlPanel.ResourceSettingsPath);
 
-            //var _resources = new List<string>
-            //    {
-            //        ControlPanel.ResourceSettingsPath
-            //    };
+            // var _resources = new List<string>
+            // {
+            // ControlPanel.ResourceSettingsPath
+            // };
 
-            //string[] _sources;
-            //_sources = new[] { Resources.MainEntryPoint, Resources.Installer };
+            // string[] _sources;
+            // _sources = new[] { Resources.MainEntryPoint, Resources.Installer };
 
-
-            //CompilerResults _results = CodeDomCompiler.Build(_references, _sources, ControlPanel.InstallerPath, _resources);
+            // CompilerResults _results = CodeDomCompiler.Build(_references, _sources, ControlPanel.InstallerPath, _resources);
         }
 
         /// <summary>Verify the connection.</summary>
@@ -680,8 +667,6 @@
                 {
                     InstallUpdate(_installOptions);
                 }
-
-                // TODO: Install update.
             }
             else
             {
