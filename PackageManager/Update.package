@@ -2,7 +2,7 @@
 
 <Comet>
 	<ChangeLog>Initial release.</ChangeLog>
-	<Download>https://raw.githubusercontent.com/DarkByte7/Comet/master/Comet/TestSample.zip</Download>
+	<Download>https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/TestSample.zip</Download>
 	<Filename>PackageManager.exe</Filename>
 	<Name>Package Manager</Name>
 	<Release>January 1, 2017</Release>

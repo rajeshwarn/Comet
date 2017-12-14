@@ -5,6 +5,7 @@
     #region Namespace
 
     using System;
+    using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Drawing;
@@ -15,6 +16,7 @@
     using System.Threading;
     using System.Windows.Forms;
 
+    using Comet.Compiler;
     using Comet.Controls;
     using Comet.Enums;
     using Comet.Events;
@@ -466,7 +468,6 @@
 
             _installOptions.DownloadedFile = _downloader.DownloadingTo;
 
-            // MessageBox.Show(_installOptions.DownloadedFile);
             OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.Downloaded));
         }
 
@@ -501,7 +502,7 @@
                     {
                         if (_autoUpdate)
                         {
-                            // DownloadUpdate();
+                            DownloadUpdate();
 
                             // Download and install later.
                             // Download and install.
@@ -582,6 +583,24 @@
             // TODO: Set resource install folder option and compile with it.
 
             // Ask to close and restart to update files with installer
+            //var _references = new List<string>
+            //    {
+            //        "System.dll",
+            //        "System.Windows.Forms.dll"
+            //    };
+
+            //ResourcesManager.CreateSettingsResource(ControlPanel.ResourceSettingsPath);
+
+            //var _resources = new List<string>
+            //    {
+            //        ControlPanel.ResourceSettingsPath
+            //    };
+
+            //string[] _sources;
+            //_sources = new[] { Resources.MainEntryPoint, Resources.Installer };
+
+
+            //CompilerResults _results = CodeDomCompiler.Build(_references, _sources, ControlPanel.InstallerPath, _resources);
         }
 
         /// <summary>Verify the connection.</summary>
@@ -601,13 +620,12 @@
         }
 
         /// <summary>
-        ///     Extract the update to the install files folder.
+        ///     Install the update.
         /// </summary>
         /// <param name="installOptions">The install options.</param>
-        private void ExtractUpdate(InstallOptions installOptions)
+        private void InstallUpdate(InstallOptions installOptions)
         {
             Archive.ExtractToDirectory(new Archive(installOptions.DownloadedFile), installOptions.InstallFilesFolder);
-            MessageBox.Show(@"Done extracting files!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             CompileInstaller(_installOptions);
         }
@@ -632,27 +650,10 @@
                         Text = Application.ProductName + @" Update"
                     };
 
-                _progressDialog.ShowDialog();
-
-                // StringBuilder _askToUpdateString = new StringBuilder();
-                // _askToUpdateString.AppendLine($"A new version ({GetLatestVersion}) is available for download.");
-                // _askToUpdateString.Append(Environment.NewLine);
-                // _askToUpdateString.AppendLine($"Would you like to download it now?");
-
-                // new Thread(() =>
-                // {
-                // Thread.CurrentThread.IsBackground = true;
-
-                // //DialogResult _result = MessageBox.Show(_askToUpdateString.ToString(), Application.ProductName + @" Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-
-                // //if (_result == DialogResult.Yes)
-                // //{
-                // //    DownloadUpdate();
-                // //}
-
-                // // Display progress dialog
-
-                // }).Start();
+                if (_progressDialog.ShowDialog() == DialogResult.OK)
+                {
+                    DownloadUpdate();
+                }
             }
         }
 
@@ -675,19 +676,16 @@
                 _askToInstall.Append(Environment.NewLine);
                 _askToInstall.AppendLine($"Would you like to install it now?");
 
-                // new Thread(() =>
-                // {
-                // Thread.CurrentThread.IsBackground = true;
+                if (_progressDialog.ShowDialog() == DialogResult.OK)
+                {
+                    InstallUpdate(_installOptions);
+                }
 
-                // DialogResult _result = MessageBox.Show(_askToInstall.ToString(), Application.ProductName + @" Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-
-                // if (_result == DialogResult.Yes)
-                // {
-                // ExtractUpdate(_installOptions);
-
-                // // TODO: Install update.
-                // }
-                // }).Start();
+                // TODO: Install update.
+            }
+            else
+            {
+                InstallUpdate(_installOptions);
             }
         }
 

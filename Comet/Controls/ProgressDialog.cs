@@ -8,6 +8,7 @@
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
+    using Comet.Enums;
     using Comet.Properties;
     using Comet.Structure;
     using Comet.UserControls;
@@ -72,6 +73,42 @@
 
         #region Events
 
+        public void UpdateDisplayMode(UpdaterState state)
+        {
+            switch (state)
+            {
+                case UpdaterState.NotChecked:
+                    break;
+                case UpdaterState.Checking:
+                    break;
+                case UpdaterState.Updated:
+                    break;
+                case UpdaterState.Outdated:
+                    break;
+                case UpdaterState.Downloading:
+                    Controls.Remove(_changeLog);
+
+                    _downData = new Download
+                        {
+                            Location = new Point(40, 60),
+                            Size = new Size(400, 280)
+                        };
+
+                    Controls.Add(_downData);
+                    break;
+                case UpdaterState.NoConnection:
+                    break;
+                case UpdaterState.PackageNotFound:
+                    break;
+                case UpdaterState.PackageDataNotFound:
+                    break;
+                case UpdaterState.Downloaded:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+            }
+        }
+
         /// <summary>
         ///     The on paint event.
         /// </summary>
@@ -87,6 +124,7 @@
         /// <param name="e">The event.</param>
         private void CancelButtonClick(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.Cancel;
             Close();
         }
 
@@ -140,7 +178,7 @@
                     Line = Color.FromArgb(224, 222, 220),
                     Shadow = Color.FromArgb(250, 249, 249),
                     ShadowVisible = true
-            };
+                };
 
             Controls.Add(_separator);
         }
@@ -151,14 +189,8 @@
         private void UpdateButtonClick(object sender, EventArgs e)
         {
             _changeLog.Visible = false;
-
-            _downData = new Download
-                {
-                    Location = new Point(40, 60),
-                    Size = new Size(400, 280)
-                };
-
-            Controls.Add(_downData);
+            UpdateDisplayMode(UpdaterState.Downloading);
+            DialogResult = DialogResult.OK;
         }
 
         #endregion
