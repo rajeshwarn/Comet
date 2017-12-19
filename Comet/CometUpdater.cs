@@ -630,6 +630,7 @@
         {
             _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion)
                 {
+                    MinimizeBox = false,
                     StartPosition = FormStartPosition.CenterScreen,
                     Text = Application.ProductName + @" Update"
                 };
