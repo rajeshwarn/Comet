@@ -92,6 +92,8 @@
             _state = UpdaterState.NotChecked;
             _installOptions = new InstallOptions(string.Empty);
 
+            InitializeProgressDialog();
+
             _bw = new BackgroundWorker();
             _bw.WorkerSupportsCancellation = true;
             _bw.DoWork += BW_DoWork;
@@ -607,6 +609,18 @@
         }
 
         /// <summary>
+        ///     Initializes the progress dialog.
+        /// </summary>
+        private void InitializeProgressDialog()
+        {
+            _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion)
+                {
+                    StartPosition = FormStartPosition.CenterParent,
+                    Text = Application.ProductName + @" Update"
+                };
+        }
+
+        /// <summary>
         ///     Install the update.
         /// </summary>
         /// <param name="installOptions">The install options.</param>
@@ -631,11 +645,7 @@
 
             if (!_autoUpdate)
             {
-                _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion)
-                    {
-                        StartPosition = FormStartPosition.CenterParent,
-                        Text = Application.ProductName + @" Update"
-                    };
+                InitializeProgressDialog();
 
                 if (_progressDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -663,6 +673,7 @@
                 _askToInstall.Append(Environment.NewLine);
                 _askToInstall.AppendLine($"Would you like to install it now?");
 
+                InitializeProgressDialog();
                 if (_progressDialog.ShowDialog() == DialogResult.OK)
                 {
                     InstallUpdate(_installOptions);
