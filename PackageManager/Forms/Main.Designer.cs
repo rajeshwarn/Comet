@@ -85,13 +85,6 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.RunAfterBuildtoolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.loadEntryPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadInstallerScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportAProblemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
@@ -117,7 +110,6 @@
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.TUpdate = new System.Windows.Forms.Timer(this.components);
-            this._updater = new Comet.CometUpdater(this.components);
             this.cmsArchive.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -604,59 +596,6 @@
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "&View";
             // 
-            // debugToolStripMenuItem
-            // 
-            this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.buildToolStripMenuItem,
-            this.toolStripSeparator5,
-            this.RunAfterBuildtoolStripMenuItem1,
-            this.toolStripSeparator8,
-            this.loadEntryPointToolStripMenuItem,
-            this.loadInstallerScriptToolStripMenuItem});
-            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-            this.debugToolStripMenuItem.Text = "Debug";
-            // 
-            // buildToolStripMenuItem
-            // 
-            this.buildToolStripMenuItem.Name = "buildToolStripMenuItem";
-            this.buildToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.buildToolStripMenuItem.Text = "Build";
-            this.buildToolStripMenuItem.Click += new System.EventHandler(this.BuildToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(174, 6);
-            // 
-            // RunAfterBuildtoolStripMenuItem1
-            // 
-            this.RunAfterBuildtoolStripMenuItem1.Checked = true;
-            this.RunAfterBuildtoolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RunAfterBuildtoolStripMenuItem1.Name = "RunAfterBuildtoolStripMenuItem1";
-            this.RunAfterBuildtoolStripMenuItem1.Size = new System.Drawing.Size(177, 22);
-            this.RunAfterBuildtoolStripMenuItem1.Text = "Run after Build";
-            this.RunAfterBuildtoolStripMenuItem1.Click += new System.EventHandler(this.RunAfterBuildToolStripMenuItem1_Click);
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(174, 6);
-            // 
-            // loadEntryPointToolStripMenuItem
-            // 
-            this.loadEntryPointToolStripMenuItem.Name = "loadEntryPointToolStripMenuItem";
-            this.loadEntryPointToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.loadEntryPointToolStripMenuItem.Text = "Load Entry Point";
-            this.loadEntryPointToolStripMenuItem.Click += new System.EventHandler(this.LoadEntryPointToolStripMenuItem_Click);
-            // 
-            // loadInstallerScriptToolStripMenuItem
-            // 
-            this.loadInstallerScriptToolStripMenuItem.Name = "loadInstallerScriptToolStripMenuItem";
-            this.loadInstallerScriptToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.loadInstallerScriptToolStripMenuItem.Text = "Load Installer Script";
-            this.loadInstallerScriptToolStripMenuItem.Click += new System.EventHandler(this.LoadInstallerScriptToolStripMenuItem_Click);
-            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -891,7 +830,6 @@
             this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.viewToolStripMenuItem,
-            this.debugToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.MdiWindowListItem = this.fileToolStripMenuItem;
@@ -915,13 +853,6 @@
             this.TUpdate.Enabled = true;
             this.TUpdate.Interval = 3000;
             this.TUpdate.Tick += new System.EventHandler(this.TUpdate_Tick);
-            // 
-            // _updater
-            // 
-            this._updater.AutoUpdate = false;
-            this._updater.NotifyUpdateAvailable = true;
-            this._updater.NotifyUpdateReadyToInstall = true;
-            this._updater.PackagePath = null;
             // 
             // Main
             // 
@@ -1004,7 +935,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.TextBox tbSource;
-        private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ListView lvErrorList;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader6;
@@ -1012,12 +942,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ToolStripMenuItem buildToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.ToolStripMenuItem loadEntryPointToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem RunAfterBuildtoolStripMenuItem1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
-        private System.Windows.Forms.ToolStripMenuItem loadInstallerScriptToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip cmsArchive;
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;

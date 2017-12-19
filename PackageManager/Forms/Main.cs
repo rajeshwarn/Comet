@@ -4,8 +4,6 @@
 
     using System;
     using System.CodeDom;
-    using System.CodeDom.Compiler;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
@@ -16,12 +14,9 @@
 
     using Comet;
     using Comet.Compiler;
-    using Comet.Enums;
     using Comet.Events;
     using Comet.Managers;
     using Comet.Structure;
-
-    using PackageManager.Properties;
 
     #endregion
 
@@ -43,12 +38,21 @@
 
             ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Update.package";
 
-            loadInstallerScriptToolStripMenuItem.PerformClick();
-            _updater = new CometUpdater(ControlPanel.UpdatePackageUrl, Assembly.GetExecutingAssembly().Location);
-            _updater.AutoUpdate = false;
+            _updater = new CometUpdater(ControlPanel.UpdatePackageUrl, Assembly.GetExecutingAssembly().Location)
+                {
+                    AutoUpdate = false
+                };
+
             _updater.UpdaterStateChanged += CometUpdater_UpdaterStateChanged;
 
-           // cometUpdater1.CheckForUpdate();
+            // cometUpdater1.CheckForUpdate();
+            string _asm = Application.StartupPath + @"\Comet.dll";
+
+            string _source = ResourcesManager.ReadResource(_asm, "Comet.Installer.MainEntryPoint.cs");
+
+            tbSource.Text = _source;
+
+            var _names = ResourcesManager.GetResourceNames(_asm);
         }
 
         #endregion
@@ -91,39 +95,6 @@
             }
         }
 
-        /// <summary>Build Tool Strip Menu Item Click.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void BuildToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var _references = new List<string>
-                {
-                    "System.dll",
-                    "System.Windows.Forms.dll"
-                };
-
-            ResourcesManager.CreateSettingsResource(ControlPanel.ResourceSettingsPath);
-
-            var _resources = new List<string>
-                {
-                    ControlPanel.ResourceSettingsPath
-                };
-
-            string[] _sources;
-            if (false)
-            {
-                _sources = new[] { Resources.MainEntryPoint, Resources.Installer };
-            }
-            else
-            {
-                _sources = new[] { tbSource.Text, Resources.Installer };
-            }
-
-            CompilerResults _results = CodeDomCompiler.Build(_references, _sources, ControlPanel.InstallerPath, _resources);
-
-            ProcessCompilerResults(_results);
-        }
-
         /// <summary>The about tool strip menu item.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
@@ -158,7 +129,7 @@
         }
 
         /// <summary>
-        /// The updater state changed.
+        ///     The updater state changed.
         /// </summary>
         /// <param name="e">The event args.</param>
         private void CometUpdater_UpdaterStateChanged(UpdaterStateEventArgs e)
@@ -177,7 +148,7 @@
                 LUpdateStats.Text = _updateStatus;
             }
 
-            var _s = e.AssemblyLocation;
+            string _s = e.AssemblyLocation;
 
             if (label1.InvokeRequired)
             {
@@ -343,7 +314,7 @@
         {
             // CodeCompileUnit _mainEntryPointUnit = CompileUnits.CreateInstallerCode();
             // tbSource.Text = CodeDomCompiler.GenerateSource(_mainEntryPointUnit);
-            tbSource.Text = Resources.MainEntryPoint;
+            // tbSource.Text = Resources.MainEntryPoint;
         }
 
         /// <summary>The main load.</summary>
@@ -485,35 +456,6 @@
             }
         }
 
-        /// <summary>Process the compiler results.</summary>
-        /// <param name="compilerResults">The compiler results.</param>
-        private void ProcessCompilerResults(CompilerResults compilerResults)
-        {
-            lvErrorList.Items.Clear();
-
-            if (compilerResults.Errors.Count > 0)
-            {
-                foreach (CompilerError _compileError in compilerResults.Errors)
-                {
-                    ListViewItem _listViewItem = new ListViewItem(_compileError.ErrorNumber);
-
-                    _listViewItem.SubItems.Add(_compileError.ErrorText);
-                    _listViewItem.SubItems.Add(_compileError.FileName);
-                    _listViewItem.SubItems.Add(_compileError.Line.ToString());
-                    _listViewItem.SubItems.Add(_compileError.Column.ToString());
-
-                    lvErrorList.Items.Add(_listViewItem);
-                }
-            }
-            else
-            {
-                if (RunAfterBuildtoolStripMenuItem1.Checked)
-                {
-                    Process.Start(ControlPanel.InstallerPath);
-                }
-            }
-        }
-
         /// <summary>Recent History Item Tool Strip Menu Item Click.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
@@ -529,14 +471,6 @@
         private void ReportAProblemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("https://github.com/DarkByte7/Comet/issues");
-        }
-
-        /// <summary>Run after build Tool Strip Menu Item Click.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void RunAfterBuildToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            RunAfterBuildtoolStripMenuItem1.Checked = !RunAfterBuildtoolStripMenuItem1.Checked;
         }
 
         /// <summary>SaveAs Tool Strip Menu Item Click.</summary>

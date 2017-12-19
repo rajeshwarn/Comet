@@ -17,6 +17,8 @@
         private string _downloadFolder;
         private string _installFilesFolder;
         private string _installPath;
+        private string _productName;
+        private string _resourceSettingsPath;
         private string _workingFolder;
 
         #endregion
@@ -70,6 +72,22 @@
 
                 _installPath = value;
                 UpdateOptions(_installPath);
+            }
+        }
+
+        public string ProductName
+        {
+            get
+            {
+                return _productName;
+            }
+        }
+
+        public string ResourceSettingsPath
+        {
+            get
+            {
+                return _resourceSettingsPath;
             }
         }
 
@@ -130,9 +148,12 @@
         {
             _installPath = installPath;
 
-            _workingFolder = Path.GetTempPath() + Application.ProductName + @"\Updater\"; // TODO : Allow custom product name
+            _productName = Application.ProductName;
+            _workingFolder = Path.GetTempPath() + _productName + @"\Updater\";
             _downloadFolder = _workingFolder + @"Download\";
             _installFilesFolder = _workingFolder + @"InstallFiles\";
+
+            _resourceSettingsPath = _workingFolder + @"\\CometSettings.resources";
 
             Verify();
         }

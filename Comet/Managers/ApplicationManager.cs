@@ -9,6 +9,7 @@
     using System.Reflection;
     using System.Windows.Forms;
 
+    using Comet.Controls;
     using Comet.Structure;
 
     #endregion
@@ -38,7 +39,7 @@
         /// <returns>The <see cref="bool" />.</returns>
         public static bool CheckForUpdate(string assemblyPath, string url)
         {
-            Assembly _assembly = Assembly.LoadFile(assemblyPath);
+            Assembly _assembly = LoadAssembly(assemblyPath);
             return CheckForUpdate(_assembly, url);
         }
 
@@ -116,6 +117,28 @@
         public static string GetMainModuleFileName()
         {
             return Process.GetCurrentProcess().MainModule.FileName;
+        }
+
+        /// <summary>
+        ///     Loads the assembly file.
+        /// </summary>
+        /// <param name="file">The file path.</param>
+        /// <returns>
+        ///     <see cref="Assembly" />
+        /// </returns>
+        public static Assembly LoadAssembly(string file)
+        {
+            if (string.IsNullOrEmpty(file))
+            {
+                VisualExceptionDialog.Show(new NoNullAllowedException(StringManager.IsNullOrEmpty(file)));
+            }
+
+            if (!File.Exists(file))
+            {
+                VisualExceptionDialog.Show(new NoNullAllowedException(StringManager.FileNotFound(file)));
+            }
+
+            return Assembly.LoadFile(file);
         }
 
         /// <summary>Restarts the application.</summary>

@@ -94,7 +94,7 @@
             VisualExceptionDialog _exceptionDialog = new VisualExceptionDialog(exception)
                 {
                     Text = caption,
-                    StartPosition = FormStartPosition.CenterParent
+                    StartPosition = FormStartPosition.CenterScreen
                 };
 
             if (dialogWindow)

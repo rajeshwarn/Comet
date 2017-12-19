@@ -69,5 +69,87 @@ namespace Comet.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to namespace Comet
+        ///{
+        ///    #region Namespace
+        ///
+        ///    using System;
+        ///
+        ///    #endregion
+        ///
+        ///    internal class ConsoleManager
+        ///    {
+        ///        #region Events
+        ///
+        ///        /// &lt;summary&gt;Draws a line across the console.&lt;/summary&gt;
+        ///        /// &lt;param name=&quot;symbol&quot;&gt;The symbol to draw.&lt;/param&gt;
+        ///        public static void DrawLine(string symbol = &quot;-&quot;)
+        ///        {
+        ///            for (var i = 0; i &lt; Console.WindowWidth; i++)
+        ///            {
+        ///                Console.Write(symbol);
+        ///            }
+        ///        }
+        ///
+        ///        #endregion
+        ///   [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ConsoleManager {
+            get {
+                return ResourceManager.GetString("ConsoleManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to namespace Comet
+        ///{
+        ///    internal class Installer
+        ///    {
+        ///        public static void InstallData()
+        ///        {
+        ///            
+        ///        }
+        ///    }
+        ///}.
+        /// </summary>
+        internal static string Installer {
+            get {
+                return ResourceManager.GetString("Installer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to namespace Comet
+        ///{
+        ///    #region Namespace
+        ///
+        ///    using System;
+        ///    using System.Diagnostics;
+        ///    using System.Globalization;
+        ///    using System.IO;
+        ///    using System.Reflection;
+        ///    using System.Resources;
+        ///    using System.Text;
+        ///    using System.Windows.Forms;
+        ///
+        ///    #endregion
+        ///
+        ///    // TODO: Install app.
+        ///    // TODO: Restart app.
+        ///    public class CometInstaller
+        ///    {
+        ///        #region Properties
+        ///
+        ///        private static bool Installed { get; set; }
+        ///
+        ///        private static string InstallFiles { ge [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string MainEntryPoint {
+            get {
+                return ResourceManager.GetString("MainEntryPoint", resourceCulture);
+            }
+        }
     }
 }

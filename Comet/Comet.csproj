@@ -90,6 +90,9 @@
     <Compile Include="Events\Delegates.cs" />
     <Compile Include="Events\DownloaderEventArgs.cs" />
     <Compile Include="Events\UpdaterStateEventArgs.cs" />
+    <EmbeddedResource Include="Installer\MainEntryPoint.cs" />
+    <EmbeddedResource Include="Installer\ConsoleManager.cs" />
+    <EmbeddedResource Include="Installer\Installer.cs" />
     <Compile Include="Managers\Downloader.cs" />
     <Compile Include="Managers\LogManager.cs" />
     <Compile Include="Managers\ResourcesManager.cs" />

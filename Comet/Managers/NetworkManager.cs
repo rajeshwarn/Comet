@@ -9,10 +9,8 @@
     using System.Net.Cache;
     using System.Net.NetworkInformation;
     using System.Net.Sockets;
-    using System.Threading;
 
     using Comet.PInvoke;
-    using Comet.Structure;
 
     #endregion
 

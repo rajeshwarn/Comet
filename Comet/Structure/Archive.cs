@@ -439,7 +439,14 @@
         /// <param name="directory">The directory output.</param>
         public static void ExtractToDirectory(Archive archive, string directory)
         {
-            ZipFile.ExtractToDirectory(archive.GetFullPath, directory);
+            try
+            {
+                ZipFile.ExtractToDirectory(archive.GetFullPath, directory);
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         /// <summary>Extract file from the archive.</summary>

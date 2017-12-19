@@ -284,16 +284,16 @@
                     Deserialize(_xPackage);
 
                     // Bug: Gets thrown on slow connection.
-                    //if (!NetworkManager.SourceExists(url))
-                    //{
-                    //    throw new FileNotFoundException(StringManager.PackageNotFound(url));
-                    //}
-                    //else
-                    //{
-                    //    // Load from url
-                    //    XDocument _xPackage = XDocument.Load(url);
-                    //    Deserialize(_xPackage);
-                    //}
+                    // if (!NetworkManager.SourceExists(url))
+                    // {
+                    // throw new FileNotFoundException(StringManager.PackageNotFound(url));
+                    // }
+                    // else
+                    // {
+                    // // Load from url
+                    // XDocument _xPackage = XDocument.Load(url);
+                    // Deserialize(_xPackage);
+                    // }
                 }
                 else
                 {

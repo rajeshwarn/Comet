@@ -20,7 +20,7 @@
         public ChangeLog(InstallOptions installOptions, Package package, Version currentVersion)
         {
             InitializeComponent();
-            
+
             StringBuilder _versionInfo = new StringBuilder();
             _versionInfo.AppendLine(@"The version of " + package.Name + @" installed on this computer is: v" + currentVersion);
             _versionInfo.AppendLine(@"The latest version is: v" + package.Version);

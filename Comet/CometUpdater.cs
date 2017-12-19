@@ -5,8 +5,10 @@
     #region Namespace
 
     using System;
+    using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Drawing;
     using System.IO;
     using System.Reflection;
@@ -15,6 +17,7 @@
     using System.Threading;
     using System.Windows.Forms;
 
+    using Comet.Compiler;
     using Comet.Controls;
     using Comet.Enums;
     using Comet.Events;
@@ -573,6 +576,7 @@
         private void Cleanup(InstallOptions installOptions)
         {
             FileManager.DeleteDirectory(installOptions.DownloadFolder);
+            File.Delete(installOptions.ResourceSettingsPath);
 
             // FileManager.DeleteDirectory(installOptions.InstallFilesFolder);
             // FileManager.DeleteDirectory(installOptions.WorkingFolder);
@@ -581,30 +585,52 @@
         /// <summary>
         ///     Compile the installer.
         /// </summary>
-        /// <param name="installOptions"></param>
+        /// <param name="installOptions">The install options.</param>
         private void CompileInstaller(InstallOptions installOptions)
         {
             // TODO: Set resource install folder option and compile with it.
-
             // Ask to close and restart to update files with installer
-            // var _references = new List<string>
-            // {
-            // "System.dll",
-            // "System.Windows.Forms.dll"
-            // };
+            var _references = new List<string>
+                {
+                    "System.dll",
+                    "System.Windows.Forms.dll"
+                };
 
-            // ResourcesManager.CreateSettingsResource(ControlPanel.ResourceSettingsPath);
+            ResourcesManager.CreateSettingsResource(installOptions.ResourceSettingsPath, installOptions);
 
-            // var _resources = new List<string>
-            // {
-            // ControlPanel.ResourceSettingsPath
-            // };
+            var _resources = new List<string>
+                {
+                    installOptions.ResourceSettingsPath
+                };
 
-            // string[] _sources;
-            // _sources = new[] { Resources.MainEntryPoint, Resources.Installer };
+            var _sources = new[] { Resources.MainEntryPoint, Resources.ConsoleManager, Resources.Installer };
 
-            // CompilerResults _results = CodeDomCompiler.Build(_references, _sources, ControlPanel.InstallerPath, _resources);
-            Cleanup(installOptions);
+            string _updaterFileName = Application.StartupPath + @"\\Updater.exe";
+
+            CompilerResults _results = CodeDomCompiler.Build(_references, _sources, _updaterFileName, _resources);
+
+            var lvErrorList = new List<ListViewItem>();
+
+            if (_results.Errors.Count > 0)
+            {
+                foreach (CompilerError _compileError in _results.Errors)
+                {
+                    ListViewItem _listViewItem = new ListViewItem(_compileError.ErrorNumber);
+
+                    _listViewItem.SubItems.Add(_compileError.ErrorText);
+                    _listViewItem.SubItems.Add(_compileError.FileName);
+                    _listViewItem.SubItems.Add(_compileError.Line.ToString());
+                    _listViewItem.SubItems.Add(_compileError.Column.ToString());
+
+                    lvErrorList.Add(_listViewItem);
+                }
+            }
+            else
+            {
+                Process.Start(_updaterFileName);
+            }
+
+            // Cleanup(installOptions); // TODO : Move method to updater.
         }
 
         /// <summary>Verify the connection.</summary>

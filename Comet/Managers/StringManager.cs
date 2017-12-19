@@ -19,7 +19,7 @@
         public static string FileNotFound(string path)
         {
             StringBuilder _fileNotFound = new StringBuilder();
-            _fileNotFound.AppendLine("Unable to locate the file using the following path." + path);
+            _fileNotFound.AppendLine("Unable to locate the file using the following path. " + path);
             return _fileNotFound.ToString();
         }
 
@@ -46,7 +46,7 @@
         public static string IsNullOrEmpty(string text)
         {
             StringBuilder _isNullOrEmpty = new StringBuilder();
-            _isNullOrEmpty.AppendLine("The string is null or empty." + nameof(text));
+            _isNullOrEmpty.AppendLine("The string is null or empty. " + nameof(text));
             return _isNullOrEmpty.ToString();
         }
 

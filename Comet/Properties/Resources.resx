@@ -121,4 +121,13 @@
   <data name="Comet" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\comet.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ConsoleManager" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\installer\consolemanager.cs;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Installer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\installer\installer.cs;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="MainEntryPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\installer\mainentrypoint.cs;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

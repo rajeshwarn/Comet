@@ -37,21 +37,15 @@
 
         #region Events
 
-        /// <summary>Draws a line across the console.</summary>
-        /// <param name="symbol">The symbol to draw.</param>
-        private static void DrawLine(string symbol = "-")
-        {
-            for (var i = 0; i < Console.WindowWidth; i++)
-            {
-                Console.Write(symbol);
-            }
-        }
+
 
         /// <summary>Install the data.</summary>
         private static void InstallData()
         {
             Console.WriteLine(@"Installing...");
-            DrawLine();
+            ConsoleManager.DrawLine();
+            
+            Installer.InstallData();
 
             // Verify process closed before data overwrite.
             // File.Copy(InstallFiles, InstallFolder, true);
@@ -88,17 +82,17 @@
 
             try
             {
-                DrawLine();
+                ConsoleManager.DrawLine();
                 Console.WriteLine(@"Loading settings...");
-                DrawLine();
+                ConsoleManager.DrawLine();
 
                 Logging = LoadInstallerSetting<bool>("Logging");
                 InstallFolder = LoadInstallerSetting<string>("InstallFolder");
                 ProductName = LoadInstallerSetting<string>("ProductName");
 
-                DrawLine();
+                ConsoleManager.DrawLine();
                 Console.WriteLine(@"Initializing");
-                DrawLine();
+                ConsoleManager.DrawLine();
 
                 WorkingFolder = Path.GetTempPath() + ProductName + @"\Updater\";
                 Console.WriteLine(@"Working Folder: " + WorkingFolder);
@@ -106,7 +100,7 @@
                 InstallFiles = WorkingFolder + @"InstallFiles\";
                 Console.WriteLine(@"Install Files: " + InstallFiles);
 
-                DrawLine();
+                ConsoleManager.DrawLine();
             }
             catch (Exception e)
             {
@@ -119,7 +113,7 @@
         {
             Console.Title = @"Comet";
 
-            DrawLine();
+            ConsoleManager.DrawLine();
             Console.WriteLine(@"Comet Installer");
 
             try

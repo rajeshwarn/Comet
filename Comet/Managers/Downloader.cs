@@ -304,9 +304,9 @@
                 _backgroundWorker.ReportProgress(0, new object[] { -1, -1, string.Empty, ProgressStatus.Success, null });
             }
         }
-       
+
         /// <summary>
-        /// The background worker progress changed.
+        ///     The background worker progress changed.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event args.</param>
@@ -322,8 +322,8 @@
             {
                 ProgressChanged(new DownloaderEventArgs((int)_percentDone[0], (int)_unWeightPercent[1], (string)_extraStatus[2], (ProgressStatus)_progressStatus[3], _userStateData[4]));
             }
-            
-           // _progressPercentage = e.ProgressPercentage;
+
+            // _progressPercentage = e.ProgressPercentage;
         }
 
         private void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
