@@ -6,7 +6,7 @@
 
     #endregion
 
-    internal class ConsoleManager
+    public class ConsoleManager
     {
         #region Events
 

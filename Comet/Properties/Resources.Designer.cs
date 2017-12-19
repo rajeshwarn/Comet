@@ -105,11 +105,13 @@ namespace Comet.Properties {
         /// <summary>
         ///   Looks up a localized string similar to namespace Comet
         ///{
+        ///    using System;
+        ///
         ///    internal class Installer
         ///    {
         ///        public static void InstallData()
         ///        {
-        ///            
+        ///            Console.WriteLine(&quot;... TODO!&quot;);
         ///        }
         ///    }
         ///}.
@@ -149,6 +151,34 @@ namespace Comet.Properties {
         internal static string MainEntryPoint {
             get {
                 return ResourceManager.GetString("MainEntryPoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to namespace Comet.Installer
+        ///{
+        ///    #region Namespace
+        ///
+        ///    using System;
+        ///    using System.Globalization;
+        ///    using System.Reflection;
+        ///    using System.Resources;
+        ///    using System.Text;
+        ///
+        ///    #endregion
+        ///
+        ///    internal class ResourceSettings
+        ///    {
+        ///        #region Events
+        ///
+        ///        /// &lt;summary&gt;Loads the installer setting from the resource.&lt;/summary&gt;
+        ///        /// &lt;typeparam name=&quot;T&quot;&gt;The type.&lt;/typeparam&gt;
+        ///        /// &lt;param name=&quot;name&quot;&gt;The name.&lt;/param&gt;
+        ///        /// &lt;param name=&quot;ignoreCase&quot;&gt;Indicates w [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ResourceSettings {
+            get {
+                return ResourceManager.GetString("ResourceSettings", resourceCulture);
             }
         }
     }

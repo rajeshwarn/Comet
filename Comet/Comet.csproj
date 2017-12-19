@@ -84,6 +84,9 @@
     <Compile Include="Controls\Separator.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\VisualCompileErrorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\VisualExceptionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +96,7 @@
     <EmbeddedResource Include="Installer\MainEntryPoint.cs" />
     <EmbeddedResource Include="Installer\ConsoleManager.cs" />
     <EmbeddedResource Include="Installer\Installer.cs" />
+    <EmbeddedResource Include="Installer\ResourceSettings.cs" />
     <Compile Include="Managers\Downloader.cs" />
     <Compile Include="Managers\LogManager.cs" />
     <Compile Include="Managers\ResourcesManager.cs" />

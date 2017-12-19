@@ -49,10 +49,7 @@
             string _asm = Application.StartupPath + @"\Comet.dll";
 
             string _source = ResourcesManager.ReadResource(_asm, "Comet.Installer.MainEntryPoint.cs");
-
             tbSource.Text = _source;
-
-            var _names = ResourcesManager.GetResourceNames(_asm);
         }
 
         #endregion
@@ -296,25 +293,6 @@
 
             ControlPanel.ArchivePath = _openFileDialog.FileName;
             UpdateArchive(_openFileDialog.FileName);
-        }
-
-        /// <summary>Load entry point Tool Strip Menu Item Click.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void LoadEntryPointToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CodeCompileUnit _mainEntryPointUnit = CompileUnits.CreateMainEntryPoint();
-            tbSource.Text = CodeDomCompiler.GenerateSource(_mainEntryPointUnit);
-        }
-
-        /// <summary>Load installer Tool Strip Menu Item Click.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void LoadInstallerScriptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // CodeCompileUnit _mainEntryPointUnit = CompileUnits.CreateInstallerCode();
-            // tbSource.Text = CodeDomCompiler.GenerateSource(_mainEntryPointUnit);
-            // tbSource.Text = Resources.MainEntryPoint;
         }
 
         /// <summary>The main load.</summary>

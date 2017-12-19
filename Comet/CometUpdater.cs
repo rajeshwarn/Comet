@@ -588,7 +588,6 @@
         /// <param name="installOptions">The install options.</param>
         private void CompileInstaller(InstallOptions installOptions)
         {
-            // TODO: Set resource install folder option and compile with it.
             // Ask to close and restart to update files with installer
             var _references = new List<string>
                 {
@@ -603,27 +602,15 @@
                     installOptions.ResourceSettingsPath
                 };
 
-            var _sources = new[] { Resources.MainEntryPoint, Resources.ConsoleManager, Resources.Installer };
+            var _sources = new[] { Resources.MainEntryPoint, Resources.ConsoleManager, Resources.Installer, Resources.ResourceSettings };
 
             string _updaterFileName = Application.StartupPath + @"\\Updater.exe";
 
             CompilerResults _results = CodeDomCompiler.Build(_references, _sources, _updaterFileName, _resources);
 
-            var lvErrorList = new List<ListViewItem>();
-
             if (_results.Errors.Count > 0)
             {
-                foreach (CompilerError _compileError in _results.Errors)
-                {
-                    ListViewItem _listViewItem = new ListViewItem(_compileError.ErrorNumber);
-
-                    _listViewItem.SubItems.Add(_compileError.ErrorText);
-                    _listViewItem.SubItems.Add(_compileError.FileName);
-                    _listViewItem.SubItems.Add(_compileError.Line.ToString());
-                    _listViewItem.SubItems.Add(_compileError.Column.ToString());
-
-                    lvErrorList.Add(_listViewItem);
-                }
+                VisualCompileErrorDialog.Show(_results);
             }
             else
             {
@@ -656,7 +643,7 @@
         {
             _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion)
                 {
-                    StartPosition = FormStartPosition.CenterParent,
+                    StartPosition = FormStartPosition.CenterScreen,
                     Text = Application.ProductName + @" Update"
                 };
         }
@@ -668,7 +655,6 @@
         private void InstallUpdate(InstallOptions installOptions)
         {
             Archive.ExtractToDirectory(new Archive(installOptions.DownloadedFile), installOptions.InstallFilesFolder);
-
             CompileInstaller(_installOptions);
         }
 
