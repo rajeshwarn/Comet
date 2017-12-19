@@ -108,10 +108,31 @@
                 Console.WriteLine(@"Install Files: " + InstallFiles);
 
                 ConsoleManager.DrawLine();
+
+                _downloadFolder = _workingFolder + @"Download\";
+                _installFilesFolder = _workingFolder + @"InstallFiles\";
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+            }
+        }
+
+        private string _installFilesFolder;
+        public string InstallFilesFolder
+        {
+            get
+            {
+                return _installFilesFolder;
+            }
+        }
+
+        private string _downloadFolder;
+        public string DownloadFolder
+        {
+            get
+            {
+                return _downloadFolder;
             }
         }
 

@@ -152,7 +152,6 @@
             _workingFolder = Path.GetTempPath() + _productName + @"\Updater\";
             _downloadFolder = _workingFolder + @"Download\";
             _installFilesFolder = _workingFolder + @"InstallFiles\";
-
             _resourceSettingsPath = _workingFolder + @"\\CometSettings.resources";
 
             Verify();

@@ -2,12 +2,14 @@
 {
     #region Namespace
 
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Resources;
 
+    using Comet.Controls;
     using Comet.Structure;
 
     #endregion
@@ -55,13 +57,29 @@
         {
             Assembly _assembly = ApplicationManager.LoadAssembly(file);
             string result;
-            using (Stream stream = _assembly.GetManifestResourceStream(resource))
-            using (StreamReader reader = new StreamReader(stream))
+
+            try
             {
-                result = reader.ReadToEnd();
+                using (Stream stream = _assembly.GetManifestResourceStream(resource))
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    result = reader.ReadToEnd();
+                }
+
+                return result;
+            }
+            catch (ArgumentNullException e)
+            {
+                // Value cannot be null.Parameter name: stream'
+                // The embedded resource cannot be found. Set type to 'Embedded Resource'.
+                VisualExceptionDialog.Show(e);
+            }
+            catch (Exception e)
+            {
+                VisualExceptionDialog.Show(e);
             }
 
-            return result;
+            return null;
         }
 
         #endregion

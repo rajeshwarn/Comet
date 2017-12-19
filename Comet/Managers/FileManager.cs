@@ -55,7 +55,7 @@
         }
 
         /// <summary>Delete a directory.</summary>
-        /// <param name="directory">The folder directory.</param>
+        /// <param name="directory">The directory path.</param>
         public static void DeleteDirectory(string directory)
         {
             var _files = Directory.GetFiles(directory);

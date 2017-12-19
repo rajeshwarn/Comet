@@ -571,17 +571,6 @@
             }
         }
 
-        /// <summary>Cleanup the temporary install files.</summary>
-        /// <param name="installOptions">The install Options.</param>
-        private void Cleanup(InstallOptions installOptions)
-        {
-            FileManager.DeleteDirectory(installOptions.DownloadFolder);
-            File.Delete(installOptions.ResourceSettingsPath);
-
-            // FileManager.DeleteDirectory(installOptions.InstallFilesFolder);
-            // FileManager.DeleteDirectory(installOptions.WorkingFolder);
-        }
-
         /// <summary>
         ///     Compile the installer.
         /// </summary>
@@ -616,8 +605,6 @@
             {
                 Process.Start(_updaterFileName);
             }
-
-            // Cleanup(installOptions); // TODO : Move method to updater.
         }
 
         /// <summary>Verify the connection.</summary>

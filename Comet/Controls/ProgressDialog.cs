@@ -28,11 +28,8 @@
         #region Variables
 
         private Button _cancelButton;
-
         private ChangeLog _changeLog;
-
         private Label _comet;
-
         private Download _downData;
         private Package _package;
         private Separator _separator;
@@ -140,7 +137,7 @@
                     Text = @"Cancel",
                     Size = _buttonSize,
                     Location = new Point(Padding.Right + 356, 350),
-                    TabIndex = 0
+                    TabIndex = 1
                 };
 
             _cancelButton.Click += CancelButtonClick;

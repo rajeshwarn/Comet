@@ -3,7 +3,6 @@
     #region Namespace
 
     using System;
-    using System.CodeDom;
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
@@ -13,7 +12,6 @@
     using System.Xml.Linq;
 
     using Comet;
-    using Comet.Compiler;
     using Comet.Events;
     using Comet.Managers;
     using Comet.Structure;
