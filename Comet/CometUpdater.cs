@@ -568,6 +568,20 @@
             }
         }
 
+        /// <summary>Cleanup the temporary install files.</summary>
+        /// <param name="installOptions">The install Options.</param>
+        private void Cleanup(InstallOptions installOptions)
+        {
+            FileManager.DeleteDirectory(installOptions.DownloadFolder);
+
+            // FileManager.DeleteDirectory(installOptions.InstallFilesFolder);
+            // FileManager.DeleteDirectory(installOptions.WorkingFolder);
+        }
+
+        /// <summary>
+        ///     Compile the installer.
+        /// </summary>
+        /// <param name="installOptions"></param>
         private void CompileInstaller(InstallOptions installOptions)
         {
             // TODO: Set resource install folder option and compile with it.
@@ -590,6 +604,7 @@
             // _sources = new[] { Resources.MainEntryPoint, Resources.Installer };
 
             // CompilerResults _results = CodeDomCompiler.Build(_references, _sources, ControlPanel.InstallerPath, _resources);
+            Cleanup(installOptions);
         }
 
         /// <summary>Verify the connection.</summary>
