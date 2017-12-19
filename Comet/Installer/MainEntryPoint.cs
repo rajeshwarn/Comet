@@ -7,8 +7,9 @@
 
     #endregion
 
-    // TODO: Install app.
-    // TODO: Restart app.
+    /// <summary>
+    ///     The comet installer.
+    /// </summary>
     public class CometInstaller
     {
         #region Events
