@@ -4,6 +4,7 @@
 
     using System;
     using System.Reflection;
+    using System.Text;
 
     using Comet.Enums;
     using Comet.Managers;
@@ -59,6 +60,44 @@
 
         /// <summary>Gets the assembly version.</summary>
         public Version Version { get; }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        ///     Override the ToString().
+        /// </summary>
+        /// <returns>
+        ///     <see cref="string" />
+        /// </returns>
+        public override string ToString()
+        {
+            StringBuilder _updaterStateEventArgsString = new StringBuilder();
+            _updaterStateEventArgsString.AppendLine("Assembly: " + Assembly);
+            _updaterStateEventArgsString.AppendLine("Location: " + AssemblyLocation);
+            _updaterStateEventArgsString.AppendLine("Package Path: " + PackagePath);
+            _updaterStateEventArgsString.AppendLine("State: " + State);
+            _updaterStateEventArgsString.AppendLine("Update Available: " + UpdateAvailable);
+            _updaterStateEventArgsString.AppendLine("Version: " + Version);
+            _updaterStateEventArgsString.AppendLine("Install options:");
+            _updaterStateEventArgsString.AppendLine("Download Folder: " + InstallOptions.DownloadFolder);
+            _updaterStateEventArgsString.AppendLine("Downloaded File: " + InstallOptions.DownloadedFile);
+            _updaterStateEventArgsString.AppendLine("Executable Path: " + InstallOptions.ExecutablePath);
+            _updaterStateEventArgsString.AppendLine("Install Directory: " + InstallOptions.InstallDirectory);
+            _updaterStateEventArgsString.AppendLine("Install Files Folder: " + InstallOptions.InstallFilesFolder);
+            _updaterStateEventArgsString.AppendLine("Product Name: " + InstallOptions.ProductName);
+            _updaterStateEventArgsString.AppendLine("Restart After Install: " + InstallOptions.RestartAfterInstall);
+            _updaterStateEventArgsString.AppendLine("Working Folder: " + InstallOptions.WorkingFolder);
+            _updaterStateEventArgsString.AppendLine("Package:");
+            _updaterStateEventArgsString.AppendLine("ChangeLog: " + Package.ChangeLog);
+            _updaterStateEventArgsString.AppendLine("Download: " + Package.Download);
+            _updaterStateEventArgsString.AppendLine("Filename: " + Package.Filename);
+            _updaterStateEventArgsString.AppendLine("Name: " + Package.Name);
+            _updaterStateEventArgsString.AppendLine("Release: " + Package.Release);
+            _updaterStateEventArgsString.AppendLine("Version: " + Package.Version);
+            return _updaterStateEventArgsString.ToString();
+        }
 
         #endregion
     }

@@ -50,7 +50,7 @@
             tbSource.Text = _source;
 
             // var _name = BetterDownloader.TryGetName(ControlPanel.UpdatePackageUrl);
-            long _name = BetterDownloader.TryGetFileSize(ControlPanel.UpdatePackageUrl);
+            // long _name = BetterDownloader.TryGetFileSize(ControlPanel.UpdatePackageUrl);
 
             Logger.Log(new Logger("Logs", ".xml", "Log", Logger.WriteMode.XML), $"Started {Application.ProductName}");
         }
@@ -148,7 +148,7 @@
                 LUpdateStats.Text = _updateStatus;
             }
 
-            string _s = e.AssemblyLocation;
+            string _s = e.ToString();
 
             if (label1.InvokeRequired)
             {
