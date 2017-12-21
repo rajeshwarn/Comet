@@ -15,8 +15,9 @@
         #region Variables
 
         private string _downloadFolder;
+        private string _executablePath;
+        private string _installDirectory;
         private string _installFilesFolder;
-        private string _installPath;
         private string _productName;
         private string _resourceSettingsPath;
         private string _workingFolder;
@@ -28,10 +29,10 @@
         /// <summary>
         ///     Initializes a new instance of the <see cref="InstallOptions" /> class.
         /// </summary>
-        /// <param name="installFolder">The install folder.</param>
-        public InstallOptions(string installFolder)
+        /// <param name="executablePath">The executable path.</param>
+        public InstallOptions(string executablePath)
         {
-            UpdateOptions(installFolder);
+            UpdateOptions(executablePath);
         }
 
         #endregion
@@ -48,30 +49,38 @@
             }
         }
 
+        public string ExecutablePath
+        {
+            get
+            {
+                return _executablePath;
+            }
+
+            set
+            {
+                if (_executablePath == value)
+                {
+                    return;
+                }
+
+                _executablePath = value;
+                UpdateOptions(_executablePath);
+            }
+        }
+
+        public string InstallDirectory
+        {
+            get
+            {
+                return _installDirectory;
+            }
+        }
+
         public string InstallFilesFolder
         {
             get
             {
                 return _installFilesFolder;
-            }
-        }
-
-        public string InstallPath
-        {
-            get
-            {
-                return _installPath;
-            }
-
-            set
-            {
-                if (_installPath == value)
-                {
-                    return;
-                }
-
-                _installPath = value;
-                UpdateOptions(_installPath);
             }
         }
 
@@ -90,6 +99,8 @@
                 return _resourceSettingsPath;
             }
         }
+
+        public bool RestartAfterInstall { get; set; }
 
         public string WorkingFolder
         {
@@ -132,19 +143,28 @@
         /// </summary>
         public void VerifyInstall()
         {
-            if (!Directory.Exists(_installPath))
+            if (!Directory.Exists(_executablePath))
             {
-                VisualExceptionDialog.Show(new DirectoryNotFoundException("The install path cannot be found. " + _installPath));
+                VisualExceptionDialog.Show(new DirectoryNotFoundException("The install path cannot be found. " + _executablePath));
             }
         }
 
         /// <summary>
         ///     Updates the options.
         /// </summary>
-        /// <param name="installPath">The install path.</param>
-        private void UpdateOptions(string installPath)
+        /// <param name="executablePath">The executable path.</param>
+        private void UpdateOptions(string executablePath)
         {
-            _installPath = installPath;
+            _executablePath = executablePath;
+
+            if (string.IsNullOrEmpty(_executablePath))
+            {
+                _installDirectory = string.Empty;
+            }
+            else
+            {
+                _installDirectory = Path.GetDirectoryName(_executablePath) + @"\";
+            }
 
             _productName = Application.ProductName;
             _workingFolder = Path.GetTempPath() + _productName + @"\Updater\";

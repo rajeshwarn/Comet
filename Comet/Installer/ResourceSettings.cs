@@ -7,6 +7,7 @@
     using System.IO;
     using System.Reflection;
     using System.Resources;
+    using System.Runtime.InteropServices;
     using System.Text;
     using System.Windows.Forms;
 
@@ -17,10 +18,12 @@
         #region Variables
 
         private string _installFiles;
-        private string _installFolder;
+        private string _installDirectory;
+        private string _executablePath;
         private bool _logging;
         private string _productName;
         private string _workingFolder;
+        private bool _restartAfterInstall;
 
         #endregion
 
@@ -37,6 +40,13 @@
         #endregion
 
         #region Properties
+        public string ExecutablePath
+        {
+            get
+            {
+                return _executablePath;
+            }
+        }
 
         public string InstallFiles
         {
@@ -46,11 +56,19 @@
             }
         }
 
-        public string InstallFolder
+        public string InstallDirectory
         {
             get
             {
-                return _installFolder;
+                return _installDirectory;
+            }
+        }
+
+        public bool RestartAfterInstall
+        {
+            get
+            {
+                return _restartAfterInstall;
             }
         }
 
@@ -94,8 +112,10 @@
                 ConsoleManager.DrawLine();
 
                 _logging = LoadInstallerSetting<bool>("Logging");
-                _installFolder = LoadInstallerSetting<string>("InstallFolder");
+                _executablePath = LoadInstallerSetting<string>("ExecutablePath");
+                _installDirectory = LoadInstallerSetting<string>("InstallDirectory");
                 _productName = LoadInstallerSetting<string>("ProductName");
+                _restartAfterInstall = LoadInstallerSetting<bool>("RestartAfterInstall");
 
                 ConsoleManager.DrawLine();
                 Console.WriteLine(@"Initializing");
@@ -106,6 +126,8 @@
 
                 _installFiles = WorkingFolder + @"InstallFiles\";
                 Console.WriteLine(@"Install Files: " + InstallFiles);
+
+                Console.WriteLine(@"Restart after install: " + _restartAfterInstall);
 
                 ConsoleManager.DrawLine();
 

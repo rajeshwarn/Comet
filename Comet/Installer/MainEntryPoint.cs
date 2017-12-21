@@ -29,6 +29,15 @@
             {
                 _resourceSettings = new ResourceSettings();
                 Installer.InstallData(_resourceSettings);
+                
+                if (_resourceSettings.RestartAfterInstall)
+                {
+                    StartExecutable(_resourceSettings.ExecutablePath);
+                }
+                else
+                {
+                    // TODO: Exit
+                }
             }
             catch (Exception e)
             {
@@ -41,7 +50,7 @@
         /// <summary>Start the executable application.</summary>
         /// <param name="filename">The filename.</param>
         /// <param name="processWindowStyle">The process window style.</param>
-        private static void StartExecutable(string filename, ProcessWindowStyle processWindowStyle)
+        private static void StartExecutable(string filename, ProcessWindowStyle processWindowStyle = ProcessWindowStyle.Normal)
         {
             Process _process = new Process
                 {
@@ -53,7 +62,7 @@
                 };
 
             Console.WriteLine(@"Starting process ({0}): {1}", processWindowStyle.ToString(), filename);
-            Console.WriteLine(@"-----------------------------");
+            ConsoleManager.DrawLine();
             _process.Start();
         }
 

@@ -63,22 +63,22 @@
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
         /// <param name="packagePath">The package path.</param>
-        /// <param name="installPath">The install Path.</param>
-        public CometUpdater(string packagePath, string installPath) : this()
+        /// <param name="executablePath">The executable path.</param>
+        public CometUpdater(string packagePath, string executablePath) : this()
         {
             _packagePath = packagePath;
-            _installOptions = new InstallOptions(installPath);
+            _installOptions = new InstallOptions(executablePath);
         }
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
         /// <param name="packagePath">The package path.</param>
-        /// <param name="installPath">The install Path.</param>
+        /// <param name="executablePath">The executable path.</param>
         /// <param name="autoUpdate">Auto update the application.</param>
-        public CometUpdater(string packagePath, string installPath, bool autoUpdate) : this()
+        public CometUpdater(string packagePath, string executablePath, bool autoUpdate) : this()
         {
             _autoUpdate = autoUpdate;
             _packagePath = packagePath;
-            _installOptions = new InstallOptions(installPath);
+            _installOptions = new InstallOptions(executablePath);
         }
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
@@ -184,6 +184,28 @@
             }
         }
 
+        /// <summary>Gets the executable directory.</summary>
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public string ExecutableDirectory
+        {
+            get
+            {
+                return _installOptions.InstallDirectory;
+            }
+        }
+
+        /// <summary>Gets the executable path.</summary>
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public string ExecutablePath
+        {
+            get
+            {
+                return _installOptions.ExecutablePath;
+            }
+        }
+
         /// <summary>Gets the change log.</summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -264,17 +286,6 @@
             get
             {
                 return _installOptions;
-            }
-        }
-
-        /// <summary>Gets the install path.</summary>
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        public string InstallPath
-        {
-            get
-            {
-                return _installOptions.InstallPath;
             }
         }
 

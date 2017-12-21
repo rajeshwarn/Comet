@@ -29,7 +29,9 @@
             {
                 _resourceWriter.AddResource("Logging", false); // TODO: On true it won't display the contents like ExtractFolder in the console.
                 _resourceWriter.AddResource("ProductName", installOptions.ProductName);
-                _resourceWriter.AddResource("InstallFolder", installOptions.InstallPath);
+                _resourceWriter.AddResource("ExecutablePath", installOptions.ExecutablePath);
+                _resourceWriter.AddResource("InstallDirectory", installOptions.InstallDirectory);
+                _resourceWriter.AddResource("RestartAfterInstall", installOptions.RestartAfterInstall);
 
                 _resourceWriter.Generate();
                 _resourceWriter.Close();
@@ -42,6 +44,7 @@
         public static List<string> GetResourceNames(string file)
         {
             Assembly _assembly = ApplicationManager.LoadAssembly(file);
+
             return _assembly.GetManifestResourceNames().ToList();
         }
 
@@ -61,7 +64,8 @@
             try
             {
                 using (Stream stream = _assembly.GetManifestResourceStream(resource))
-                using (StreamReader reader = new StreamReader(stream))
+                using
+                    (StreamReader reader = new StreamReader(stream))
                 {
                     result = reader.ReadToEnd();
                 }
