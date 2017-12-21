@@ -90,7 +90,7 @@
             _updaterStateEventArgsString.AppendLine("Restart After Install: " + InstallOptions.RestartAfterInstall);
             _updaterStateEventArgsString.AppendLine("Working Folder: " + InstallOptions.WorkingFolder);
             _updaterStateEventArgsString.AppendLine("Package:");
-            _updaterStateEventArgsString.AppendLine("ChangeLog: " + Package.ChangeLog);
+            _updaterStateEventArgsString.AppendLine("Change Log: " + Package.ChangeLog);
             _updaterStateEventArgsString.AppendLine("Download: " + Package.Download);
             _updaterStateEventArgsString.AppendLine("Filename: " + Package.Filename);
             _updaterStateEventArgsString.AppendLine("Name: " + Package.Name);

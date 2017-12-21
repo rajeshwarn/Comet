@@ -345,6 +345,7 @@
                         Controls.Remove(_downloadPanel);
                         Controls.Remove(_installButton);
                         InstallUpdate();
+                        Close();
                         break;
                     }
 
