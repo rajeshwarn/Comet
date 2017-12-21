@@ -98,7 +98,8 @@
     <EmbeddedResource Include="Installer\Installer.cs" />
     <EmbeddedResource Include="Installer\ResourceSettings.cs" />
     <Compile Include="Managers\Downloader.cs" />
-    <Compile Include="Managers\LogManager.cs" />
+    <Compile Include="Structure\BetterDownloader.cs" />
+    <Compile Include="Structure\Logger.cs" />
     <Compile Include="Managers\ResourcesManager.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -132,11 +133,11 @@
     <Compile Include="UserControls\ChangeLog.Designer.cs">
       <DependentUpon>ChangeLog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Download.cs">
+    <Compile Include="UserControls\DownloadPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\Download.Designer.cs">
-      <DependentUpon>Download.cs</DependentUpon>
+    <Compile Include="UserControls\DownloadPanel.Designer.cs">
+      <DependentUpon>DownloadPanel.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -145,8 +146,8 @@
     <EmbeddedResource Include="UserControls\ChangeLog.resx">
       <DependentUpon>ChangeLog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Download.resx">
-      <DependentUpon>Download.cs</DependentUpon>
+    <EmbeddedResource Include="UserControls\DownloadPanel.resx">
+      <DependentUpon>DownloadPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

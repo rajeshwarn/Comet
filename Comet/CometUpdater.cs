@@ -5,19 +5,14 @@
     #region Namespace
 
     using System;
-    using System.CodeDom.Compiler;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Drawing;
     using System.IO;
     using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Text;
-    using System.Threading;
     using System.Windows.Forms;
 
-    using Comet.Compiler;
     using Comet.Controls;
     using Comet.Enums;
     using Comet.Events;
@@ -27,7 +22,7 @@
 
     #endregion
 
-    // TODO: Catch timeout to package connection exception.
+    // TODO: Handle timeout to package connection exception.
     #endregion
 
     /// <summary>The <see cref="CometUpdater" />.</summary>
@@ -44,8 +39,7 @@
 
         private bool _autoUpdate;
 
-        private BackgroundWorker _bw;
-        private Downloader _downloader;
+        private BackgroundWorker _backgroundUpdateChecker;
         private InstallOptions _installOptions;
         private bool _notifyUpdateAvailable;
         private bool _notifyUpdateReadyToInstall;
@@ -95,24 +89,18 @@
             _state = UpdaterState.NotChecked;
             _installOptions = new InstallOptions(string.Empty);
 
-            InitializeProgressDialog();
+            _backgroundUpdateChecker = new BackgroundWorker
+                {
+                    WorkerSupportsCancellation = true
+                };
 
-            _bw = new BackgroundWorker();
-            _bw.WorkerSupportsCancellation = true;
-            _bw.DoWork += BW_DoWork;
+            _backgroundUpdateChecker.DoWork += BackgroundUpdateCheckerDoWork;
+            _backgroundUpdateChecker.RunWorkerCompleted += BackgroundUpdateChecker_Completed;
         }
 
         [Category("UpdaterState")]
         [Description("The update check event.")]
         public event Delegates.UpdaterStateChangedEventHandler CheckingForUpdate;
-
-        [Category("UpdaterState")]
-        [Description("The download event.")]
-        public event Delegates.UpdaterStateChangedEventHandler DownloadingUpdate;
-
-        [Category("UpdaterState")]
-        [Description("The updater state change event.")]
-        public event Delegates.UpdaterStateChangedEventHandler UpdaterStateChanged;
 
         #endregion
 
@@ -147,6 +135,30 @@
             }
         }
 
+        /// <summary>
+        ///     verify the connection state.
+        /// </summary>
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public bool Connected
+        {
+            get
+            {
+                bool _connected;
+
+                if ((_state == UpdaterState.NotChecked) | (_state == UpdaterState.NoConnection) | (_state == UpdaterState.PackageNotFound) | (_state == UpdaterState.PackageDataNotFound))
+                {
+                    _connected = false;
+                }
+                else
+                {
+                    _connected = true;
+                }
+
+                return _connected;
+            }
+        }
+
         /// <summary>Gets the current version.</summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -176,7 +188,7 @@
         {
             get
             {
-                if (ConnectionSynchronized())
+                if (Connected)
                 {
                     if (Package.ChangeLog != null)
                     {
@@ -212,7 +224,7 @@
         {
             get
             {
-                if (ConnectionSynchronized())
+                if (Connected)
                 {
                     if (Package.Version != null)
                     {
@@ -306,7 +318,7 @@
         {
             get
             {
-                if (ConnectionSynchronized())
+                if (Connected)
                 {
                     if (!string.IsNullOrWhiteSpace(_packagePath))
                     {
@@ -397,307 +409,113 @@
         /// <summary>Checks the application for updates.</summary>
         public void CheckForUpdate()
         {
-            if (!_bw.IsBusy)
+            if (!_backgroundUpdateChecker.IsBusy)
             {
-                _bw.RunWorkerAsync();
+                _backgroundUpdateChecker.RunWorkerAsync();
             }
-        }
-
-        /// <summary>Download the update package.</summary>
-        public void DownloadUpdate()
-        {
-            // TODO: Bug: This method seems to be run twice.
-            if (!ConnectionSynchronized())
-            {
-                CheckForUpdate();
-            }
-
-            if (_updateAvailable)
-            {
-                if (NetworkManager.SourceExists(Package.Download))
-                {
-                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.Downloading));
-                }
-                else
-                {
-                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.PackageDataNotFound));
-                }
-            }
-            else
-            {
-                OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.Updated));
-            }
-        }
-
-        /// <summary>The on download update event.</summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void OnCheckingForUpdate(UpdaterStateEventArgs e)
-        {
-            CheckingForUpdate?.Invoke(e);
-
-            _updateAvailable = ApplicationManager.CheckForUpdate(e.AssemblyLocation, e.PackagePath);
-
-            if (_updateAvailable)
-            {
-                OnUpdaterStateChanged(new UpdaterStateEventArgs(e.Assembly, _installOptions, e.PackagePath, UpdaterState.Outdated));
-            }
-            else
-            {
-                OnUpdaterStateChanged(new UpdaterStateEventArgs(e.Assembly, _installOptions, e.PackagePath, UpdaterState.Updated));
-            }
-        }
-
-        /// <summary>The on download update event.</summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void OnDownloadUpdate(UpdaterStateEventArgs e)
-        {
-            // TODO: Move to progress dialog to do tasks there to call.
-            var _urls = new List<string>
-                {
-                    e.Package.Download
-                };
-
-            _downloader = new Downloader(_urls, e.InstallOptions.DownloadFolder);
-
-            // _downloader.ProgressChanged += Downloader_ProgressChanged;
-            _downloader.Download();
-            DownloadingUpdate?.Invoke(e);
-
-            while (!_downloader.DownloadComplete)
-            {
-                // Wait for downloader to finish.
-                Thread.Sleep(1000);
-            }
-
-            _installOptions.DownloadedFile = _downloader.DownloadingTo;
-
-            OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.Downloaded));
-        }
-
-        /// <summary>The on updater state changed event.</summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void OnUpdaterStateChanged(UpdaterStateEventArgs e)
-        {
-            _state = e.State;
-            UpdaterStateChanged?.Invoke(e);
-
-            switch (e.State)
-            {
-                case UpdaterState.NotChecked:
-                    {
-                        break;
-                    }
-
-                case UpdaterState.Checking:
-                    {
-                        OnCheckingForUpdate(e);
-                        break;
-                    }
-
-                case UpdaterState.Updated:
-                    {
-                        _updateAvailable = false;
-                        _bw.CancelAsync();
-                        break;
-                    }
-
-                case UpdaterState.Outdated:
-                    {
-                        NotificationUpdateAvailable();
-                        break;
-                    }
-
-                case UpdaterState.Downloading:
-                    {
-                        OnDownloadUpdate(e);
-                        break;
-                    }
-
-                case UpdaterState.NoConnection:
-                    {
-                        _updateAvailable = false;
-                        _bw.CancelAsync();
-                        break;
-                    }
-
-                case UpdaterState.PackageNotFound:
-                    {
-                        _updateAvailable = false;
-                        _bw.CancelAsync();
-                        break;
-                    }
-
-                case UpdaterState.Downloaded:
-                    {
-                        NotificationUpdateReadyToInstall();
-                        break;
-                    }
-
-                case UpdaterState.PackageDataNotFound:
-                    {
-                        _updateAvailable = false;
-                        _bw.CancelAsync();
-                        VisualExceptionDialog.Show(new FileNotFoundException(StringManager.RemoteFileNotFound(Package.Download)));
-                        break;
-                    }
-
-                default:
-                    {
-                        throw new ArgumentOutOfRangeException();
-                    }
-            }
-        }
-
-        private void BW_DoWork(object sender, DoWorkEventArgs e)
-        {
-            CheckForUpdate();
-
-            _installOptions.Verify();
-
-            if (NetworkManager.InternetAvailable)
-            {
-                if (NetworkManager.SourceExists(_packagePath))
-                {
-                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.Checking));
-                }
-                else
-                {
-                    OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.PackageNotFound));
-                }
-            }
-            else
-            {
-                OnUpdaterStateChanged(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, UpdaterState.NoConnection));
-            }
-        }
-
-        /// <summary>
-        ///     Compile the installer.
-        /// </summary>
-        /// <param name="installOptions">The install options.</param>
-        private void CompileInstaller(InstallOptions installOptions)
-        {
-            // Ask to close and restart to update files with installer
-            var _references = new List<string>
-                {
-                    "System.dll",
-                    "System.Windows.Forms.dll"
-                };
-
-            ResourcesManager.CreateSettingsResource(installOptions.ResourceSettingsPath, installOptions);
-
-            var _resources = new List<string>
-                {
-                    installOptions.ResourceSettingsPath
-                };
-
-            var _sources = new[] { Resources.MainEntryPoint, Resources.ConsoleManager, Resources.Installer, Resources.ResourceSettings };
-
-            string _updaterFileName = Application.StartupPath + @"\\Updater.exe";
-
-            CompilerResults _results = CodeDomCompiler.Build(_references, _sources, _updaterFileName, _resources);
-
-            if (_results.Errors.Count > 0)
-            {
-                VisualCompileErrorDialog.Show(_results);
-            }
-            else
-            {
-                Process.Start(_updaterFileName);
-            }
-        }
-
-        /// <summary>Verify the connection.</summary>
-        /// <returns>
-        ///     <see cref="bool" />
-        /// </returns>
-        private bool ConnectionSynchronized()
-        {
-            if ((_state == UpdaterState.NotChecked) | (_state == UpdaterState.NoConnection) | (_state == UpdaterState.PackageNotFound))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        ///     Initializes the progress dialog.
-        /// </summary>
-        private void InitializeProgressDialog()
-        {
-            _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion)
-                {
-                    MinimizeBox = false,
-                    StartPosition = FormStartPosition.CenterScreen,
-                    Text = Application.ProductName + @" Update"
-                };
-        }
-
-        /// <summary>
-        ///     Install the update.
-        /// </summary>
-        /// <param name="installOptions">The install options.</param>
-        private void InstallUpdate(InstallOptions installOptions)
-        {
-            Archive.ExtractToDirectory(new Archive(installOptions.DownloadedFile), installOptions.InstallFilesFolder);
-            CompileInstaller(_installOptions);
         }
 
         /// <summary>
         ///     Notify the user an update is available.
         /// </summary>
-        private void NotificationUpdateAvailable()
+        public void NotificationUpdateAvailable()
         {
-            if (_notifyUpdateAvailable)
+            if (!_notifyUpdateAvailable)
             {
-                StringBuilder _updateAvailableString = new StringBuilder();
-                _updateAvailableString.AppendLine($"The update (v.{GetLatestVersion}) is available for download.");
-                Notification.DisplayNotification(Resources.Comet, "Update Available", _updateAvailableString.ToString(), ToolTipIcon.Info);
+                return;
             }
 
-            if (!_autoUpdate)
-            {
-                InitializeProgressDialog();
-
-                if (_progressDialog.ShowDialog() == DialogResult.OK)
-                {
-                    DownloadUpdate();
-                }
-            }
+            StringBuilder _updateAvailableString = new StringBuilder();
+            _updateAvailableString.AppendLine($"The update (v.{GetLatestVersion}) is available for download.");
+            Notification.DisplayNotification(Resources.Comet, "Update Available", _updateAvailableString.ToString(), ToolTipIcon.Info);
         }
 
         /// <summary>
         ///     Notify the user the update is ready to install.
         /// </summary>
-        private void NotificationUpdateReadyToInstall()
+        public void NotificationUpdateReadyToInstall()
         {
-            if (_notifyUpdateReadyToInstall)
+            if (!_notifyUpdateReadyToInstall)
             {
-                StringBuilder _updateReadyToInstall = new StringBuilder();
-                _updateReadyToInstall.AppendLine($"The update (v.{GetLatestVersion}) is ready to install.");
-                Notification.DisplayNotification(Resources.Comet, "Update Ready", _updateReadyToInstall.ToString(), ToolTipIcon.Info);
+                return;
             }
 
-            if (!_autoUpdate)
-            {
-                StringBuilder _askToInstall = new StringBuilder();
-                _askToInstall.AppendLine($"The update (v.{GetLatestVersion}) is ready to install.");
-                _askToInstall.Append(Environment.NewLine);
-                _askToInstall.AppendLine($"Would you like to install it now?");
+            StringBuilder _updateReadyToInstall = new StringBuilder();
+            _updateReadyToInstall.AppendLine($"The update (v.{GetLatestVersion}) is ready to install.");
+            Notification.DisplayNotification(Resources.Comet, "Update Ready", _updateReadyToInstall.ToString(), ToolTipIcon.Info);
+        }
 
-                InitializeProgressDialog();
-                if (_progressDialog.ShowDialog() == DialogResult.OK)
+        /// <summary>
+        ///     Checking for update.
+        /// </summary>
+        /// <param name="e">The sender.</param>
+        protected virtual void OnCheckingForUpdate(UpdaterStateEventArgs e)
+        {
+            CheckingForUpdate?.Invoke(e);
+
+            if (NetworkManager.InternetAvailable)
+            {
+                if (NetworkManager.SourceExists(_packagePath))
                 {
-                    InstallUpdate(_installOptions);
+                    if (ApplicationManager.CheckForUpdate(AssemblyLocation, _packagePath))
+                    {
+                        _updateAvailable = true;
+                        _state = UpdaterState.Outdated;
+                        CheckingForUpdate?.Invoke(e);
+                    }
+                    else
+                    {
+                        _updateAvailable = false;
+                        _state = UpdaterState.Updated;
+                        CheckingForUpdate?.Invoke(e);
+                    }
+                }
+                else
+                {
+                    _state = UpdaterState.PackageNotFound;
+                    _updateAvailable = false;
+                    CheckingForUpdate?.Invoke(e);
+                    VisualExceptionDialog.Show(new FileNotFoundException(StringManager.RemoteFileNotFound(Package.Download)));
                 }
             }
             else
             {
-                InstallUpdate(_installOptions);
+                _state = UpdaterState.NoConnection;
+                _updateAvailable = false;
+                CheckingForUpdate?.Invoke(e);
             }
+
+            _backgroundUpdateChecker.CancelAsync();
+        }
+
+        /// <summary>Checking for update complete.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        private void BackgroundUpdateChecker_Completed(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (_autoUpdate)
+            {
+                // TODO: Automatically continue updating.
+                _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion, this);
+                _progressDialog.Show();
+            }
+            else
+            {
+                _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion, this);
+
+                // TODO: Prevent opening multiple progress dialogs.
+                _progressDialog.Show();
+            }
+        }
+
+        /// <summary>
+        ///     Background worker checks for updates.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        private void BackgroundUpdateCheckerDoWork(object sender, DoWorkEventArgs e)
+        {
+            OnCheckingForUpdate(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
         }
 
         #endregion

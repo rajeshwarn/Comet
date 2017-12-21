@@ -15,17 +15,15 @@
 
     #endregion
 
+    [Obsolete]
     [Description("Downloads and resumes files from HTTP, HTTPS, FTP, and File (file://) URLs.")]
     public class Downloader
     {
         #region Variables
 
         public long Adler32;
-
         public string PublicSignKey;
-
         public byte[] SignedSHA1Hash;
-
         public bool UseRelativeProgress;
 
         #endregion
@@ -33,27 +31,16 @@
         #region Variables
 
         private readonly BackgroundWorker _backgroundWorker;
-
         private readonly Adler32 _downloaderAdler32;
-
         private readonly Stopwatch _stopWatch;
-
         private string _currentUrl;
-
         private bool _downloadComplete;
-
         private string _downloadFolder;
-
         private string _downloadSpeed;
-
         private int _progressPercentage;
-
         private long _sentSinceLastCalc;
-
         private Bytes _units;
-
         private List<string> _urlList;
-
         private bool _waitingForResponse;
 
         #endregion
@@ -305,11 +292,6 @@
             }
         }
 
-        /// <summary>
-        ///     The background worker progress changed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event args.</param>
         private void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             var _percentDone = (object[])e.UserState;
@@ -337,8 +319,8 @@
 
         private void BeginDownload()
         {
-            DownloadData data = null;
-            FileStream fs = null;
+            DownloadData _downloadData = null;
+            FileStream _fileStream = null;
 
             try
             {
@@ -347,18 +329,18 @@
 
                 // get download details 
                 _waitingForResponse = true;
-                data = DownloadData.Create(_currentUrl, _downloadFolder);
+                _downloadData = DownloadData.Create(_currentUrl, _downloadFolder);
                 _waitingForResponse = false;
 
                 // reset the adler
                 _downloaderAdler32.Reset();
 
-                DownloadingTo = data.FileName;
+                DownloadingTo = _downloadData.FileName;
 
                 if (!File.Exists(DownloadingTo))
                 {
                     // create the file
-                    fs = File.Open(DownloadingTo, FileMode.Create, FileAccess.Write);
+                    _fileStream = File.Open(DownloadingTo, FileMode.Create, FileAccess.Write);
                 }
                 else
                 {
@@ -369,7 +351,7 @@
                     }
 
                     // Append to an existing file (resume)
-                    fs = File.Open(DownloadingTo, FileMode.Append, FileAccess.Write);
+                    _fileStream = File.Open(DownloadingTo, FileMode.Append, FileAccess.Write);
                 }
 
                 // create the download buffer
@@ -378,22 +360,22 @@
                 int readCount;
 
                 // update how many bytes have already been read
-                _sentSinceLastCalc = data.StartPoint; // for BPS calculation
+                _sentSinceLastCalc = _downloadData.StartPoint; // for BPS calculation
 
                 // Only increment once for each %
                 var LastProgress = 0;
-                while ((readCount = data.DownloadStream.Read(buffer, 0, BufferSize)) > 0)
+                while ((readCount = _downloadData.DownloadStream.Read(buffer, 0, BufferSize)) > 0)
                 {
                     // break on cancel
                     if (_backgroundWorker.CancellationPending)
                     {
-                        data.Close();
-                        fs.Close();
+                        _downloadData.Close();
+                        _fileStream.Close();
                         break;
                     }
 
                     // update total bytes read
-                    data.StartPoint += readCount;
+                    _downloadData.StartPoint += readCount;
 
                     // update the adler32 value
                     if (Adler32 != 0)
@@ -402,13 +384,13 @@
                     }
 
                     // save block to end of file
-                    fs.Write(buffer, 0, readCount);
+                    _fileStream.Write(buffer, 0, readCount);
 
                     // calculate download speed
-                    CalculateBps(data.StartPoint, data.TotalDownloadSize);
+                    CalculateBps(_downloadData.StartPoint, _downloadData.TotalDownloadSize);
 
                     // send progress info
-                    if (!_backgroundWorker.CancellationPending && (data.PercentDone > LastProgress))
+                    if (!_backgroundWorker.CancellationPending && (_downloadData.PercentDone > LastProgress))
                     {
                         _backgroundWorker.ReportProgress(0, new object[]
                             {
@@ -416,18 +398,18 @@
                                 // UseRelativeProgress ? InstallUpdate.GetRelativeProgess(0, data.PercentDone) : data.PercentDone,
 
                                 // unweighted percent
-                                data.PercentDone,
+                                _downloadData.PercentDone,
                                 _downloadSpeed, ProgressStatus.None, null
                             });
 
-                        LastProgress = data.PercentDone;
+                        LastProgress = _downloadData.PercentDone;
                     }
 
                     // break on cancel
                     if (_backgroundWorker.CancellationPending)
                     {
-                        data.Close();
-                        fs.Close();
+                        _downloadData.Close();
+                        _fileStream.Close();
                         break;
                     }
                 }
@@ -449,14 +431,14 @@
             }
             finally
             {
-                if (data != null)
+                if (_downloadData != null)
                 {
-                    data.Close();
+                    _downloadData.Close();
                 }
 
-                if (fs != null)
+                if (_fileStream != null)
                 {
-                    fs.Close();
+                    _fileStream.Close();
                 }
             }
         }
@@ -530,24 +512,26 @@
 
                     try
                     {
-                        using (FileStream fs = new FileStream(DownloadingTo, FileMode.Open, FileAccess.Read))
-                        using (SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider())
+                        using (FileStream _fileStream = new FileStream(DownloadingTo, FileMode.Open, FileAccess.Read))
+                        using (SHA1CryptoServiceProvider _sha1 = new SHA1CryptoServiceProvider())
                         {
-                            hash = sha1.ComputeHash(fs);
+                            hash = _sha1.ComputeHash(_fileStream);
                         }
 
-                        RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
-                        RSA.FromXmlString(PublicSignKey);
+                        RSACryptoServiceProvider _rsa = new RSACryptoServiceProvider();
+                        _rsa.FromXmlString(PublicSignKey);
 
-                        RSAPKCS1SignatureDeformatter RSADeformatter = new RSAPKCS1SignatureDeformatter(RSA);
-                        RSADeformatter.SetHashAlgorithm("SHA1");
+                        RSAPKCS1SignatureDeformatter _rsaDeformatter = new RSAPKCS1SignatureDeformatter(_rsa);
+                        _rsaDeformatter.SetHashAlgorithm("SHA1");
 
-                        // verify signed hash
-                        if (!RSADeformatter.VerifySignature(hash, SignedSHA1Hash))
+                        // Verify signed hash
+                        if (!_rsaDeformatter.VerifySignature(hash, SignedSHA1Hash))
                         {
                             // The signature is not valid.
                             throw new Exception("Verification failed.");
                         }
+
+                        _downloadComplete = true;
                     }
                     catch (Exception ex)
                     {

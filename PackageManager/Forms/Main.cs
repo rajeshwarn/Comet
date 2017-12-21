@@ -41,13 +41,18 @@
                     AutoUpdate = false
                 };
 
-            _updater.UpdaterStateChanged += CometUpdater_UpdaterStateChanged;
+            _updater.CheckingForUpdate += CometUpdater_CheckingForUpdate;
 
             // cometUpdater1.CheckForUpdate();
             string _asm = Application.StartupPath + @"\Comet.dll";
 
             string _source = ResourcesManager.ReadResource(_asm, "Comet.Installer.MainEntryPoint.cs");
             tbSource.Text = _source;
+
+            // var _name = BetterDownloader.TryGetName(ControlPanel.UpdatePackageUrl);
+            long _name = BetterDownloader.TryGetFileSize(ControlPanel.UpdatePackageUrl);
+
+            Logger.Log(new Logger("Logs", ".xml", "Log", Logger.WriteMode.XML), $"Started {Application.ProductName}");
         }
 
         #endregion
@@ -127,9 +132,9 @@
         ///     The updater state changed.
         /// </summary>
         /// <param name="e">The event args.</param>
-        private void CometUpdater_UpdaterStateChanged(UpdaterStateEventArgs e)
+        private void CometUpdater_CheckingForUpdate(UpdaterStateEventArgs e)
         {
-            string _updateStatus = @"Update status: " + e.State;
+            string _updateStatus = @"Update status: " + _updater.State;
 
             if (LUpdateStats.InvokeRequired)
             {

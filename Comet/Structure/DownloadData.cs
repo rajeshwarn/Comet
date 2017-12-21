@@ -122,9 +122,6 @@
                 if (req is FtpWebRequest)
                 {
                     // get the file size for FTP files
-                    req.Method = WebRequestMethods.Ftp.GetFileSize;
-                    downloadData._webResponse = req.GetResponse();
-                    downloadData.GetFileSize();
 
                     // new request for downloading the FTP file
                     req = GetRequest(url);
@@ -193,7 +190,7 @@
             }
 
             // trim out non-standard filename characters
-            if (!string.IsNullOrEmpty(fileName) && fileName.IndexOfAny(invalidFilenameChars.ToArray()) != -1)
+            if (!string.IsNullOrEmpty(fileName) && (fileName.IndexOfAny(invalidFilenameChars.ToArray()) != -1))
             {
                 // make a new string builder (with at least one bad character)
                 StringBuilder newText = new StringBuilder(fileName.Length - 1);
@@ -266,22 +263,6 @@
             return downloadData;
         }
 
-        // private void GetFileSize()
-        // {
-        // if (_webResponse != null)
-        // {
-        // try
-        // {
-        // _size = _webResponse.ContentLength;
-        // }
-        // catch
-        // {
-        // // file size couldn't be determined
-        // _size = -1;
-        // }
-        // }
-        // }
-
         /// <summary>
         ///     Get the file size.
         /// </summary>
@@ -319,7 +300,7 @@
         {
             UriBuilder uri = new UriBuilder(url);
             bool hasCredentials = !string.IsNullOrEmpty(uri.UserName) && !string.IsNullOrEmpty(uri.Password);
-            if (hasCredentials && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+            if (hasCredentials && ((uri.Scheme == Uri.UriSchemeHttp) || (uri.Scheme == Uri.UriSchemeHttps)))
             {
                 // get the URL without user/password
                 url = new UriBuilder(uri.Scheme, uri.Host, uri.Port, uri.Path, uri.Fragment).ToString();
@@ -356,7 +337,7 @@
                 HttpWebResponse httpResponse = (HttpWebResponse)response;
 
                 // If it's an HTML page, it's probably an error page.
-                if (httpResponse.StatusCode == HttpStatusCode.NotFound || httpResponse.ContentType.Contains("text/html"))
+                if ((httpResponse.StatusCode == HttpStatusCode.NotFound) || httpResponse.ContentType.Contains("text/html"))
                 {
                     throw new Exception(
                         string.Format("Could not download \"{0}\" - a web page was returned from the web server.", url));
@@ -383,7 +364,7 @@
                 }
                 catch
                 {
-                    // file size couldn't be determined
+                    // File size couldn't be determined
                     _size = -1;
                 }
             }

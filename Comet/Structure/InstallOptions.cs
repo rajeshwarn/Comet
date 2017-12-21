@@ -109,8 +109,6 @@
         public void Verify()
         {
             FileManager.CreateDirectory(_workingFolder);
-            FileManager.CreateDirectory(_downloadFolder);
-            FileManager.CreateDirectory(_installFilesFolder);
         }
 
         /// <summary>
@@ -153,8 +151,6 @@
             _downloadFolder = _workingFolder + @"Download\";
             _installFilesFolder = _workingFolder + @"InstallFiles\";
             _resourceSettingsPath = _workingFolder + @"\\CometSettings.resources";
-
-            Verify();
         }
 
         #endregion

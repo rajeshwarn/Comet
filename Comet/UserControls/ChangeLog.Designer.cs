@@ -51,8 +51,8 @@
             this.LVersion.Name = "LVersion";
             this.LVersion.Size = new System.Drawing.Size(547, 31);
             this.LVersion.TabIndex = 2;
-            this.LVersion.Text = "The version of ProductName installed on this computer is: v1.0. \r\nThe latest vers" +
-    "ion is: v1.1.";
+            this.LVersion.Text = "The version of ProductName installed on this computer is: v#.#.#.#. \r\nThe latest " +
+    "version is: v#.#.#.#.";
             // 
             // label3
             // 
