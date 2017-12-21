@@ -23,7 +23,7 @@
         private bool _logging;
         private string _productName;
         private string _workingFolder;
-        private bool _restartAfterInstall;
+        private bool _restartApplicationAfterInstall;
 
         #endregion
 
@@ -64,11 +64,11 @@
             }
         }
 
-        public bool RestartAfterInstall
+        public bool RestartApplicationAfterInstall
         {
             get
             {
-                return _restartAfterInstall;
+                return _restartApplicationAfterInstall;
             }
         }
 
@@ -115,7 +115,7 @@
                 _executablePath = LoadInstallerSetting<string>("ExecutablePath");
                 _installDirectory = LoadInstallerSetting<string>("InstallDirectory");
                 _productName = LoadInstallerSetting<string>("ProductName");
-                _restartAfterInstall = LoadInstallerSetting<bool>("RestartAfterInstall");
+                _restartApplicationAfterInstall = LoadInstallerSetting<bool>("RestartApplicationAfterInstall");
 
                 ConsoleManager.DrawLine();
                 Console.WriteLine(@"Initializing");
@@ -126,8 +126,6 @@
 
                 _installFiles = WorkingFolder + @"InstallFiles\";
                 Console.WriteLine(@"Install Files: " + InstallFiles);
-
-                Console.WriteLine(@"Restart after install: " + _restartAfterInstall);
 
                 ConsoleManager.DrawLine();
 

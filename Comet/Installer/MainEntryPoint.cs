@@ -30,7 +30,7 @@
                 _resourceSettings = new ResourceSettings();
                 Installer.InstallData(_resourceSettings);
                 
-                if (_resourceSettings.RestartAfterInstall)
+                if (_resourceSettings.RestartApplicationAfterInstall)
                 {
                     StartExecutable(_resourceSettings.ExecutablePath);
                 }
