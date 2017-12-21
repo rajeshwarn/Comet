@@ -43,6 +43,8 @@
         private InstallOptions _installOptions;
         private bool _notifyUpdateAvailable;
         private bool _notifyUpdateReadyToInstall;
+
+        private bool _opened;
         private string _packagePath;
         private ProgressDialog _progressDialog;
         private UpdaterState _state;
@@ -88,6 +90,7 @@
             _notifyUpdateReadyToInstall = true;
             _state = UpdaterState.NotChecked;
             _installOptions = new InstallOptions(string.Empty);
+            _opened = false;
 
             _backgroundUpdateChecker = new BackgroundWorker
                 {
@@ -493,18 +496,26 @@
         /// <param name="e">The event args.</param>
         private void BackgroundUpdateChecker_Completed(object sender, RunWorkerCompletedEventArgs e)
         {
+            _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion, this);
+
             if (_autoUpdate)
             {
                 // TODO: Automatically continue updating.
-                _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion, this);
                 _progressDialog.Show();
             }
             else
             {
-                _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion, this);
-
-                // TODO: Prevent opening multiple progress dialogs.
-                _progressDialog.Show();
+                if (!_opened)
+                {
+                    _opened = true;
+                    _progressDialog.Show();
+                }
+                else
+                {
+                    _progressDialog.Focus();
+                    _progressDialog.BringToFront();
+                    _progressDialog.Activate();
+                }
             }
         }
 
@@ -516,6 +527,32 @@
         private void BackgroundUpdateCheckerDoWork(object sender, DoWorkEventArgs e)
         {
             OnCheckingForUpdate(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
+        }
+
+        /// <summary>
+        ///     Determines whether the form exists in the open forms collection.
+        /// </summary>
+        /// <param name="form">The form.</param>
+        /// <returns>
+        ///     <see cref="bool" />
+        /// </returns>
+        private bool FormExists(Form form)
+        {
+            FormCollection _formCollection = Application.OpenForms;
+            var _found = false;
+            foreach (Form _form in _formCollection)
+            {
+                if (_progressDialog == _form)
+                {
+                    _found = true;
+                }
+                else
+                {
+                    _found = false;
+                }
+            }
+
+            return _found;
         }
 
         #endregion
