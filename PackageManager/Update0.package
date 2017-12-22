@@ -4,7 +4,7 @@
   <Filename>Filename.exe</Filename>
   <Name>ProductName</Name>
   <Release>22/12/2017</Release>
-  <Version>0.0.0.0</Version>
+  <Version>0.0.0.1</Version>
   <Downloads>
     <Link>http://https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Test2.zip</Link>
     <Link>http://https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/TestSample.zip</Link>
