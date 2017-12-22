@@ -522,8 +522,9 @@
 
             if (_autoUpdate)
             {
-                // TODO: Automatically continue updating.
+                // TODO: Automatically continue installing after update completed download.
                 _progressDialog.Show();
+                _progressDialog._updateButton.PerformClick();
             }
             else
             {
