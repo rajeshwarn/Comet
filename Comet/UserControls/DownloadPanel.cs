@@ -71,8 +71,6 @@
 
         private void BeginDownload(InstallOptions installOptions, Package package)
         {
-            Logger.Log(new Logger("Logs", ".xml", "Log", Logger.WriteMode.XML), "Started Download.");
-
             _downloader.Download();
 
             while (!_downloader.DownloadComplete)
@@ -82,9 +80,6 @@
             }
 
             _installOptions.DownloadedFile = _downloader.Downloads[0];
-
-            // _installOptions.DownloadedFile = _downloader.DownloadingTo;
-            Logger.Log(new Logger("Logs", ".xml", "Log", Logger.WriteMode.XML), $"Downloaded file: {_downloader.Downloads[0]}");
         }
 
         private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)

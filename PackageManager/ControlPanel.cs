@@ -7,6 +7,8 @@
     using System.Linq;
     using System.Windows.Forms;
 
+    using Comet.Structure;
+
     #endregion
 
     internal class ControlPanel
@@ -36,6 +38,10 @@
         #region Events
 
         public static List<string> FileHistory = new List<string>();
+
+        public static string LogDirectory = "Logs";
+        public static string LogExtension = ".xml";
+        public static string LogFile = "Log";
 
         /// <summary>Updates the History Log file.</summary>
         /// <param name="write">Write new log history to file.</param>
@@ -100,6 +106,17 @@
         }
 
         public static string ResourceSettingsPath = Application.StartupPath + @"\\CometSettings.resources";
+
+        /// <summary>
+        ///     Write entry to log file.
+        /// </summary>
+        /// <param name="message"></param>
+        public static void WriteLog(string message)
+        {
+            Logger.Log(new Logger(LogDirectory, LogExtension, LogFile, WriteMode), message);
+        }
+
+        public static Logger.WriteMode WriteMode = Logger.WriteMode.XML;
 
         private const string FileHistoryLocation = @"Logs\History.log";
 

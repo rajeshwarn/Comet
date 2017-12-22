@@ -4,6 +4,7 @@
 
     using System;
     using System.Diagnostics;
+    using System.Drawing;
     using System.Globalization;
     using System.IO;
     using System.IO.Compression;
@@ -15,6 +16,8 @@
     using Comet.Events;
     using Comet.Managers;
     using Comet.Structure;
+
+    using PackageManager.UserControls;
 
     #endregion
 
@@ -31,6 +34,8 @@
             ControlPanel.PackageFileTypes = @"Package File|*.package";
             ControlPanel.MaxRecentProjects = 10;
             ControlPanel.InstallerPath = "Installer.exe";
+
+            ControlPanel.WriteLog($"Started {Application.ProductName}");
 
             CbUrlScheme.SelectedIndex = 0;
 
@@ -49,10 +54,17 @@
             string _source = ResourcesManager.ReadResource(_asm, "Comet.Installer.MainEntryPoint.cs");
             tbSource.Text = _source;
 
-            // var _name = BetterDownloader.TryGetName(ControlPanel.UpdatePackageUrl);
-            // long _name = BetterDownloader.TryGetFileSize(ControlPanel.UpdatePackageUrl);
+            TabPage _downloadSitesTabPage = new TabPage("Download Sites");
 
-            Logger.Log(new Logger("Logs", ".xml", "Log", Logger.WriteMode.XML), $"Started {Application.ProductName}");
+            DownloadSites _downloadSites = new DownloadSites
+                {
+                    BackColor = Color.White,
+                    Dock = DockStyle.Fill
+                };
+
+            _downloadSitesTabPage.Controls.Add(_downloadSites);
+
+            tabControlCreator.TabPages.Add(_downloadSitesTabPage);
         }
 
         #endregion
@@ -84,15 +96,17 @@
                     Multiselect = true
                 };
 
-            if (_openFileDialog.ShowDialog() == DialogResult.OK)
+            if (_openFileDialog.ShowDialog() != DialogResult.OK)
             {
-                foreach (string file in _openFileDialog.FileNames)
-                {
-                    Archive.CreateEntryFromFile(new Archive(ControlPanel.ArchivePath), file, Path.GetFileName(file), CompressionLevel.Fastest);
-                }
-
-                UpdateArchive(ControlPanel.ArchivePath);
+                return;
             }
+
+            foreach (string file in _openFileDialog.FileNames)
+            {
+                Archive.CreateEntryFromFile(new Archive(ControlPanel.ArchivePath), file, Path.GetFileName(file), CompressionLevel.Fastest);
+            }
+
+            UpdateArchive(ControlPanel.ArchivePath);
         }
 
         /// <summary>The about tool strip menu item.</summary>
