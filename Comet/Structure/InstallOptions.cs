@@ -20,19 +20,35 @@
         private string _installFilesFolder;
         private string _productName;
         private string _resourceSettingsPath;
+        private bool _restartApplicationAfterInstall;
         private string _workingFolder;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="InstallOptions" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InstallOptions" /> class.</summary>
         /// <param name="executablePath">The executable path.</param>
-        public InstallOptions(string executablePath)
+        /// <param name="restartApplicationAfterInstall">The restart Application After Install.</param>
+        public InstallOptions(string executablePath, bool restartApplicationAfterInstall)
         {
-            UpdateOptions(executablePath);
+            _executablePath = executablePath;
+            _restartApplicationAfterInstall = restartApplicationAfterInstall;
+
+            if (string.IsNullOrEmpty(_executablePath))
+            {
+                _installDirectory = string.Empty;
+            }
+            else
+            {
+                _installDirectory = Path.GetDirectoryName(_executablePath) + @"\";
+            }
+
+            _productName = Application.ProductName;
+            _workingFolder = Path.GetTempPath() + _productName + @"\Updater\";
+            _downloadFolder = _workingFolder + @"Download\";
+            _installFilesFolder = _workingFolder + @"InstallFiles\";
+            _resourceSettingsPath = _workingFolder + @"\\CometSettings.resources";
         }
 
         #endregion
@@ -54,17 +70,6 @@
             get
             {
                 return _executablePath;
-            }
-
-            set
-            {
-                if (_executablePath == value)
-                {
-                    return;
-                }
-
-                _executablePath = value;
-                UpdateOptions(_executablePath);
             }
         }
 
@@ -101,6 +106,19 @@
         }
 
         public bool RestartAfterInstall { get; set; }
+
+        public bool RestartApplicationAfterInstall
+        {
+            get
+            {
+                return _restartApplicationAfterInstall;
+            }
+
+            set
+            {
+                _restartApplicationAfterInstall = value;
+            }
+        }
 
         public string WorkingFolder
         {
@@ -147,30 +165,6 @@
             {
                 VisualExceptionDialog.Show(new DirectoryNotFoundException("The install path cannot be found. " + _executablePath));
             }
-        }
-
-        /// <summary>
-        ///     Updates the options.
-        /// </summary>
-        /// <param name="executablePath">The executable path.</param>
-        private void UpdateOptions(string executablePath)
-        {
-            _executablePath = executablePath;
-
-            if (string.IsNullOrEmpty(_executablePath))
-            {
-                _installDirectory = string.Empty;
-            }
-            else
-            {
-                _installDirectory = Path.GetDirectoryName(_executablePath) + @"\";
-            }
-
-            _productName = Application.ProductName;
-            _workingFolder = Path.GetTempPath() + _productName + @"\Updater\";
-            _downloadFolder = _workingFolder + @"Download\";
-            _installFilesFolder = _workingFolder + @"InstallFiles\";
-            _resourceSettingsPath = _workingFolder + @"\\CometSettings.resources";
         }
 
         #endregion

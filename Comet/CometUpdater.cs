@@ -62,21 +62,23 @@
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
         /// <param name="packagePath">The package path.</param>
         /// <param name="executablePath">The executable path.</param>
-        public CometUpdater(string packagePath, string executablePath) : this()
+        /// <param name="restartApplicationAfterInstall">Restart application after install toggle.</param>
+        public CometUpdater(string packagePath, string executablePath, bool restartApplicationAfterInstall) : this()
         {
             _packagePath = packagePath;
-            _installOptions = new InstallOptions(executablePath);
+            _installOptions = new InstallOptions(executablePath, restartApplicationAfterInstall);
         }
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
         /// <param name="packagePath">The package path.</param>
         /// <param name="executablePath">The executable path.</param>
         /// <param name="autoUpdate">Auto update the application.</param>
-        public CometUpdater(string packagePath, string executablePath, bool autoUpdate) : this()
+        /// <param name="restartApplicationAfterInstall">Restart application after install toggle.</param>
+        public CometUpdater(string packagePath, string executablePath, bool autoUpdate, bool restartApplicationAfterInstall) : this()
         {
             _autoUpdate = autoUpdate;
             _packagePath = packagePath;
-            _installOptions = new InstallOptions(executablePath);
+            _installOptions = new InstallOptions(executablePath, restartApplicationAfterInstall);
         }
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
@@ -87,7 +89,7 @@
             _notifyUpdateAvailable = true;
             _notifyUpdateReadyToInstall = true;
             _state = UpdaterState.NotChecked;
-            _installOptions = new InstallOptions(string.Empty);
+            _installOptions = new InstallOptions(string.Empty, true);
             _opened = false;
 
             _backgroundUpdateChecker = new BackgroundWorker
@@ -374,6 +376,24 @@
             get
             {
                 return GetEntryAssembly.GetName().Name;
+            }
+        }
+
+        /// <summary>Gets or sets the restart application after install.</summary>
+        [Browsable(true)]
+        [Category("Status")]
+        [Description("Gets or sets the restart application after install.")]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public bool RestartApplicationAfterInstall
+        {
+            get
+            {
+                return _installOptions.RestartApplicationAfterInstall;
+            }
+
+            set
+            {
+                _installOptions.RestartApplicationAfterInstall = value;
             }
         }
 
