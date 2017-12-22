@@ -519,7 +519,7 @@
             {
                 // TODO: Automatically continue installing after update completed download.
                 _progressDialog.Show();
-                _progressDialog._updateButton.PerformClick();
+                _progressDialog.UpdateButton.PerformClick();
             }
             else
             {

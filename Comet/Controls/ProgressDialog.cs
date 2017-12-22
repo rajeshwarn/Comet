@@ -32,9 +32,9 @@
     {
         #region Variables
 
-        public Button _cancelButton;
-        public Button _installButton;
-        public Button _updateButton;
+        internal Button CancelButton0;
+        internal Button InstallButton;
+        internal Button UpdateButton;
 
         #endregion
 
@@ -44,16 +44,13 @@
         private string _bannerTitle;
         private ChangeLog _changeLogPanel;
         private Label _comet;
-
         private Version _currentVersion;
         private DownloadPanel _downloadPanel;
-
         private InstallOptions _installOptions;
         private Point _location = new Point(40, 60);
         private Package _package;
         private Separator _separator;
         private Size _size = new Size(400, 280);
-
         private UpdateMode _updateMode;
         private CometUpdater _updater;
 
@@ -130,7 +127,7 @@
         /// <summary>The cancel button is clicked.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
-        private void CancelButtonClick(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -182,16 +179,16 @@
         {
             _updater.NotificationUpdateReadyToInstall();
 
-            if (_installButton.InvokeRequired)
+            if (InstallButton.InvokeRequired)
             {
-                _installButton.BeginInvoke((MethodInvoker)delegate
+                InstallButton.BeginInvoke((MethodInvoker)delegate
                     {
-                        _installButton.Enabled = true;
+                        InstallButton.Enabled = true;
                     });
             }
             else
             {
-                _installButton.Enabled = true;
+                InstallButton.Enabled = true;
             }
 
             if (_updater.AutoUpdate)
@@ -206,7 +203,7 @@
             var _buttonSpacing = 7;
             Size _buttonSize = new Size(75, 23);
 
-            _cancelButton = new Button
+            CancelButton0 = new Button
                 {
                     BackColor = SystemColors.Control,
                     Text = @"Cancel",
@@ -215,38 +212,38 @@
                     TabIndex = 1
                 };
 
-            _cancelButton.Click += CancelButtonClick;
+            CancelButton0.Click += CancelButton_Click;
 
-            Controls.Add(_cancelButton);
+            Controls.Add(CancelButton0);
 
-            _updateButton = new Button
+            UpdateButton = new Button
                 {
                     BackColor = SystemColors.Control,
                     Text = @"Update",
                     Size = _buttonSize,
-                    Location = new Point(_cancelButton.Left - _buttonSize.Width - 5, _cancelButton.Location.Y),
+                    Location = new Point(CancelButton0.Left - _buttonSize.Width - 5, CancelButton0.Location.Y),
                     TabIndex = 0
                 };
 
-            _updateButton.Click += UpdateButtonClick;
+            UpdateButton.Click += UpdateButton_Click;
 
-            Controls.Add(_updateButton);
+            Controls.Add(UpdateButton);
 
-            _installButton = new Button
+            InstallButton = new Button
                 {
                     BackColor = SystemColors.Control,
                     Text = @"Install",
                     Size = _buttonSize,
-                    Location = new Point(_cancelButton.Left - _buttonSize.Width - 5, _cancelButton.Location.Y),
+                    Location = new Point(CancelButton0.Left - _buttonSize.Width - 5, CancelButton0.Location.Y),
                     TabIndex = 0,
                     Enabled = false
                 };
 
-            _installButton.Click += InstallButtonClick;
+            InstallButton.Click += InstallButton_Click;
 
             _comet = new Label
                 {
-                    Location = new Point(0, _cancelButton.Location.Y - 10),
+                    Location = new Point(0, CancelButton0.Location.Y - 10),
                     Size = new Size(39, 20),
                     Text = @"Comet",
                     ForeColor = Color.DarkGray
@@ -270,7 +267,7 @@
         /// <summary>The update button is clicked.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
-        private void InstallButtonClick(object sender, EventArgs e)
+        private void InstallButton_Click(object sender, EventArgs e)
         {
             UpdateDisplayMode(UpdateMode.Installing);
         }
@@ -300,7 +297,7 @@
         /// <summary>The update button is clicked.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
-        private void UpdateButtonClick(object sender, EventArgs e)
+        private void UpdateButton_Click(object sender, EventArgs e)
         {
             UpdateDisplayMode(UpdateMode.Download);
         }
@@ -324,8 +321,8 @@
                         UpdateBanner("Downloading", $"The latest v.{_package.Version} of {_package.Name}.");
 
                         Controls.Remove(_changeLogPanel);
-                        Controls.Remove(_updateButton);
-                        Controls.Add(_installButton);
+                        Controls.Remove(UpdateButton);
+                        Controls.Add(InstallButton);
 
                         _downloadPanel = new DownloadPanel(_installOptions, _package, _updater)
                             {
@@ -342,7 +339,7 @@
                     {
                         UpdateBanner("Installing", $"Updating {_package.Name} to the v.{_package.Version}.");
                         Controls.Remove(_downloadPanel);
-                        Controls.Remove(_installButton);
+                        Controls.Remove(InstallButton);
                         InstallUpdate();
                         Close();
                         break;
