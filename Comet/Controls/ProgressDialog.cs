@@ -132,7 +132,6 @@
         /// <param name="e">The event.</param>
         private void CancelButtonClick(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Cancel;
             Close();
         }
 

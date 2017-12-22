@@ -38,12 +38,10 @@
         #region Variables
 
         private bool _autoUpdate;
-
         private BackgroundWorker _backgroundUpdateChecker;
         private InstallOptions _installOptions;
         private bool _notifyUpdateAvailable;
         private bool _notifyUpdateReadyToInstall;
-
         private bool _opened;
         private string _packagePath;
         private ProgressDialog _progressDialog;
@@ -469,13 +467,23 @@
 
             if (NetworkManager.InternetAvailable)
             {
-                if (NetworkManager.SourceExists(_packagePath))
+                if (NetworkManager.SourceExists(e.PackagePath))
                 {
-                    if (ApplicationManager.CheckForUpdate(AssemblyLocation, _packagePath))
+                    if (ApplicationManager.CheckForUpdate(e.AssemblyLocation, e.PackagePath))
                     {
                         _updateAvailable = true;
+
+                        // if (_state != UpdaterState.Outdated)
+                        // {
+                        // NotificationUpdateAvailable();
+                        // }
+
+                        // TODO: Bug wont show notification passed here.
                         _state = UpdaterState.Outdated;
+
                         CheckingForUpdate?.Invoke(e);
+
+                        NotificationUpdateAvailable();
                     }
                     else
                     {
@@ -489,7 +497,7 @@
                     _state = UpdaterState.PackageNotFound;
                     _updateAvailable = false;
                     CheckingForUpdate?.Invoke(e);
-                    VisualExceptionDialog.Show(new FileNotFoundException(StringManager.RemoteFileNotFound(Package.Download)));
+                    VisualExceptionDialog.Show(new FileNotFoundException(StringManager.RemoteFileNotFound(e.Package.Download)));
                 }
             }
             else
@@ -502,12 +510,18 @@
             _backgroundUpdateChecker.CancelAsync();
         }
 
+        private void _progressDialog_Closed(object sender, EventArgs e)
+        {
+            _opened = false;
+        }
+
         /// <summary>Checking for update complete.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event args.</param>
         private void BackgroundUpdateChecker_Completed(object sender, RunWorkerCompletedEventArgs e)
         {
             _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion, this);
+            _progressDialog.Closed += _progressDialog_Closed;
 
             if (_autoUpdate)
             {
@@ -538,32 +552,6 @@
         private void BackgroundUpdateCheckerDoWork(object sender, DoWorkEventArgs e)
         {
             OnCheckingForUpdate(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
-        }
-
-        /// <summary>
-        ///     Determines whether the form exists in the open forms collection.
-        /// </summary>
-        /// <param name="form">The form.</param>
-        /// <returns>
-        ///     <see cref="bool" />
-        /// </returns>
-        private bool FormExists(Form form)
-        {
-            FormCollection _formCollection = Application.OpenForms;
-            var _found = false;
-            foreach (Form _form in _formCollection)
-            {
-                if (_progressDialog == _form)
-                {
-                    _found = true;
-                }
-                else
-                {
-                    _found = false;
-                }
-            }
-
-            return _found;
         }
 
         #endregion
