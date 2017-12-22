@@ -463,6 +463,12 @@
         /// <param name="e">The sender.</param>
         protected virtual void OnCheckingForUpdate(UpdaterStateEventArgs e)
         {
+            if (_state == UpdaterState.Outdated)
+            {
+                return;
+            }
+
+            _state = UpdaterState.Checking;
             CheckingForUpdate?.Invoke(e);
 
             if (NetworkManager.InternetAvailable)
@@ -472,18 +478,9 @@
                     if (ApplicationManager.CheckForUpdate(e.AssemblyLocation, e.PackagePath))
                     {
                         _updateAvailable = true;
-
-                        // if (_state != UpdaterState.Outdated)
-                        // {
-                        // NotificationUpdateAvailable();
-                        // }
-
-                        // TODO: Bug wont show notification passed here.
-                        _state = UpdaterState.Outdated;
-
-                        CheckingForUpdate?.Invoke(e);
-
                         NotificationUpdateAvailable();
+                        _state = UpdaterState.Outdated;
+                        CheckingForUpdate?.Invoke(e);
                     }
                     else
                     {
