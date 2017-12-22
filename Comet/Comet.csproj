@@ -93,10 +93,10 @@
     <Compile Include="Events\Delegates.cs" />
     <Compile Include="Events\DownloaderEventArgs.cs" />
     <Compile Include="Events\UpdaterStateEventArgs.cs" />
-    <EmbeddedResource Include="Installer\MainEntryPoint.cs" />
-    <EmbeddedResource Include="Installer\ConsoleManager.cs" />
-    <EmbeddedResource Include="Installer\Installer.cs" />
-    <EmbeddedResource Include="Installer\ResourceSettings.cs" />
+    <EmbeddedResource Include="Setup\MainEntryPoint.cs" />
+    <EmbeddedResource Include="Setup\ConsoleManager.cs" />
+    <EmbeddedResource Include="Setup\Installer.cs" />
+    <EmbeddedResource Include="Setup\ResourceSettings.cs" />
     <Compile Include="Managers\OldDownloader.cs" />
     <Compile Include="Structure\Downloader.cs" />
     <Compile Include="Structure\Logger.cs" />
@@ -142,6 +142,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\ChangeLog.resx">
       <DependentUpon>ChangeLog.cs</DependentUpon>

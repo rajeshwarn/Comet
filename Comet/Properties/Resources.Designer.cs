@@ -79,7 +79,7 @@ namespace Comet.Properties {
         ///
         ///    #endregion
         ///
-        ///    internal class ConsoleManager
+        ///    public class ConsoleManager
         ///    {
         ///        #region Events
         ///
@@ -94,7 +94,7 @@ namespace Comet.Properties {
         ///        }
         ///
         ///        #endregion
-        ///   [rest of string was truncated]&quot;;.
+        ///     [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ConsoleManager {
             get {
@@ -105,16 +105,24 @@ namespace Comet.Properties {
         /// <summary>
         ///   Looks up a localized string similar to namespace Comet
         ///{
+        ///    #region Namespace
+        ///
         ///    using System;
+        ///    using System.IO;
+        ///
+        ///    #endregion
         ///
         ///    internal class Installer
         ///    {
-        ///        public static void InstallData()
+        ///        #region Events
+        ///
+        ///        /// &lt;summary&gt;Cleanup the temporary install files.&lt;/summary&gt;
+        ///        /// &lt;param name=&quot;resourceSettings&quot;&gt;The resource Settings.&lt;/param&gt;
+        ///        public static void Cleanup(ResourceSettings resourceSettings)
         ///        {
-        ///            Console.WriteLine(&quot;... TODO!&quot;);
-        ///        }
-        ///    }
-        ///}.
+        ///            Console.WriteLine(@&quot;Cleaning up...&quot;);
+        ///            ConsoleManager.DrawLine();
+        ///            DeleteDirector [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Installer {
             get {
@@ -129,24 +137,25 @@ namespace Comet.Properties {
         ///
         ///    using System;
         ///    using System.Diagnostics;
-        ///    using System.Globalization;
-        ///    using System.IO;
-        ///    using System.Reflection;
-        ///    using System.Resources;
-        ///    using System.Text;
-        ///    using System.Windows.Forms;
         ///
         ///    #endregion
         ///
-        ///    // TODO: Install app.
-        ///    // TODO: Restart app.
+        ///    /// &lt;summary&gt;
+        ///    ///     The comet installer.
+        ///    /// &lt;/summary&gt;
         ///    public class CometInstaller
         ///    {
-        ///        #region Properties
+        ///        #region Events
         ///
-        ///        private static bool Installed { get; set; }
+        ///        private static ResourceSettings _resourceSettings;
         ///
-        ///        private static string InstallFiles { ge [rest of string was truncated]&quot;;.
+        ///        /// &lt;summary&gt;The main application entry point.&lt;/summary&gt;
+        ///        [STAThread]
+        ///        private static void Main()
+        ///        {
+        ///            Console.Title = @&quot;Comet&quot;;
+        ///
+        ///            ConsoleMa [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string MainEntryPoint {
             get {
@@ -155,26 +164,29 @@ namespace Comet.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to namespace Comet.Installer
+        ///   Looks up a localized string similar to namespace Comet
         ///{
         ///    #region Namespace
         ///
         ///    using System;
         ///    using System.Globalization;
+        ///    using System.IO;
         ///    using System.Reflection;
         ///    using System.Resources;
+        ///    using System.Runtime.InteropServices;
         ///    using System.Text;
+        ///    using System.Windows.Forms;
         ///
         ///    #endregion
         ///
-        ///    internal class ResourceSettings
+        ///    public class ResourceSettings
         ///    {
-        ///        #region Events
+        ///        #region Variables
         ///
-        ///        /// &lt;summary&gt;Loads the installer setting from the resource.&lt;/summary&gt;
-        ///        /// &lt;typeparam name=&quot;T&quot;&gt;The type.&lt;/typeparam&gt;
-        ///        /// &lt;param name=&quot;name&quot;&gt;The name.&lt;/param&gt;
-        ///        /// &lt;param name=&quot;ignoreCase&quot;&gt;Indicates w [rest of string was truncated]&quot;;.
+        ///        private string _installFiles;
+        ///        private string _installDirectory;
+        ///        private string _executablePath;
+        ///        private bool [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ResourceSettings {
             get {

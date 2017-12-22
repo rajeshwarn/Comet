@@ -51,7 +51,7 @@
             // cometUpdater1.CheckForUpdate();
             string _asm = Application.StartupPath + @"\Comet.dll";
 
-            string _source = ResourcesManager.ReadResource(_asm, "Comet.Installer.MainEntryPoint.cs");
+            string _source = ResourcesManager.ReadResource(_asm, "Comet.Setup.MainEntryPoint.cs");
             tbSource.Text = _source;
 
             TabPage _downloadSitesTabPage = new TabPage("Download Sites");
