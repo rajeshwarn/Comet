@@ -15,27 +15,31 @@
 
     #endregion
 
-    /// <summary>The download.</summary>
+    /// <summary>The Download User Panel.</summary>
     [ToolboxItem(false)]
     public partial class DownloadPanel : UserControl
     {
         #region Variables
 
-        internal BetterDownloader _downloader;
+        internal Downloader Downloader;
 
         #endregion
 
         #region Variables
 
-        // private string _downloadedFile;
         private InstallOptions _installOptions;
-
         private CometUpdater _updater;
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DownloadPanel" /> class.
+        /// </summary>
+        /// <param name="installOptions">The install options.</param>
+        /// <param name="package">The package.</param>
+        /// <param name="updater">The updater.</param>
         public DownloadPanel(InstallOptions installOptions, Package package, CometUpdater updater)
         {
             InitializeComponent();
@@ -53,96 +57,117 @@
                     package.Download
                 };
 
-            LCount.Text = @"Count: " + _urls.Count;
+            LDownloadFiles.Text = $@"Download File/s: {_urls.Count} of {_urls.Count}";
 
-            _downloader = new BetterDownloader(_urls, installOptions.DownloadFolder);
-            _downloader._client.DownloadProgressChanged += DownloadProgressChanged;
-            _downloader._client.DownloadFileCompleted += DownloadFileCompleted;
+            Downloader = new Downloader(_urls, installOptions.DownloadFolder);
+            Downloader._client.DownloadProgressChanged += DownloadProgressChanged;
+            Downloader._client.DownloadFileCompleted += DownloadFileCompleted;
 
-            new Thread(() =>
-                {
-                    BeginDownload(installOptions, package);
-                }).Start();
+            new Thread(BeginDownload).Start();
         }
 
         #endregion
 
         #region Events
 
-        private void BeginDownload(InstallOptions installOptions, Package package)
+        /// <summary>The file download begin.</summary>
+        private void BeginDownload()
         {
-            _downloader.Download();
+            Downloader.Download();
 
-            while (!_downloader.DownloadComplete)
+            while (!Downloader.DownloadComplete)
             {
-                // Wait for downloader to finish.
+                // Interval to repeat Wait for downloader to finish.
                 Thread.Sleep(100);
             }
 
-            _installOptions.DownloadedFile = _downloader.Downloads[0];
+            _installOptions.DownloadedFile = Downloader.Downloads[0];
         }
 
+        /// <summary>
+        ///     The file download completed event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
         private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             if (_updater.AutoUpdate)
             {
+                // Do nothing here.
             }
         }
 
+        /// <summary>
+        ///     The file download progress changed event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
         private void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            double _receive = double.Parse(e.BytesReceived.ToString());
-            double _fileSize = double.Parse(e.TotalBytesToReceive.ToString());
+            double _bytesReceived = double.Parse(e.BytesReceived.ToString());
+            double _totalBytesToReceive = double.Parse(e.TotalBytesToReceive.ToString());
+            double _percentage = (_bytesReceived / _totalBytesToReceive) * 100;
 
-            double _percentage = (_receive / _fileSize) * 100;
-
-            string _status = $"Downloaded {string.Format("0:0.##", _percentage)}";
             int _value = int.Parse(Math.Truncate(_percentage).ToString(CultureInfo.CurrentCulture));
-
-            if (progressBar1.InvokeRequired)
+            if (progressBarFileDownload.InvokeRequired)
             {
-                progressBar1.BeginInvoke((MethodInvoker)delegate
+                progressBarFileDownload.BeginInvoke((MethodInvoker)delegate
                     {
-                        progressBar1.Value = _value;
+                        progressBarFileDownload.Value = _value;
                     });
             }
             else
             {
-                progressBar1.Value = _value;
+                progressBarFileDownload.Value = _value;
             }
 
-            Bytes _receive1 = new Bytes(long.Parse(e.BytesReceived.ToString()))
+            string _progressString = $@"Progress: {_value}%";
+            if (LProgress.InvokeRequired)
+            {
+                LProgress.BeginInvoke((MethodInvoker)delegate
+                    {
+                        LProgress.Text = _progressString;
+                    });
+            }
+            else
+            {
+                LProgress.Text = _progressString;
+            }
+
+            Bytes _bytesReceivedType = new Bytes(long.Parse(e.BytesReceived.ToString()))
+                {
+                    Abbreviated = true
+                };
+            Bytes _totalBytesToReceiveType = new Bytes(long.Parse(e.TotalBytesToReceive.ToString()))
                 {
                     Abbreviated = true
                 };
 
-            Bytes _fileSize1 = new Bytes(long.Parse(e.TotalBytesToReceive.ToString()))
-                {
-                    Abbreviated = true
-                };
+            string _receivedString = @"Received: " + _bytesReceivedType;
+            string _totalSizeString = @"Total Size: " + _totalBytesToReceiveType;
 
-            if (label1.InvokeRequired)
+            if (LBytesReceived.InvokeRequired)
             {
-                label1.BeginInvoke((MethodInvoker)delegate
+                LBytesReceived.BeginInvoke((MethodInvoker)delegate
                     {
-                        label1.Text = @"Receive: " + _receive1;
+                        LBytesReceived.Text = _receivedString;
                     });
             }
             else
             {
-                label1.Text = @"Receive: " + _receive1;
+                LBytesReceived.Text = _receivedString;
             }
 
-            if (label2.InvokeRequired)
+            if (LBytesTotalSize.InvokeRequired)
             {
-                label2.BeginInvoke((MethodInvoker)delegate
+                LBytesTotalSize.BeginInvoke((MethodInvoker)delegate
                     {
-                        label2.Text = @"File size: " + _fileSize1;
+                        LBytesTotalSize.Text = _totalSizeString;
                     });
             }
             else
             {
-                label2.Text = @"File size: " + _fileSize1;
+                LBytesTotalSize.Text = _totalSizeString;
             }
         }
 

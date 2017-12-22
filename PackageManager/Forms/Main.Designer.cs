@@ -118,6 +118,7 @@
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.TUpdate = new System.Windows.Forms.Timer(this.components);
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.cmsArchive.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -647,7 +648,7 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
-            // tabControl2
+            // tabControlCreator
             // 
             this.tabControlCreator.Controls.Add(this.tabPage5);
             this.tabControlCreator.Controls.Add(this.tabPage6);
@@ -667,6 +668,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.checkBox4);
             this.tabPage5.Controls.Add(this.checkBox2);
             this.tabPage5.Controls.Add(this.checkBox1);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
@@ -887,7 +889,7 @@
             this.checkBox3.Text = "Disable install directory page";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
-            // tabControl1
+            // tabControlMain
             // 
             this.tabControlMain.Controls.Add(this.tabPage1);
             this.tabControlMain.Controls.Add(this.tabPage2);
@@ -967,6 +969,16 @@
             this.TUpdate.Enabled = true;
             this.TUpdate.Interval = 3000;
             this.TUpdate.Tick += new System.EventHandler(this.TUpdate_Tick);
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(98, 18);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(220, 17);
+            this.checkBox4.TabIndex = 2;
+            this.checkBox4.Text = "User option: Allow custom install directory";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -1106,6 +1118,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.NumericUpDown numericUpDown4;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox checkBox4;
     }
 }
 

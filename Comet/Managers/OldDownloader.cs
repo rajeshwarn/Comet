@@ -17,7 +17,7 @@
 
     [Obsolete]
     [Description("Downloads and resumes files from HTTP, HTTPS, FTP, and File (file://) URLs.")]
-    public class Downloader
+    public class OldDownloader
     {
         #region Variables
 
@@ -48,11 +48,11 @@
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Downloader" /> class.
+        ///     Initializes a new instance of the <see cref="OldDownloader" /> class.
         /// </summary>
         /// <param name="url">The url list.</param>
         /// <param name="downloadFolder">The download folder.</param>
-        public Downloader(List<string> url, string downloadFolder)
+        public OldDownloader(List<string> url, string downloadFolder)
         {
             _downloadComplete = false;
             _downloaderAdler32 = new Adler32();

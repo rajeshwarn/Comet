@@ -335,7 +335,7 @@
                             };
                         Controls.Add(_downloadPanel);
 
-                        _downloadPanel._downloader._client.DownloadFileCompleted += DownloadFileCompleted;
+                        _downloadPanel.Downloader._client.DownloadFileCompleted += DownloadFileCompleted;
                         break;
                     }
 

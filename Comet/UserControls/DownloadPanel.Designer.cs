@@ -29,10 +29,13 @@
         private void InitializeComponent()
         {
             this.LDown = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.LCount = new System.Windows.Forms.Label();
+            this.progressBarFileDownload = new System.Windows.Forms.ProgressBar();
+            this.LBytesTotalSize = new System.Windows.Forms.Label();
+            this.LBytesReceived = new System.Windows.Forms.Label();
+            this.LDownloadFiles = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.LProgress = new System.Windows.Forms.Label();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // LDown
@@ -40,57 +43,82 @@
             this.LDown.Dock = System.Windows.Forms.DockStyle.Top;
             this.LDown.Location = new System.Drawing.Point(0, 0);
             this.LDown.Name = "LDown";
-            this.LDown.Size = new System.Drawing.Size(386, 31);
+            this.LDown.Size = new System.Drawing.Size(446, 31);
             this.LDown.TabIndex = 3;
             this.LDown.Text = "Comet is downloading updates for {package.Name}. This process could take a few mi" +
     "nutes.";
             // 
-            // progressBar1
+            // progressBarFileDownload
             // 
-            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.progressBar1.Location = new System.Drawing.Point(0, 237);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(386, 23);
-            this.progressBar1.TabIndex = 4;
+            this.progressBarFileDownload.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBarFileDownload.Location = new System.Drawing.Point(3, 110);
+            this.progressBarFileDownload.Name = "progressBarFileDownload";
+            this.progressBarFileDownload.Size = new System.Drawing.Size(440, 23);
+            this.progressBarFileDownload.TabIndex = 4;
             // 
-            // label2
+            // LBytesTotalSize
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 57);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(66, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "File size: 0 B";
+            this.LBytesTotalSize.AutoSize = true;
+            this.LBytesTotalSize.Location = new System.Drawing.Point(6, 29);
+            this.LBytesTotalSize.Name = "LBytesTotalSize";
+            this.LBytesTotalSize.Size = new System.Drawing.Size(77, 13);
+            this.LBytesTotalSize.TabIndex = 5;
+            this.LBytesTotalSize.Text = "Total Size: # B";
             // 
-            // label1
+            // LBytesReceived
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 44);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Receive: 0 B";
+            this.LBytesReceived.AutoSize = true;
+            this.LBytesReceived.Location = new System.Drawing.Point(6, 16);
+            this.LBytesReceived.Name = "LBytesReceived";
+            this.LBytesReceived.Size = new System.Drawing.Size(76, 13);
+            this.LBytesReceived.TabIndex = 6;
+            this.LBytesReceived.Text = "Received: # B";
             // 
-            // LCount
+            // LDownloadFiles
             // 
-            this.LCount.AutoSize = true;
-            this.LCount.Location = new System.Drawing.Point(3, 31);
-            this.LCount.Name = "LCount";
-            this.LCount.Size = new System.Drawing.Size(48, 13);
-            this.LCount.TabIndex = 7;
-            this.LCount.Text = "Count: #";
+            this.LDownloadFiles.AutoSize = true;
+            this.LDownloadFiles.Location = new System.Drawing.Point(0, 31);
+            this.LDownloadFiles.Name = "LDownloadFiles";
+            this.LDownloadFiles.Size = new System.Drawing.Size(119, 13);
+            this.LDownloadFiles.TabIndex = 7;
+            this.LDownloadFiles.Text = "Download File/s: # of #";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.LBytesReceived);
+            this.groupBox1.Controls.Add(this.LBytesTotalSize);
+            this.groupBox1.Location = new System.Drawing.Point(3, 57);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(437, 47);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Details";
+            // 
+            // LProgress
+            // 
+            this.LProgress.AutoSize = true;
+            this.LProgress.Location = new System.Drawing.Point(0, 44);
+            this.LProgress.Name = "LProgress";
+            this.LProgress.Size = new System.Drawing.Size(68, 13);
+            this.LProgress.TabIndex = 9;
+            this.LProgress.Text = "Progress: 0%";
             // 
             // DownloadPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.LCount);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.LProgress);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.LDownloadFiles);
+            this.Controls.Add(this.progressBarFileDownload);
             this.Controls.Add(this.LDown);
             this.Name = "DownloadPanel";
-            this.Size = new System.Drawing.Size(386, 260);
+            this.Size = new System.Drawing.Size(446, 237);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -99,9 +127,11 @@
         #endregion
 
         private System.Windows.Forms.Label LDown;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label LCount;
+        private System.Windows.Forms.ProgressBar progressBarFileDownload;
+        private System.Windows.Forms.Label LBytesTotalSize;
+        private System.Windows.Forms.Label LBytesReceived;
+        private System.Windows.Forms.Label LDownloadFiles;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label LProgress;
     }
 }

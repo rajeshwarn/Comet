@@ -18,7 +18,7 @@
     #endregion
 
     [Description("Downloads and resumes files from HTTP, HTTPS, FTP, and File (file://) URLs.")]
-    public class BetterDownloader
+    public class Downloader
     {
         #region Variables
 
@@ -37,10 +37,10 @@
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="BetterDownloader" /> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="Downloader" /> class.</summary>
         /// <param name="urlList">The url List.</param>
         /// <param name="downloadDirectory">The download directory.</param>
-        public BetterDownloader(List<string> urlList, string downloadDirectory)
+        public Downloader(List<string> urlList, string downloadDirectory)
         {
             _downloadDirectory = downloadDirectory;
 

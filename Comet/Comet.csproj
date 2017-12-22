@@ -97,8 +97,8 @@
     <EmbeddedResource Include="Installer\ConsoleManager.cs" />
     <EmbeddedResource Include="Installer\Installer.cs" />
     <EmbeddedResource Include="Installer\ResourceSettings.cs" />
-    <Compile Include="Managers\Downloader.cs" />
-    <Compile Include="Structure\BetterDownloader.cs" />
+    <Compile Include="Managers\OldDownloader.cs" />
+    <Compile Include="Structure\Downloader.cs" />
     <Compile Include="Structure\Logger.cs" />
     <Compile Include="Managers\ResourcesManager.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
