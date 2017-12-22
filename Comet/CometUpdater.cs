@@ -507,18 +507,13 @@
             _backgroundUpdateChecker.CancelAsync();
         }
 
-        private void _progressDialog_Closed(object sender, EventArgs e)
-        {
-            _opened = false;
-        }
-
         /// <summary>Checking for update complete.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event args.</param>
         private void BackgroundUpdateChecker_Completed(object sender, RunWorkerCompletedEventArgs e)
         {
             _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion, this);
-            _progressDialog.Closed += _progressDialog_Closed;
+            _progressDialog.Closed += ProgressDialog_Closed;
 
             if (_autoUpdate)
             {
@@ -550,6 +545,16 @@
         private void BackgroundUpdateCheckerDoWork(object sender, DoWorkEventArgs e)
         {
             OnCheckingForUpdate(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
+        }
+
+        /// <summary>
+        ///     The progress dialog closed event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        private void ProgressDialog_Closed(object sender, EventArgs e)
+        {
+            _opened = false;
         }
 
         #endregion
