@@ -6,7 +6,7 @@
   <Release>22/12/2017</Release>
   <Version>1.0.0.1</Version>
   <Downloads>
-    <Link>http://https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Test2.zip</Link>
-    <Link>http://https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/TestSample.zip</Link>
+    <Link>https://github.com/DarkByte7/Comet/raw/master/PackageManager/Test2.zip</Link>
+    <Link>https://github.com/DarkByte7/Comet/raw/master/PackageManager/TestSample.zip</Link>
   </Downloads>
 </Comet>
