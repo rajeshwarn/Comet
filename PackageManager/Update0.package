@@ -2,7 +2,7 @@
 <Comet>
   <ChangeLog>Initial release</ChangeLog>
   <Filename>Filename.exe</Filename>
-  <Name>ProductName</Name>
+  <Name>Package Manager</Name>
   <Release>22/12/2017</Release>
   <Version>1.0.0.1</Version>
   <Downloads>
