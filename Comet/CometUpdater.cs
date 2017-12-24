@@ -22,7 +22,6 @@
 
     #endregion
 
-    // TODO: Handle timeout to package connection exception.
     #endregion
 
     /// <summary>The <see cref="CometUpdater" />.</summary>
@@ -485,6 +484,7 @@
         {
             if (_state == UpdaterState.Outdated)
             {
+                CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
                 return;
             }
 
@@ -495,11 +495,9 @@
             {
                 if (NetworkManager.SourceExists(e.PackagePath.OriginalString))
                 {
-                    // TODO: Version below
-                    // TODO: Version above
-                    // TODO: Version the same
                     if (ApplicationManager.CheckForUpdate(e.Assembly, e.PackagePath))
                     {
+                        // Outdated
                         _updateAvailable = true;
                         NotificationUpdateAvailable();
                         _state = UpdaterState.Outdated;
@@ -507,6 +505,7 @@
                     }
                     else
                     {
+                        // Updated
                         _updateAvailable = false;
                         _state = UpdaterState.Updated;
                         CheckingForUpdate?.Invoke(e);
@@ -545,7 +544,6 @@
 
             if (_autoUpdate)
             {
-                // TODO: Automatically continue installing after update completed download.
                 _progressDialog.Show();
                 _progressDialog.UpdateButton.PerformClick();
             }
