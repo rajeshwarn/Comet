@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Comet</id>
+    <version>1.0.0.0</version>
+    <authors>DarkByte7</authors>
+    <owners>Comet</owners>
+    <licenseUrl>https://github.com/DarkByte7/Comet/blob/master/License.md</licenseUrl>
+    <projectUrl>https://darkbyte7.github.io/Comet/</projectUrl>
+    <iconUrl>http://i.imgur.com/1AvNHG2.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The Comet library provides integration into your .NET Windows Form applications for automatic updating functionality.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>UI Framework Development Toolbox Windows Forms VisualStudio Visual-Studio .NET Metro ModernUI MetroFramework MetroUI WinForms Controls Graphics Rendering Library Components Visual Plus Visual-Plus VB VB.NET User Interface User-Interface VPF</tags>
+  </metadata>
+  <files>
+  <file src="..\Comet\bin\Debug\Comet.dll" target="lib\Comet\4.5\Comet.dll"></file>
+  </files>
+</package>
