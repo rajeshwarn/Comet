@@ -1,6 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Comet>
-    <ChangeLog>Initial release</ChangeLog>
+    <ChangeLog>An automatic updater library for your .NET applications. The package manager uses the Comet API to build your customized updates.
+  
+Version 0.1a - 09/01/2017
+-	Initial release.
+
+Features:
+-	Automatic Updater
+-	Toolbox Component
+-	Custom installer
+
+</ChangeLog>
     <Filename>PackageManager.exe</Filename>
     <Name>Package Manager</Name>
     <Release>01/01/2017</Release>
