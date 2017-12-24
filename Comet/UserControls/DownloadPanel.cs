@@ -19,7 +19,7 @@
     {
         #region Variables
 
-        private int _currentDownload;
+        private int _downloadedFilesCount;
         private DownloadsManager _downloadManager;
         private InstallOptions _installOptions;
         private Package _package;
@@ -51,7 +51,7 @@
             _downloadManager = new DownloadsManager(package.Downloads, installOptions.DownloadFolder);
             _downloadManager.ProgressChanged += DownloadManager_ProgressChanged;
             _downloadManager.DownloadsCompleted += DownloadManager_DownloadsCompleted;
-            LDownloadFiles.Text = $@"Download File/s: {_downloadManager.CurrentDownload} of {package.Downloads.Count}";
+            LDownloadFiles.Text = $@"Download File/s: {_downloadManager.DownloadedFilesCount} of {package.Downloads.Count}";
 
             _downloadManager.Download();
         }
@@ -88,8 +88,8 @@
             // double _totalBytesToReceive = double.Parse(e.TotalBytesToReceive.ToString());
             /// double _percentage = (_bytesReceived / _totalBytesToReceive) * 100;
             
-            // _currentDownload = _downloadManager.DownloadedFiles.Count;
-            string _downloadedFilesString = $@"Download File/s: {_currentDownload} of {_package.Downloads.Count}";
+            _downloadedFilesCount = _downloadManager.DownloadedFilesCount;
+            string _downloadedFilesString = $@"Download File/s: {_downloadedFilesCount} of {_package.Downloads.Count}";
             if (LDownloadFiles.InvokeRequired)
             {
                 LDownloadFiles.BeginInvoke((MethodInvoker)delegate

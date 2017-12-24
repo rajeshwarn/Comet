@@ -367,9 +367,10 @@
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             closeToolStripMenuItem.Enabled = true;
-            ControlPanel.FileName = string.Empty;
+            ControlPanel.FileName = "Untitled.package";
             ControlPanel.FullPath = string.Empty;
             ControlPanel.FileSaved = false;
+            tabControlMain.TabPages[1].Text = ControlPanel.FileName;
 
             const string ChangeLog = "Initial release";
 
@@ -406,7 +407,7 @@
                     ControlPanel.FileName = Path.GetFileName(path);
                     ControlPanel.FullPath = path;
                     ControlPanel.ManageHistoryLog(true);
-
+                    tabControlMain.TabPages[1].Text = ControlPanel.FileName;
                     ConstructRecentFilesMenuStrip();
                 }
             }
@@ -463,7 +464,20 @@
         private void RecentHistoryItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem _recentHistoryItemClicked = (ToolStripMenuItem)sender;
-            OpenFile(_recentHistoryItemClicked.Text);
+
+            string _filePath = _recentHistoryItemClicked.Tag.ToString();
+
+            if (File.Exists(_filePath))
+            {
+                OpenFile(_filePath);
+            }
+            else
+            {
+                recentHistoryToolStripMenuItem.DropDownItems.Remove(_recentHistoryItemClicked);
+            }
+
+
+            // TODO: Reorganize file history in menu strip. UPDATE() method.
         }
 
         /// <summary>Report A Problem Tool Strip Menu Item Click.</summary>
@@ -483,6 +497,7 @@
             {
                 _saveFileDialog.Title = @"Save package";
                 _saveFileDialog.Filter = ControlPanel.PackageFileTypes;
+                _saveFileDialog.FileName = ControlPanel.FileName;
 
                 if (_saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -491,7 +506,7 @@
                     ControlPanel.FullPath = _saveFileDialog.FileName;
                     ControlPanel.FileName = Path.GetFileName(_saveFileDialog.FileName);
                     ControlPanel.FileSaved = true;
-
+                    tabControlMain.TabPages[1].Text = ControlPanel.FileName;
                     saveToolStripMenuItem.Enabled = false;
                 }
             }

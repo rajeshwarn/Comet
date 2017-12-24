@@ -31,12 +31,11 @@
 
         private readonly BackgroundWorker _backgroundDownloader;
         private int _bufferSize;
-        private int _currentDownload;
+        private int downloadedFilesCount;
         private Uri _currentUrl;
         private WebProxy _customProxy;
         private bool _downloadComplete;
         private string _downloadDirectory;
-
         private List<string> _downloadedFiles;
         private Adler32 _downloaderAdler32;
         private List<Uri> _downloadList;
@@ -66,7 +65,7 @@
             ServicePointManager.DefaultConnectionLimit = _totalCount;
 
             _bufferSize = 4096;
-            _currentDownload = 0;
+            downloadedFilesCount = 0;
             _stopWatch = new Stopwatch();
 
             _backgroundDownloader = new BackgroundWorker
@@ -103,11 +102,19 @@
 
         #region Properties
 
-        public int CurrentDownload
+        public int DownloadedFilesCount
         {
             get
             {
-                return _currentDownload;
+                return downloadedFilesCount;
+            }
+        }
+
+        public WebProxy CustomProxy
+        {
+            get
+            {
+                return _customProxy;
             }
         }
 
@@ -304,6 +311,7 @@
         /// <param name="e">The event args.</param>
         private void BackgroundDownloader_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            downloadedFilesCount = DownloadedFiles.Count;
             var arr = (object[])e.UserState;
             DownloaderEventArgs _event = new DownloaderEventArgs((int)arr[0], (int)arr[1], (string)arr[2], (ProgressStatus)arr[3], arr[4]);
             ProgressChanged?.Invoke(_event);

@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Windows.Forms;
 
+    using Comet.Controls;
     using Comet.Managers;
 
     using PackageManager.Managers;
@@ -60,20 +61,27 @@
         /// <param name="downloads">The downloads.</param>
         internal void ImportPackageDownloads(List<Uri> downloads)
         {
-            foreach (Uri _download in downloads)
+            try
             {
-                ListViewItem _item = new ListViewItem(_download.OriginalString);
-                _item.SubItems.Add(NetworkManager.SourceExists(_download.OriginalString).ToString());
-
-                if (Helper.IsItemInCollection(_item, ListViewUrlList))
+                foreach (Uri _download in downloads)
                 {
-                    return;
+                    ListViewItem _item = new ListViewItem(_download.OriginalString);
+                    _item.SubItems.Add(NetworkManager.SourceExists(_download.OriginalString).ToString());
+
+                    if (Helper.IsItemInCollection(_item, ListViewUrlList))
+                    {
+                        return;
+                    }
+
+                    ListViewUrlList.Items.Add(_item);
                 }
 
-                ListViewUrlList.Items.Add(_item);
+                UpdateDownloadsList();
             }
-
-            UpdateDownloadsList();
+            catch (Exception e)
+            {
+                VisualExceptionDialog.Show(e);
+            }
         }
 
         /// <summary>

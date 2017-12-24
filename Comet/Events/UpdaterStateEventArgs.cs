@@ -85,7 +85,7 @@
 
             foreach (string _download in InstallOptions.DownloadedFiles)
             {
-                _updaterStateEventArgsString.AppendLine("Downloaded File: " + _download);
+                _updaterStateEventArgsString.AppendLine("Download File: " + _download);
             }
 
             _updaterStateEventArgsString.AppendLine("Executable Path: " + InstallOptions.ExecutablePath);
