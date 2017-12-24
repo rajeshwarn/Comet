@@ -92,31 +92,13 @@
         /// <param name="dialogWindow">The dialog Window.</param>
         public static void Show(Exception exception, string caption = "Exception Dialog", bool dialogWindow = true)
         {
-            Thread _threadShowDialog = new Thread(Display)
+            Thread _threadShowDialog = new Thread(() => Display(exception, caption, dialogWindow))
                 {
                     IsBackground = true
                 };
 
             _threadShowDialog.SetApartmentState(ApartmentState.STA);
             _threadShowDialog.Start();
-
-            void Display()
-            {
-                VisualExceptionDialog _exceptionDialog = new VisualExceptionDialog(exception)
-                    {
-                        Text = caption,
-                        StartPosition = FormStartPosition.CenterScreen
-                    };
-
-                if (dialogWindow)
-                {
-                    _exceptionDialog.ShowDialog();
-                }
-                else
-                {
-                    _exceptionDialog.Show();
-                }
-            }
         }
 
         /// <summary>Copy the log to the clipboard.</summary>
@@ -155,6 +137,28 @@
         public void SaveLog(string filePath)
         {
             File.WriteAllText(filePath, CreateLog());
+        }
+
+        /// <summary>Display the <see cref="VisualExceptionDialog" />.</summary>
+        /// <param name="exception">The exception.</param>
+        /// <param name="caption">The caption.</param>
+        /// <param name="dialogWindow">The dialog Window.</param>
+        private static void Display(Exception exception, string caption, bool dialogWindow)
+        {
+            VisualExceptionDialog _exceptionDialog = new VisualExceptionDialog(exception)
+                {
+                    Text = caption,
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+
+            if (dialogWindow)
+            {
+                _exceptionDialog.ShowDialog();
+            }
+            else
+            {
+                _exceptionDialog.Show();
+            }
         }
 
         /// <summary>The Copy button is clicked.</summary>
