@@ -333,7 +333,7 @@
             // 
             this.statusStripMain.Location = new System.Drawing.Point(0, 440);
             this.statusStripMain.Name = "statusStripMain";
-            this.statusStripMain.Size = new System.Drawing.Size(645, 22);
+            this.statusStripMain.Size = new System.Drawing.Size(672, 22);
             this.statusStripMain.TabIndex = 4;
             this.statusStripMain.Text = "statusStrip1";
             // 
@@ -493,7 +493,7 @@
             this.tabControlCreator.Multiline = true;
             this.tabControlCreator.Name = "tabControlCreator";
             this.tabControlCreator.SelectedIndex = 0;
-            this.tabControlCreator.Size = new System.Drawing.Size(631, 384);
+            this.tabControlCreator.Size = new System.Drawing.Size(658, 384);
             this.tabControlCreator.TabIndex = 6;
             // 
             // tabPage5
@@ -517,7 +517,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(623, 358);
+            this.tabPage5.Size = new System.Drawing.Size(650, 358);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "General";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -525,7 +525,7 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(6, 6);
+            this.checkBox4.Location = new System.Drawing.Point(8, 270);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(220, 17);
             this.checkBox4.TabIndex = 2;
@@ -535,7 +535,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(6, 29);
+            this.checkBox2.Location = new System.Drawing.Point(8, 293);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(229, 17);
             this.checkBox2.TabIndex = 1;
@@ -545,7 +545,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 52);
+            this.checkBox1.Location = new System.Drawing.Point(8, 316);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(169, 17);
             this.checkBox1.TabIndex = 0;
@@ -555,7 +555,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 97);
+            this.label3.Location = new System.Drawing.Point(5, 58);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 13);
             this.label3.TabIndex = 6;
@@ -563,7 +563,7 @@
             // 
             // nudRevision
             // 
-            this.nudRevision.Location = new System.Drawing.Point(270, 225);
+            this.nudRevision.Location = new System.Drawing.Point(269, 227);
             this.nudRevision.Maximum = new decimal(new int[] {
             10,
             0,
@@ -577,7 +577,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 149);
+            this.label5.Location = new System.Drawing.Point(5, 32);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(52, 13);
             this.label5.TabIndex = 10;
@@ -587,16 +587,16 @@
             // 
             this.dtpRelease.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtpRelease.Location = new System.Drawing.Point(93, 198);
+            this.dtpRelease.Location = new System.Drawing.Point(92, 200);
             this.dtpRelease.Name = "dtpRelease";
-            this.dtpRelease.Size = new System.Drawing.Size(478, 20);
+            this.dtpRelease.Size = new System.Drawing.Size(552, 20);
             this.dtpRelease.TabIndex = 18;
             this.dtpRelease.ValueChanged += new System.EventHandler(this.DateTimePickerRelease_ValueChanged);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 227);
+            this.label8.Location = new System.Drawing.Point(5, 229);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(45, 13);
             this.label8.TabIndex = 16;
@@ -604,7 +604,7 @@
             // 
             // nudBuild
             // 
-            this.nudBuild.Location = new System.Drawing.Point(211, 225);
+            this.nudBuild.Location = new System.Drawing.Point(210, 227);
             this.nudBuild.Maximum = new decimal(new int[] {
             10,
             0,
@@ -619,9 +619,9 @@
             // 
             this.tbPackageFilename.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbPackageFilename.Location = new System.Drawing.Point(93, 146);
+            this.tbPackageFilename.Location = new System.Drawing.Point(92, 29);
             this.tbPackageFilename.Name = "tbPackageFilename";
-            this.tbPackageFilename.Size = new System.Drawing.Size(480, 20);
+            this.tbPackageFilename.Size = new System.Drawing.Size(552, 20);
             this.tbPackageFilename.TabIndex = 11;
             this.tbPackageFilename.TextChanged += new System.EventHandler(this.TbPackage_TextChanged);
             // 
@@ -629,15 +629,17 @@
             // 
             this.tbPackageChangeLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbPackageChangeLog.Location = new System.Drawing.Point(93, 94);
+            this.tbPackageChangeLog.Location = new System.Drawing.Point(92, 55);
+            this.tbPackageChangeLog.Multiline = true;
             this.tbPackageChangeLog.Name = "tbPackageChangeLog";
-            this.tbPackageChangeLog.Size = new System.Drawing.Size(480, 20);
+            this.tbPackageChangeLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tbPackageChangeLog.Size = new System.Drawing.Size(552, 139);
             this.tbPackageChangeLog.TabIndex = 7;
             this.tbPackageChangeLog.TextChanged += new System.EventHandler(this.TbPackage_TextChanged);
             // 
             // nudMajor
             // 
-            this.nudMajor.Location = new System.Drawing.Point(93, 224);
+            this.nudMajor.Location = new System.Drawing.Point(92, 226);
             this.nudMajor.Maximum = new decimal(new int[] {
             10,
             0,
@@ -657,16 +659,16 @@
             // 
             this.tbPackageName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbPackageName.Location = new System.Drawing.Point(93, 172);
+            this.tbPackageName.Location = new System.Drawing.Point(92, 6);
             this.tbPackageName.Name = "tbPackageName";
-            this.tbPackageName.Size = new System.Drawing.Size(480, 20);
+            this.tbPackageName.Size = new System.Drawing.Size(552, 20);
             this.tbPackageName.TabIndex = 13;
             this.tbPackageName.TextChanged += new System.EventHandler(this.TbPackage_TextChanged);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 202);
+            this.label7.Location = new System.Drawing.Point(5, 204);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(49, 13);
             this.label7.TabIndex = 14;
@@ -674,7 +676,7 @@
             // 
             // nudMinor
             // 
-            this.nudMinor.Location = new System.Drawing.Point(152, 225);
+            this.nudMinor.Location = new System.Drawing.Point(151, 227);
             this.nudMinor.Maximum = new decimal(new int[] {
             10,
             0,
@@ -688,7 +690,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 175);
+            this.label6.Location = new System.Drawing.Point(5, 9);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(38, 13);
             this.label6.TabIndex = 12;
@@ -842,7 +844,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(0, 24);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(645, 416);
+            this.tabControlMain.Size = new System.Drawing.Size(672, 416);
             this.tabControlMain.TabIndex = 7;
             // 
             // tabPage1
@@ -881,7 +883,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(637, 390);
+            this.tabPage2.Size = new System.Drawing.Size(664, 390);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Untitled";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -895,7 +897,7 @@
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.MdiWindowListItem = this.fileToolStripMenuItem;
             this.menuStripMain.Name = "menuStripMain";
-            this.menuStripMain.Size = new System.Drawing.Size(645, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(672, 24);
             this.menuStripMain.TabIndex = 5;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -913,7 +915,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(645, 462);
+            this.ClientSize = new System.Drawing.Size(672, 462);
             this.Controls.Add(this.tabControlMain);
             this.Controls.Add(this.menuStripMain);
             this.Controls.Add(this.statusStripMain);
