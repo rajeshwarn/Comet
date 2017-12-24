@@ -21,7 +21,7 @@
         /// <param name="installOptions">The install Options.</param>
         /// <param name="packagePath">The package path.</param>
         /// <param name="state">The update state.</param>
-        public UpdaterStateEventArgs(Assembly assembly, InstallOptions installOptions, string packagePath, UpdaterState state)
+        public UpdaterStateEventArgs(Assembly assembly, InstallOptions installOptions, Uri packagePath, UpdaterState state)
         {
             Assembly = assembly;
             AssemblyLocation = assembly.Location;
@@ -50,7 +50,7 @@
         public Package Package { get; }
 
         /// <summary>The package uri source.</summary>
-        public string PackagePath { get; }
+        public Uri PackagePath { get; }
 
         /// <summary>The update state.</summary>
         public UpdaterState State { get; }
@@ -82,7 +82,12 @@
             _updaterStateEventArgsString.AppendLine("Version: " + Version);
             _updaterStateEventArgsString.AppendLine("Install options:");
             _updaterStateEventArgsString.AppendLine("Download Folder: " + InstallOptions.DownloadFolder);
-            _updaterStateEventArgsString.AppendLine("Downloaded File: " + InstallOptions.DownloadedFile);
+
+            foreach (string _download in InstallOptions.DownloadedFiles)
+            {
+                _updaterStateEventArgsString.AppendLine("Downloaded File: " + _download);
+            }
+
             _updaterStateEventArgsString.AppendLine("Executable Path: " + InstallOptions.ExecutablePath);
             _updaterStateEventArgsString.AppendLine("Install Directory: " + InstallOptions.InstallDirectory);
             _updaterStateEventArgsString.AppendLine("Install Files Folder: " + InstallOptions.InstallFilesFolder);
@@ -91,7 +96,14 @@
             _updaterStateEventArgsString.AppendLine("Working Folder: " + InstallOptions.WorkingFolder);
             _updaterStateEventArgsString.AppendLine("Package:");
             _updaterStateEventArgsString.AppendLine("Change Log: " + Package.ChangeLog);
-            _updaterStateEventArgsString.AppendLine("Download: " + Package.Download);
+
+            _updaterStateEventArgsString.AppendLine("Downloads: ");
+
+            foreach (Uri _download in Package.Downloads)
+            {
+                _updaterStateEventArgsString.AppendLine("Link: " + _download.OriginalString);
+            }
+
             _updaterStateEventArgsString.AppendLine("Filename: " + Package.Filename);
             _updaterStateEventArgsString.AppendLine("Name: " + Package.Name);
             _updaterStateEventArgsString.AppendLine("Release: " + Package.Release);

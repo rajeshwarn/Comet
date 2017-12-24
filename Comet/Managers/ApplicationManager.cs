@@ -23,7 +23,7 @@
         /// <param name="assembly">The assembly.</param>
         /// <param name="url">The url to the package.</param>
         /// <returns>The <see cref="bool" />.</returns>
-        public static bool CheckForUpdate(Assembly assembly, string url)
+        public static bool CheckForUpdate(Assembly assembly, Uri url)
         {
             if (!File.Exists(assembly.Location))
             {
@@ -31,16 +31,6 @@
             }
 
             return CompareVersion(assembly.Location, new Package(url));
-        }
-
-        /// <summary>Checks for update.</summary>
-        /// <param name="assemblyPath">The assembly path.</param>
-        /// <param name="url">The url to the package.</param>
-        /// <returns>The <see cref="bool" />.</returns>
-        public static bool CheckForUpdate(string assemblyPath, string url)
-        {
-            Assembly _assembly = LoadAssembly(assemblyPath);
-            return CheckForUpdate(_assembly, url);
         }
 
         /// <summary>Compares the source version with the comparison.</summary>
@@ -71,12 +61,18 @@
         /// <returns>The <see cref="bool" />.</returns>
         public static bool CompareVersion(Version source, Version comparison)
         {
-            if (source.CompareTo(comparison) > 0)
+            bool _larger;
+
+            if (source >= comparison)
             {
-                return false;
+                _larger = false;
+            }
+            else
+            {
+                _larger = true;
             }
 
-            return source.CompareTo(comparison) < 0;
+            return _larger;
         }
 
         /// <summary>Compares the file version with the comparison file.</summary>

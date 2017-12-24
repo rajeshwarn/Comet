@@ -3,6 +3,7 @@
     #region Namespace
 
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Drawing;
     using System.Globalization;
@@ -24,6 +25,12 @@
     /// <summary>The main.</summary>
     public partial class Main : Form
     {
+        #region Variables
+
+        private DownloadSites _downloadSites;
+
+        #endregion
+
         #region Constructors
 
         public Main()
@@ -37,11 +44,9 @@
 
             ControlPanel.WriteLog($"Started {Application.ProductName}");
 
-            CbUrlScheme.SelectedIndex = 0;
+            ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Update0.package";
 
-            ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Update.package";
-
-            _updater = new CometUpdater(ControlPanel.UpdatePackageUrl, Assembly.GetExecutingAssembly().Location)
+            _updater = new CometUpdater(new Uri(ControlPanel.UpdatePackageUrl), Assembly.GetExecutingAssembly().Location, false)
                 {
                     AutoUpdate = false
                 };
@@ -56,7 +61,7 @@
 
             TabPage _downloadSitesTabPage = new TabPage("Download Sites");
 
-            DownloadSites _downloadSites = new DownloadSites
+            _downloadSites = new DownloadSites
                 {
                     BackColor = Color.White,
                     Dock = DockStyle.Fill
@@ -137,7 +142,7 @@
             string _productName = string.Empty;
             DateTime _dateTime = new DateTime(2000, 1, 1);
             Version _version = new Version(0, 0, 0, 0);
-            Package _newPackage = new Package(_changeLog, _downloadLink, _fileName, _productName, _dateTime.ToString(CultureInfo.CurrentCulture), _version);
+            Package _newPackage = new Package(_changeLog, _fileName, _productName, _dateTime.ToString(CultureInfo.CurrentCulture), _version, new List<Uri>());
             UpdatePackage(_newPackage);
             closeToolStripMenuItem.Enabled = false;
         }
@@ -367,13 +372,14 @@
             ControlPanel.FileSaved = false;
 
             const string ChangeLog = "Initial release";
-            const string DownloadLink = "www.example.com/";
+
+            // const string DownloadLink = "www.example.com/";
             const string FileName = "Filename.exe";
             const string PackageProductName = "ProductName";
             DateTime _dateTime = DateTime.Today;
             Version _version = new Version(1, 0, 0, 0);
 
-            UpdatePackage(new Package(ChangeLog, DownloadLink, FileName, PackageProductName, _dateTime.ToString(CultureInfo.CurrentCulture), _version));
+            UpdatePackage(new Package(ChangeLog, FileName, PackageProductName, _dateTime.ToString(CultureInfo.CurrentCulture), _version, new List<Uri>()));
         }
 
         /// <summary>Package version value changed.</summary>
@@ -498,7 +504,7 @@
             Package _package = new Package
                 {
                     ChangeLog = tbPackageChangeLog.Text,
-                    Download = tbPackageDownloadLink.Text,
+                    Downloads = _downloadSites.DownloadsList,
                     Filename = tbPackageFilename.Text,
                     Name = tbPackageName.Text,
                     Release = dtpRelease.Value,
@@ -563,35 +569,6 @@
             }
         }
 
-        /// <summary>
-        ///     Tick Update
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void TUpdate_Tick(object sender, EventArgs e)
-        {
-            if (tbPackageDownloadLink.TextLength >= 1)
-            {
-                string _source = CbUrlScheme.Text + tbPackageDownloadLink.Text;
-
-                if (NetworkManager.IsURLFormatted(_source))
-                {
-                    if (NetworkManager.SourceExists(_source))
-                    {
-                        PbDownloadLinkConnection.Visible = false;
-                    }
-                    else
-                    {
-                        PbDownloadLinkConnection.Visible = true;
-                    }
-                }
-                else
-                {
-                    PbDownloadLinkConnection.Visible = true;
-                }
-            }
-        }
-
         /// <summary>Update the archive file/s list.</summary>
         /// <param name="path">The archive file path.</param>
         private void UpdateArchive(string path)
@@ -647,24 +624,17 @@
         private void UpdatePackage(Package package)
         {
             DateTime _dateTime = Convert.ToDateTime(package.Release);
-            UpdatePackage(package.ChangeLog, package.Download, package.Filename, package.Name, _dateTime, package.Version);
-        }
 
-        /// <summary>Updates the package data fields.</summary>
-        /// <param name="changeLog">The change log.</param>
-        /// <param name="downloadLink">The download link.</param>
-        /// <param name="fileName">The file name.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="release">The release date.</param>
-        /// <param name="version">The version.</param>
-        private void UpdatePackage(string changeLog, string downloadLink, string fileName, string name, DateTime release, Version version)
-        {
-            tbPackageChangeLog.Text = changeLog;
-            tbPackageDownloadLink.Text = downloadLink;
-            tbPackageFilename.Text = fileName;
-            tbPackageName.Text = name;
-            dtpRelease.Value = release;
-            UpdateVersion(version);
+            tbPackageChangeLog.Text = package.ChangeLog;
+
+            var _downloadsList = package.Downloads;
+
+            _downloadSites.ImportPackageDownloads(_downloadsList);
+
+            tbPackageFilename.Text = package.Filename;
+            tbPackageName.Text = package.Name;
+            dtpRelease.Value = package.Release;
+            UpdateVersion(package.Version);
         }
 
         /// <summary>Update package data version.</summary>

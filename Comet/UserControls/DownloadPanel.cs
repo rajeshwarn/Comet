@@ -3,14 +3,12 @@
     #region Namespace
 
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Globalization;
-    using System.Net;
     using System.Text;
-    using System.Threading;
     using System.Windows.Forms;
 
+    using Comet.Events;
+    using Comet.Managers;
     using Comet.Structure;
 
     #endregion
@@ -21,13 +19,10 @@
     {
         #region Variables
 
-        internal Downloader Downloader;
-
-        #endregion
-
-        #region Variables
-
+        private int _currentDownload;
+        private DownloadsManager _downloadManager;
         private InstallOptions _installOptions;
+        private Package _package;
         private CometUpdater _updater;
 
         #endregion
@@ -45,6 +40,7 @@
             InitializeComponent();
 
             _installOptions = installOptions;
+            _package = package;
             _updater = updater;
 
             StringBuilder _downText = new StringBuilder();
@@ -52,75 +48,74 @@
 
             LDown.Text = _downText.ToString();
 
-            var _urls = new List<string>
-                {
-                    package.Download
-                };
+            _downloadManager = new DownloadsManager(package.Downloads, installOptions.DownloadFolder);
+            _downloadManager.ProgressChanged += DownloadManager_ProgressChanged;
+            _downloadManager.DownloadsCompleted += DownloadManager_DownloadsCompleted;
+            LDownloadFiles.Text = $@"Download File/s: {_downloadManager.CurrentDownload} of {package.Downloads.Count}";
 
-            LDownloadFiles.Text = $@"Download File/s: {_urls.Count} of {_urls.Count}";
+            _downloadManager.Download();
+        }
 
-            Downloader = new Downloader(_urls, installOptions.DownloadFolder);
-            Downloader._client.DownloadProgressChanged += DownloadProgressChanged;
-            Downloader._client.DownloadFileCompleted += DownloadFileCompleted;
+        #endregion
 
-            new Thread(BeginDownload).Start();
+        #region Properties
+
+        public DownloadsManager DownloadManager
+        {
+            get
+            {
+                return _downloadManager;
+            }
         }
 
         #endregion
 
         #region Events
 
-        /// <summary>The file download begin.</summary>
-        private void BeginDownload()
-        {
-            Downloader.Download();
-
-            while (!Downloader.DownloadComplete)
-            {
-                // Interval to repeat Wait for downloader to finish.
-                Thread.Sleep(100);
-            }
-
-            _installOptions.DownloadedFile = Downloader.Downloads[0];
-        }
-
         /// <summary>
-        ///     The file download completed event.
+        ///     The download manager downloads completed.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event args.</param>
-        private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        private void DownloadManager_DownloadsCompleted(object sender, EventArgs e)
         {
-            if (_updater.AutoUpdate)
-            {
-                // Do nothing here.
-            }
+            _installOptions.DownloadedFiles = _downloadManager.DownloadedFiles;
         }
 
-        /// <summary>
-        ///     The file download progress changed event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event args.</param>
-        private void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private void DownloadManager_ProgressChanged(DownloaderEventArgs e)
         {
-            double _bytesReceived = double.Parse(e.BytesReceived.ToString());
-            double _totalBytesToReceive = double.Parse(e.TotalBytesToReceive.ToString());
-            double _percentage = (_bytesReceived / _totalBytesToReceive) * 100;
-
-            int _value = int.Parse(Math.Truncate(_percentage).ToString(CultureInfo.CurrentCulture));
-            if (progressBarFileDownload.InvokeRequired)
+            // double _bytesReceived = double.Parse(e.BytesReceived.ToString());
+            // double _totalBytesToReceive = double.Parse(e.TotalBytesToReceive.ToString());
+            /// double _percentage = (_bytesReceived / _totalBytesToReceive) * 100;
+            
+            // _currentDownload = _downloadManager.DownloadedFiles.Count;
+            string _downloadedFilesString = $@"Download File/s: {_currentDownload} of {_package.Downloads.Count}";
+            if (LDownloadFiles.InvokeRequired)
             {
-                progressBarFileDownload.BeginInvoke((MethodInvoker)delegate
+                LDownloadFiles.BeginInvoke((MethodInvoker)delegate
                     {
-                        progressBarFileDownload.Value = _value;
+                        LDownloadFiles.Text = _downloadedFilesString;
                     });
             }
             else
             {
-                progressBarFileDownload.Value = _value;
+                LDownloadFiles.Text = _downloadedFilesString;
             }
 
+            // int _value = int.Parse(Math.Truncate(_percentage).ToString(CultureInfo.CurrentCulture));
+            int _value = e.PercentDone;
+
+            // if (progressBarFileDownload.InvokeRequired)
+            // {
+            // progressBarFileDownload.BeginInvoke((MethodInvoker)delegate
+            // {
+            // progressBarFileDownload.Value = _value;
+            // });
+            // }
+            // else
+            // {
+            // progressBarFileDownload.Value = _value;
+            // }
             string _progressString = $@"Progress: {_value}%";
             if (LProgress.InvokeRequired)
             {
@@ -134,41 +129,41 @@
                 LProgress.Text = _progressString;
             }
 
-            Bytes _bytesReceivedType = new Bytes(long.Parse(e.BytesReceived.ToString()))
-                {
-                    Abbreviated = true
-                };
-            Bytes _totalBytesToReceiveType = new Bytes(long.Parse(e.TotalBytesToReceive.ToString()))
-                {
-                    Abbreviated = true
-                };
+            // Bytes _bytesReceivedType = new Bytes(long.Parse(e.BytesReceived.ToString()))
+            // {
+            // Abbreviated = true
+            // };
+            // Bytes _totalBytesToReceiveType = new Bytes(long.Parse(e.TotalBytesToReceive.ToString()))
+            // {
+            // Abbreviated = true
+            // };
 
-            string _receivedString = @"Received: " + _bytesReceivedType;
-            string _totalSizeString = @"Total Size: " + _totalBytesToReceiveType;
+            // string _receivedString = @"Received: " + _bytesReceivedType;
+            // string _totalSizeString = @"Total Size: " + _totalBytesToReceiveType;
 
-            if (LBytesReceived.InvokeRequired)
-            {
-                LBytesReceived.BeginInvoke((MethodInvoker)delegate
-                    {
-                        LBytesReceived.Text = _receivedString;
-                    });
-            }
-            else
-            {
-                LBytesReceived.Text = _receivedString;
-            }
+            // if (LBytesReceived.InvokeRequired)
+            // {
+            // LBytesReceived.BeginInvoke((MethodInvoker)delegate
+            // {
+            // LBytesReceived.Text = _receivedString;
+            // });
+            // }
+            // else
+            // {
+            // LBytesReceived.Text = _receivedString;
+            // }
 
-            if (LBytesTotalSize.InvokeRequired)
-            {
-                LBytesTotalSize.BeginInvoke((MethodInvoker)delegate
-                    {
-                        LBytesTotalSize.Text = _totalSizeString;
-                    });
-            }
-            else
-            {
-                LBytesTotalSize.Text = _totalSizeString;
-            }
+            // if (LBytesTotalSize.InvokeRequired)
+            // {
+            // LBytesTotalSize.BeginInvoke((MethodInvoker)delegate
+            // {
+            // LBytesTotalSize.Text = _totalSizeString;
+            // });
+            // }
+            // else
+            // {
+            // LBytesTotalSize.Text = _totalSizeString;
+            // }
         }
 
         #endregion

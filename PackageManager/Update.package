@@ -1,10 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <Comet>
-	<ChangeLog>Initial release.</ChangeLog>
-	<Download>https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/TestSample.zip</Download>
-	<Filename>PackageManager.exe</Filename>
-	<Name>Package Manager</Name>
-	<Release>January 1, 2017</Release>
-	<Version>1.0.0.1</Version>
+    <ChangeLog>Initial release</ChangeLog>
+    <Filename>Filename.exe</Filename>
+    <Name>ProductName</Name>
+    <Release>22/12/2017</Release>
+    <Version>1.0.0.1</Version>
+    <Downloads>
+        <Link>https://github.com/DarkByte7/Comet/raw/master/PackageManager/Test2.zip</Link>
+        <Link>https://github.com/DarkByte7/Comet/raw/master/PackageManager/TestSample.zip</Link>
+    </Downloads>
 </Comet>

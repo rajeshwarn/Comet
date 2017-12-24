@@ -212,7 +212,6 @@
         private System.Windows.Forms.Button BtnAdd;
         private System.Windows.Forms.ComboBox CbUrlScheme;
         private System.Windows.Forms.TextBox TextBoxUrl;
-        private System.Windows.Forms.ListView ListViewUrlList;
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.ColumnHeader columnHeader11;
         private System.Windows.Forms.ContextMenuStrip CmsDownloadSites;
@@ -220,5 +219,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        private System.Windows.Forms.ListView ListViewUrlList;
     }
 }

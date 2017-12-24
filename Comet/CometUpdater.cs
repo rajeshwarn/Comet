@@ -43,7 +43,7 @@
         private bool _notifyUpdateAvailable;
         private bool _notifyUpdateReadyToInstall;
         private bool _opened;
-        private string _packagePath;
+        private Uri _packagePath;
         private ProgressDialog _progressDialog;
         private UpdaterState _state;
         private bool _updateAvailable;
@@ -63,7 +63,7 @@
         /// <param name="packagePath">The package path.</param>
         /// <param name="executablePath">The executable path.</param>
         /// <param name="restartApplicationAfterInstall">Restart application after install toggle.</param>
-        public CometUpdater(string packagePath, string executablePath, bool restartApplicationAfterInstall) : this()
+        public CometUpdater(Uri packagePath, string executablePath, bool restartApplicationAfterInstall) : this()
         {
             _packagePath = packagePath;
             _installOptions = new InstallOptions(executablePath, restartApplicationAfterInstall);
@@ -74,7 +74,7 @@
         /// <param name="executablePath">The executable path.</param>
         /// <param name="autoUpdate">Auto update the application.</param>
         /// <param name="restartApplicationAfterInstall">Restart application after install toggle.</param>
-        public CometUpdater(string packagePath, string executablePath, bool autoUpdate, bool restartApplicationAfterInstall) : this()
+        public CometUpdater(Uri packagePath, string executablePath, bool autoUpdate, bool restartApplicationAfterInstall) : this()
         {
             _autoUpdate = autoUpdate;
             _packagePath = packagePath;
@@ -334,7 +334,7 @@
             {
                 if (Connected)
                 {
-                    if (!string.IsNullOrWhiteSpace(_packagePath))
+                    if (!string.IsNullOrWhiteSpace(_packagePath.OriginalString))
                     {
                         return new Package(_packagePath);
                     }
@@ -355,7 +355,7 @@
         [Category("Status")]
         [Description("Gets or sets the package uri.")]
         [EditorBrowsable(EditorBrowsableState.Always)]
-        public string PackagePath
+        public Uri PackagePath
         {
             get
             {
@@ -493,9 +493,12 @@
 
             if (NetworkManager.InternetAvailable)
             {
-                if (NetworkManager.SourceExists(e.PackagePath))
+                if (NetworkManager.SourceExists(e.PackagePath.OriginalString))
                 {
-                    if (ApplicationManager.CheckForUpdate(e.AssemblyLocation, e.PackagePath))
+                    // TODO: Version below
+                    // TODO: Version above
+                    // TODO: Version the same
+                    if (ApplicationManager.CheckForUpdate(e.Assembly, e.PackagePath))
                     {
                         _updateAvailable = true;
                         NotificationUpdateAvailable();
@@ -514,7 +517,7 @@
                     _state = UpdaterState.PackageNotFound;
                     _updateAvailable = false;
                     CheckingForUpdate?.Invoke(e);
-                    VisualExceptionDialog.Show(new FileNotFoundException(StringManager.RemoteFileNotFound(e.Package.Download)));
+                    VisualExceptionDialog.Show(new FileNotFoundException(StringManager.RemoteFileNotFound(e.PackagePath.OriginalString)));
                 }
             }
             else
@@ -532,6 +535,11 @@
         /// <param name="e">The event args.</param>
         private void BackgroundUpdateChecker_Completed(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (_state == UpdaterState.Updated)
+            {
+                return;
+            }
+
             _progressDialog = new ProgressDialog(_installOptions, Package, CurrentVersion, this);
             _progressDialog.Closed += ProgressDialog_Closed;
 

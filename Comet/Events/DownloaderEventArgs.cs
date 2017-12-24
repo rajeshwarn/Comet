@@ -18,7 +18,7 @@
         /// <param name="extraStatus">The extra Status.</param>
         /// <param name="status">The status.</param>
         /// <param name="payload">The payload.</param>
-        public DownloaderEventArgs(int percentDone, int unweightedPercent, string extraStatus, OldDownloader.ProgressStatus status, object payload)
+        public DownloaderEventArgs(int percentDone, int unweightedPercent, string extraStatus, DownloadsManager.ProgressStatus status, object payload)
         {
             PercentDone = percentDone;
             UnWeightedPercent = unweightedPercent;
@@ -37,7 +37,7 @@
 
         public int PercentDone { get; }
 
-        public OldDownloader.ProgressStatus Status { get; }
+        public DownloadsManager.ProgressStatus Status { get; }
 
         public int UnWeightedPercent { get; }
 

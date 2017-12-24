@@ -2,6 +2,7 @@
 {
     #region Namespace
 
+    using System.Collections.Generic;
     using System.IO;
     using System.Windows.Forms;
 
@@ -55,7 +56,8 @@
 
         #region Properties
 
-        public string DownloadedFile { get; set; }
+        // public string DownloadedFile { get; set; }
+        public List<string> DownloadedFiles { get; set; } = new List<string>();
 
         public string DownloadFolder
         {
@@ -140,21 +142,21 @@
             FileManager.CreateDirectory(_workingFolder);
         }
 
-        /// <summary>
-        ///     Verify the install files folder exists before extracting.
-        /// </summary>
-        public void VerifyExtract()
-        {
-            if (!Directory.Exists(_installFilesFolder))
-            {
-                VisualExceptionDialog.Show(new DirectoryNotFoundException("The install files path cannot be found. " + _installFilesFolder));
-            }
+        ///// <summary>
+        /////     Verify the install files folder exists before extracting.
+        ///// </summary>
+        // public void VerifyExtract()
+        // {
+        // if (!Directory.Exists(_installFilesFolder))
+        // {
+        // VisualExceptionDialog.Show(new DirectoryNotFoundException("The install files path cannot be found. " + _installFilesFolder));
+        // }
 
-            if (!File.Exists(DownloadedFile))
-            {
-                VisualExceptionDialog.Show(new DirectoryNotFoundException("The downloaded file doesn't exist. " + DownloadedFile));
-            }
-        }
+        // if (!File.Exists(DownloadedFile))
+        // {
+        // VisualExceptionDialog.Show(new DirectoryNotFoundException("The downloaded file doesn't exist. " + DownloadedFile));
+        // }
+        // }
 
         /// <summary>
         ///     Verify the install folder exists before installing.

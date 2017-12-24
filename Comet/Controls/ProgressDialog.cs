@@ -175,7 +175,7 @@
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event args.</param>
-        private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        private void DownloadFileCompleted(object sender, EventArgs e)
         {
             _updater.NotificationUpdateReadyToInstall();
 
@@ -278,7 +278,12 @@
         private void InstallUpdate()
         {
             FileManager.CreateDirectory(_installOptions.InstallFilesFolder);
-            Archive.ExtractToDirectory(new Archive(_installOptions.DownloadedFile), _installOptions.InstallFilesFolder);
+
+            foreach (string _archive in _installOptions.DownloadedFiles)
+            {
+                Archive.ExtractToDirectory(new Archive(_archive), _installOptions.InstallFilesFolder);
+            }
+
             CompileInstaller(_installOptions);
         }
 
@@ -331,7 +336,7 @@
                             };
                         Controls.Add(_downloadPanel);
 
-                        _downloadPanel.Downloader._client.DownloadFileCompleted += DownloadFileCompleted;
+                        _downloadPanel.DownloadManager.DownloadsCompleted += DownloadFileCompleted;
                         break;
                     }
 

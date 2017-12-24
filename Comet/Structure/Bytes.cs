@@ -344,15 +344,12 @@
         /// <returns>The <see cref="long" />.</returns>
         public static long GetFileSize(string file)
         {
-            if (File.Exists(file))
+            if (!File.Exists(file))
             {
-                FileInfo _fileInfo = new FileInfo(file);
-                return _fileInfo.Length;
+                throw new FileNotFoundException($"The file was not found: {file}");
             }
-            else
-            {
-                throw new FileNotFoundException();
-            }
+
+            return new FileInfo(file).Length;
         }
 
         /// <summary>Retrieves the FileSizeType.</summary>

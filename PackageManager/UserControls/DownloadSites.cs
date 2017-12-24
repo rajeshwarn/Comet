@@ -17,7 +17,7 @@
     {
         #region Variables
 
-        private List<string> _urlList;
+        private List<Uri> _urlList;
 
         #endregion
 
@@ -31,7 +31,7 @@
             InitializeComponent();
             ControlPanel.WriteLog($"Initializing Download Sites Panel");
 
-            _urlList = new List<string>();
+            _urlList = new List<Uri>();
             CbUrlScheme.SelectedIndex = 0;
         }
 
@@ -42,7 +42,7 @@
         /// <summary>
         ///     Get the downloads list.
         /// </summary>
-        public List<string> DownloadsList
+        public List<Uri> DownloadsList
         {
             get
             {
@@ -53,6 +53,28 @@
         #endregion
 
         #region Events
+
+        /// <summary>
+        ///     Import the package downloads to the list view.
+        /// </summary>
+        /// <param name="downloads">The downloads.</param>
+        internal void ImportPackageDownloads(List<Uri> downloads)
+        {
+            foreach (Uri _download in downloads)
+            {
+                ListViewItem _item = new ListViewItem(_download.OriginalString);
+                _item.SubItems.Add(NetworkManager.SourceExists(_download.OriginalString).ToString());
+
+                if (Helper.IsItemInCollection(_item, ListViewUrlList))
+                {
+                    return;
+                }
+
+                ListViewUrlList.Items.Add(_item);
+            }
+
+            UpdateDownloadsList();
+        }
 
         /// <summary>
         ///     Button add Url.
@@ -76,6 +98,7 @@
 
             ListViewUrlList.Items.Add(_item);
             UpdateDownloadsList();
+            TextBoxUrl.Clear();
         }
 
         /// <summary>
@@ -134,7 +157,7 @@
 
             foreach (ListViewItem _item in ListViewUrlList.Items)
             {
-                _urlList.Add(_item.Text);
+                _urlList.Add(new Uri(_item.Text));
             }
         }
 

@@ -97,8 +97,8 @@
     <EmbeddedResource Include="Setup\ConsoleManager.cs" />
     <EmbeddedResource Include="Setup\Installer.cs" />
     <EmbeddedResource Include="Setup\ResourceSettings.cs" />
-    <Compile Include="Managers\OldDownloader.cs" />
-    <Compile Include="Structure\Downloader.cs" />
+    <Compile Include="Managers\DownloadsManager.cs" />
+    <Compile Include="Structure\DownloadData.cs" />
     <Compile Include="Structure\Logger.cs" />
     <Compile Include="Managers\ResourcesManager.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -116,7 +116,6 @@
     <Compile Include="Managers\NetworkManager.cs" />
     <Compile Include="Managers\PackageManager.cs" />
     <Compile Include="Managers\StringManager.cs" />
-    <Compile Include="Structure\DownloadData.cs" />
     <Compile Include="CometUpdater.cs">
       <SubType>Component</SubType>
     </Compile>

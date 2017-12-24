@@ -8,6 +8,7 @@
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Text;
+    using System.Threading;
     using System.Windows.Forms;
 
     #endregion
@@ -91,19 +92,30 @@
         /// <param name="dialogWindow">The dialog Window.</param>
         public static void Show(Exception exception, string caption = "Exception Dialog", bool dialogWindow = true)
         {
-            VisualExceptionDialog _exceptionDialog = new VisualExceptionDialog(exception)
+            Thread _threadShowDialog = new Thread(Display)
                 {
-                    Text = caption,
-                    StartPosition = FormStartPosition.CenterScreen
+                    IsBackground = true
                 };
 
-            if (dialogWindow)
+            _threadShowDialog.SetApartmentState(ApartmentState.STA);
+            _threadShowDialog.Start();
+
+            void Display()
             {
-                _exceptionDialog.ShowDialog();
-            }
-            else
-            {
-                _exceptionDialog.Show();
+                VisualExceptionDialog _exceptionDialog = new VisualExceptionDialog(exception)
+                    {
+                        Text = caption,
+                        StartPosition = FormStartPosition.CenterScreen
+                    };
+
+                if (dialogWindow)
+                {
+                    _exceptionDialog.ShowDialog();
+                }
+                else
+                {
+                    _exceptionDialog.Show();
+                }
             }
         }
 
@@ -228,12 +240,14 @@
 
             Controls.Add(_messageLabel);
 
+            string _message = _exception?.Message ?? "The exception was null.";
+
             _messageTextBox = new TextBox
                 {
                     ReadOnly = true,
                     BackColor = BackColor,
                     BorderStyle = BorderStyle.None,
-                    Text = _exception.Message,
+                    Text = _message,
                     Location = new Point(_messageLabel.Location.X, _messageLabel.Bottom),
                     Size = new Size(width, 20)
                 };
@@ -297,12 +311,14 @@
 
             Controls.Add(_typeLabel);
 
+            string _message = _exception?.GetType().ToString() ?? "The exception was null.";
+
             _typeTextBox = new TextBox
                 {
                     ReadOnly = true,
                     BackColor = BackColor,
                     BorderStyle = BorderStyle.None,
-                    Text = _exception.GetType().ToString(),
+                    Text = _message,
                     Location = new Point(_pictureBoxImage.Right + _imageSpacing, _typeLabel.Bottom),
                     Size = new Size(width, 20)
                 };
