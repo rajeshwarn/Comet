@@ -44,7 +44,7 @@
 
             ControlPanel.WriteLog($"Started {Application.ProductName}");
 
-            ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Update0.package";
+            ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Update.package";
 
             _updater = new CometUpdater(new Uri(ControlPanel.UpdatePackageUrl), Assembly.GetExecutingAssembly().Location, false)
                 {
