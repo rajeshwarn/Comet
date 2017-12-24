@@ -488,34 +488,30 @@
                 return;
             }
 
-            _state = UpdaterState.Checking;
-            CheckingForUpdate?.Invoke(e);
-
+            CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
             if (NetworkManager.InternetAvailable)
             {
                 if (NetworkManager.SourceExists(e.PackagePath.OriginalString))
                 {
                     if (ApplicationManager.CheckForUpdate(e.Assembly, e.PackagePath))
                     {
-                        // Outdated
                         _updateAvailable = true;
                         NotificationUpdateAvailable();
                         _state = UpdaterState.Outdated;
-                        CheckingForUpdate?.Invoke(e);
+                        CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
                     }
                     else
                     {
-                        // Updated
                         _updateAvailable = false;
                         _state = UpdaterState.Updated;
-                        CheckingForUpdate?.Invoke(e);
+                        CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
                     }
                 }
                 else
                 {
                     _state = UpdaterState.PackageNotFound;
                     _updateAvailable = false;
-                    CheckingForUpdate?.Invoke(e);
+                    CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
                     VisualExceptionDialog.Show(new FileNotFoundException(StringManager.RemoteFileNotFound(e.PackagePath.OriginalString)));
                 }
             }
@@ -523,7 +519,7 @@
             {
                 _state = UpdaterState.NoConnection;
                 _updateAvailable = false;
-                CheckingForUpdate?.Invoke(e);
+                CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
             }
 
             _backgroundUpdateChecker.CancelAsync();
@@ -570,6 +566,7 @@
         /// <param name="e">The event args.</param>
         private void BackgroundUpdateCheckerDoWork(object sender, DoWorkEventArgs e)
         {
+            _state = UpdaterState.Checking;
             OnCheckingForUpdate(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
         }
 
