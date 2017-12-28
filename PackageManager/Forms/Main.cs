@@ -18,6 +18,7 @@
     using Comet.Managers;
     using Comet.Structure;
 
+    using PackageManager.Managers;
     using PackageManager.UserControls;
 
     #endregion
@@ -28,6 +29,7 @@
         #region Variables
 
         private DownloadSites _downloadSites;
+        private HistoryManager _historyManager;
 
         #endregion
 
@@ -37,6 +39,7 @@
         {
             InitializeComponent();
 
+            ControlPanel.FileHistoryLocation = @"Logs\History.xml";
             ControlPanel.ArchiveFileTypes = @"ZIP File|*.zip";
             ControlPanel.PackageFileTypes = @"Package File|*.package";
             ControlPanel.MaxRecentProjects = 10;
@@ -122,15 +125,6 @@
             _updater.CheckForUpdate();
         }
 
-        /// <summary>Clears the recent files from history.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void ClearRecentFilesHistory_Click(object sender, EventArgs e)
-        {
-            recentHistoryToolStripMenuItem.DropDownItems.Clear();
-            ConstructClearRecentFilesMenuItem();
-        }
-
         /// <summary>Close Tool Strip Menu Item Click.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event.</param>
@@ -180,30 +174,6 @@
             {
                 label1.Text = _s;
             }
-        }
-
-        /// <summary>CreateInstallerCode clear recent files menu item.</summary>
-        private void ConstructClearRecentFilesMenuItem()
-        {
-            ToolStripMenuItem _clearRecentFilesHistory = new ToolStripMenuItem
-                {
-                    Name = "ClearRecentFilesHistoryMenuItem",
-                    Text = @"Empty Recent Files List"
-                };
-
-            _clearRecentFilesHistory.Click += ClearRecentFilesHistory_Click;
-            recentHistoryToolStripMenuItem.DropDownItems.Add(_clearRecentFilesHistory);
-
-            ToolStripSeparator _toolStripSeparator = new ToolStripSeparator();
-            recentHistoryToolStripMenuItem.DropDownItems.Add(_toolStripSeparator);
-        }
-
-        /// <summary>Constructs the recent files menu strip.</summary>
-        private void ConstructRecentFilesMenuStrip()
-        {
-            recentHistoryToolStripMenuItem.DropDownItems.Clear();
-            ConstructClearRecentFilesMenuItem();
-            PopulateRecentFilesHistory();
         }
 
         /// <summary>DateTime release value changed.</summary>
@@ -335,7 +305,8 @@
             lvErrorList.Columns[3].Width = 50;
             lvErrorList.Columns[4].Width = 50;
 
-            ConstructRecentFilesMenuStrip();
+            _historyManager = new HistoryManager(recentHistoryToolStripMenuItem, ControlPanel.FileHistoryLocation);
+            _historyManager.ToolStripMenuItemClicked += RecentHistory_Click;
         }
 
         /// <summary>New Tool Strip Menu Item Click.</summary>
@@ -406,9 +377,12 @@
                     ControlPanel.FileSaved = true;
                     ControlPanel.FileName = Path.GetFileName(path);
                     ControlPanel.FullPath = path;
-                    ControlPanel.ManageHistoryLog(true);
+
+                    _historyManager.Add(path);
+                    _historyManager.UpdateMenu();
+                    _historyManager.Save();
+
                     tabControlMain.TabPages[1].Text = ControlPanel.FileName;
-                    ConstructRecentFilesMenuStrip();
                 }
             }
             catch (Exception e)
@@ -437,47 +411,16 @@
             }
         }
 
-        /// <summary>Populate the recent files history from the log.</summary>
-        private void PopulateRecentFilesHistory()
-        {
-            // Check for recent file updates
-            ControlPanel.ManageHistoryLog();
-
-            for (var i = 0; i < ControlPanel.FileHistory.Count; i++)
-            {
-                // CreateInstallerCode sub-item
-                ToolStripMenuItem _recentFileItem = new ToolStripMenuItem
-                    {
-                        Name = @"RecentFilesListToolStripMenuItem" + i,
-                        Tag = ControlPanel.FileHistory[i],
-                        Text = i + @": " + ControlPanel.FileHistory[i]
-                    };
-
-                _recentFileItem.Click += RecentHistoryItem_Click;
-                recentHistoryToolStripMenuItem.DropDownItems.Add(_recentFileItem);
-            }
-        }
-
-        /// <summary>Recent History Item Tool Strip Menu Item Click.</summary>
+        /// <summary>
+        ///     The tool strip menu item click event for a recent history entry.
+        /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The event.</param>
-        private void RecentHistoryItem_Click(object sender, EventArgs e)
+        /// <param name="e">The event args.</param>
+        private void RecentHistory_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem _recentHistoryItemClicked = (ToolStripMenuItem)sender;
-
-            string _filePath = _recentHistoryItemClicked.Tag.ToString();
-
-            if (File.Exists(_filePath))
-            {
-                OpenFile(_filePath);
-            }
-            else
-            {
-                recentHistoryToolStripMenuItem.DropDownItems.Remove(_recentHistoryItemClicked);
-            }
-
-
-            // TODO: Reorganize file history in menu strip. UPDATE() method.
+            ToolStripMenuItem _toolStripMenuItemClicked = (ToolStripMenuItem)sender;
+            string _clickedFilePath = _toolStripMenuItemClicked.Tag.ToString();
+            OpenFile(_clickedFilePath);
         }
 
         /// <summary>Report A Problem Tool Strip Menu Item Click.</summary>
@@ -539,9 +482,7 @@
                 if (File.Exists(ControlPanel.FullPath))
                 {
                     SavePackage(ControlPanel.FullPath);
-
-                    ConstructRecentFilesMenuStrip();
-
+                    _historyManager.UpdateMenu();
                     ControlPanel.FileSaved = true;
                 }
                 else

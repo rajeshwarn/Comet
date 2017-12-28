@@ -346,15 +346,8 @@
 
         /// <summary>Saves the package to file.</summary>
         /// <param name="path">The file path.</param>
-        public void Save(string path)
-        {
-            Save(path, SaveOptions.DisableFormatting);
-        }
-
-        /// <summary>Saves the package to file.</summary>
-        /// <param name="path">The file path.</param>
         /// <param name="saveOptions">The save options.</param>
-        public void Save(string path, SaveOptions saveOptions)
+        public void Save(string path, SaveOptions saveOptions = SaveOptions.DisableFormatting)
         {
             try
             {
