@@ -42,7 +42,7 @@
         private bool _notifyUpdateAvailable;
         private bool _notifyUpdateReadyToInstall;
         private bool _opened;
-        private Uri _packagePath;
+        private Uri _updateServerPackagePath;
         private ProgressDialog _progressDialog;
         private UpdaterState _state;
         private bool _updateAvailable;
@@ -59,31 +59,31 @@
         }
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
-        /// <param name="packagePath">The package path.</param>
+        /// <param name="updateServerPackagePath">The update server package path.</param>
         /// <param name="executablePath">The executable path.</param>
         /// <param name="restartApplicationAfterInstall">Restart application after install toggle.</param>
-        public CometUpdater(Uri packagePath, string executablePath, bool restartApplicationAfterInstall) : this()
+        public CometUpdater(Uri updateServerPackagePath, string executablePath, bool restartApplicationAfterInstall) : this()
         {
-            _packagePath = packagePath;
+            _updateServerPackagePath = updateServerPackagePath;
             _installOptions = new InstallOptions(executablePath, restartApplicationAfterInstall);
         }
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
-        /// <param name="packagePath">The package path.</param>
+        /// <param name="updateServerPackagePath">The update server package path.</param>
         /// <param name="executablePath">The executable path.</param>
         /// <param name="autoUpdate">Auto update the application.</param>
         /// <param name="restartApplicationAfterInstall">Restart application after install toggle.</param>
-        public CometUpdater(Uri packagePath, string executablePath, bool autoUpdate, bool restartApplicationAfterInstall) : this()
+        public CometUpdater(Uri updateServerPackagePath, string executablePath, bool autoUpdate, bool restartApplicationAfterInstall) : this()
         {
             _autoUpdate = autoUpdate;
-            _packagePath = packagePath;
+            _updateServerPackagePath = updateServerPackagePath;
             _installOptions = new InstallOptions(executablePath, restartApplicationAfterInstall);
         }
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
         public CometUpdater()
         {
-            _packagePath = null;
+            _updateServerPackagePath = null;
             _autoUpdate = false;
             _notifyUpdateAvailable = true;
             _notifyUpdateReadyToInstall = true;
@@ -333,9 +333,9 @@
             {
                 if (Connected)
                 {
-                    if (!string.IsNullOrWhiteSpace(_packagePath.OriginalString))
+                    if (!string.IsNullOrWhiteSpace(_updateServerPackagePath.OriginalString))
                     {
-                        return new Package(_packagePath);
+                        return new Package(_updateServerPackagePath);
                     }
                     else
                     {
@@ -349,21 +349,21 @@
             }
         }
 
-        /// <summary>Gets or sets the package uri.</summary>
+        /// <summary>Gets or sets the update server package path.</summary>
         [Browsable(true)]
         [Category("Status")]
-        [Description("Gets or sets the package uri.")]
+        [Description("Gets or sets the update server package path.")]
         [EditorBrowsable(EditorBrowsableState.Always)]
-        public Uri PackagePath
+        public Uri UpdateServerPackagePath
         {
             get
             {
-                return _packagePath;
+                return _updateServerPackagePath;
             }
 
             set
             {
-                _packagePath = value;
+                _updateServerPackagePath = value;
             }
         }
 
@@ -484,11 +484,11 @@
         {
             if (_state == UpdaterState.Outdated)
             {
-                CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
+                CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _updateServerPackagePath, _state));
                 return;
             }
 
-            CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
+            CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _updateServerPackagePath, _state));
             if (NetworkManager.InternetAvailable)
             {
                 if (NetworkManager.SourceExists(e.PackagePath.OriginalString))
@@ -498,20 +498,20 @@
                         _updateAvailable = true;
                         NotificationUpdateAvailable();
                         _state = UpdaterState.Outdated;
-                        CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
+                        CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _updateServerPackagePath, _state));
                     }
                     else
                     {
                         _updateAvailable = false;
                         _state = UpdaterState.Updated;
-                        CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
+                        CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _updateServerPackagePath, _state));
                     }
                 }
                 else
                 {
                     _state = UpdaterState.PackageNotFound;
                     _updateAvailable = false;
-                    CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
+                    CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _updateServerPackagePath, _state));
                     VisualExceptionDialog.Show(new FileNotFoundException(StringManager.RemoteFileNotFound(e.PackagePath.OriginalString)));
                 }
             }
@@ -519,7 +519,7 @@
             {
                 _state = UpdaterState.NoConnection;
                 _updateAvailable = false;
-                CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
+                CheckingForUpdate?.Invoke(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _updateServerPackagePath, _state));
             }
 
             _backgroundUpdateChecker.CancelAsync();
@@ -567,7 +567,7 @@
         private void BackgroundUpdateCheckerDoWork(object sender, DoWorkEventArgs e)
         {
             _state = UpdaterState.Checking;
-            OnCheckingForUpdate(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _packagePath, _state));
+            OnCheckingForUpdate(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _updateServerPackagePath, _state));
         }
 
         /// <summary>
