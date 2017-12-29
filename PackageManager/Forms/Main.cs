@@ -137,6 +137,7 @@
             string _downloadLink = string.Empty;
             string _fileName = string.Empty;
             string _productName = string.Empty;
+            tabControlMain.TabPages[1].Text = string.Empty;
             DateTime _dateTime = new DateTime(2000, 1, 1);
             Version _version = new Version(0, 0, 0, 0);
             Package _newPackage = new Package(_changeLog, _fileName, _productName, _dateTime.ToString(CultureInfo.CurrentCulture), _version, new List<Uri>());
