@@ -28,25 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.lvArchive = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.cmsArchive = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.newArchiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadArchiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-            this.addFilesToArchiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.extractFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.extractToTheSpecifiedFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.deleteFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tbSource = new System.Windows.Forms.TextBox();
             this.lvErrorList = new System.Windows.Forms.ListView();
@@ -93,9 +75,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.nudMinor = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.tabPage9 = new System.Windows.Forms.TabPage();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.tabPage12 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -107,12 +86,11 @@
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.TbUpdaterDetails = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
-            this.TbUpdaterDetails = new System.Windows.Forms.TextBox();
-            this.cmsArchive.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -123,7 +101,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudBuild)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMajor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMinor)).BeginInit();
-            this.tabPage9.SuspendLayout();
             this.tabPage12.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -135,131 +112,6 @@
             this.tabPage2.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lvArchive
-            // 
-            this.lvArchive.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4});
-            this.lvArchive.ContextMenuStrip = this.cmsArchive;
-            this.lvArchive.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvArchive.FullRowSelect = true;
-            this.lvArchive.GridLines = true;
-            this.lvArchive.Location = new System.Drawing.Point(3, 3);
-            this.lvArchive.Name = "lvArchive";
-            this.lvArchive.Size = new System.Drawing.Size(644, 352);
-            this.lvArchive.TabIndex = 4;
-            this.lvArchive.UseCompatibleStateImageBehavior = false;
-            this.lvArchive.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Size";
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Type";
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Modified";
-            // 
-            // cmsArchive
-            // 
-            this.cmsArchive.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newArchiveToolStripMenuItem,
-            this.loadArchiveToolStripMenuItem,
-            this.toolStripSeparator12,
-            this.addFilesToArchiveToolStripMenuItem,
-            this.toolStripSeparator9,
-            this.selectAllToolStripMenuItem,
-            this.toolStripSeparator11,
-            this.extractFileToolStripMenuItem,
-            this.extractToTheSpecifiedFolderToolStripMenuItem,
-            this.toolStripSeparator10,
-            this.deleteFileToolStripMenuItem});
-            this.cmsArchive.Name = "cmsArchive";
-            this.cmsArchive.Size = new System.Drawing.Size(228, 182);
-            // 
-            // newArchiveToolStripMenuItem
-            // 
-            this.newArchiveToolStripMenuItem.Name = "newArchiveToolStripMenuItem";
-            this.newArchiveToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            this.newArchiveToolStripMenuItem.Text = "New archive...";
-            this.newArchiveToolStripMenuItem.Click += new System.EventHandler(this.NewArchiveToolStripMenuItem_Click);
-            // 
-            // loadArchiveToolStripMenuItem
-            // 
-            this.loadArchiveToolStripMenuItem.Name = "loadArchiveToolStripMenuItem";
-            this.loadArchiveToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            this.loadArchiveToolStripMenuItem.Text = "Load archive...";
-            this.loadArchiveToolStripMenuItem.Click += new System.EventHandler(this.LoadArchiveToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator12
-            // 
-            this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(224, 6);
-            // 
-            // addFilesToArchiveToolStripMenuItem
-            // 
-            this.addFilesToArchiveToolStripMenuItem.Enabled = false;
-            this.addFilesToArchiveToolStripMenuItem.Name = "addFilesToArchiveToolStripMenuItem";
-            this.addFilesToArchiveToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            this.addFilesToArchiveToolStripMenuItem.Text = "Add files to archive";
-            this.addFilesToArchiveToolStripMenuItem.Click += new System.EventHandler(this.AddFilesToArchiveToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator9
-            // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(224, 6);
-            // 
-            // selectAllToolStripMenuItem
-            // 
-            this.selectAllToolStripMenuItem.Enabled = false;
-            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            this.selectAllToolStripMenuItem.Text = "Select all";
-            this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.SelectAllToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator11
-            // 
-            this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(224, 6);
-            // 
-            // extractFileToolStripMenuItem
-            // 
-            this.extractFileToolStripMenuItem.Enabled = false;
-            this.extractFileToolStripMenuItem.Name = "extractFileToolStripMenuItem";
-            this.extractFileToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            this.extractFileToolStripMenuItem.Text = "Extract file";
-            this.extractFileToolStripMenuItem.Click += new System.EventHandler(this.ExtractFileToolStripMenuItem_Click);
-            // 
-            // extractToTheSpecifiedFolderToolStripMenuItem
-            // 
-            this.extractToTheSpecifiedFolderToolStripMenuItem.Enabled = false;
-            this.extractToTheSpecifiedFolderToolStripMenuItem.Name = "extractToTheSpecifiedFolderToolStripMenuItem";
-            this.extractToTheSpecifiedFolderToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            this.extractToTheSpecifiedFolderToolStripMenuItem.Text = "Extract to the specified folder";
-            this.extractToTheSpecifiedFolderToolStripMenuItem.Click += new System.EventHandler(this.ExtractToTheSpecifiedFolderToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator10
-            // 
-            this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(224, 6);
-            // 
-            // deleteFileToolStripMenuItem
-            // 
-            this.deleteFileToolStripMenuItem.Enabled = false;
-            this.deleteFileToolStripMenuItem.Name = "deleteFileToolStripMenuItem";
-            this.deleteFileToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            this.deleteFileToolStripMenuItem.Text = "Delete file";
-            this.deleteFileToolStripMenuItem.Click += new System.EventHandler(this.DeleteFileToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -481,9 +333,6 @@
             // tabControlCreator
             // 
             this.tabControlCreator.Controls.Add(this.tabPage5);
-            this.tabControlCreator.Controls.Add(this.tabPage6);
-            this.tabControlCreator.Controls.Add(this.tabPage7);
-            this.tabControlCreator.Controls.Add(this.tabPage9);
             this.tabControlCreator.Controls.Add(this.tabPage10);
             this.tabControlCreator.Controls.Add(this.tabPage12);
             this.tabControlCreator.Controls.Add(this.tabPage3);
@@ -695,37 +544,6 @@
             this.label6.TabIndex = 12;
             this.label6.Text = "Name:";
             // 
-            // tabPage6
-            // 
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(650, 358);
-            this.tabPage6.TabIndex = 1;
-            this.tabPage6.Text = "Style";
-            this.tabPage6.UseVisualStyleBackColor = true;
-            // 
-            // tabPage7
-            // 
-            this.tabPage7.Location = new System.Drawing.Point(4, 22);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(650, 358);
-            this.tabPage7.TabIndex = 2;
-            this.tabPage7.Text = "Language";
-            this.tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // tabPage9
-            // 
-            this.tabPage9.Controls.Add(this.lvArchive);
-            this.tabPage9.Location = new System.Drawing.Point(4, 22);
-            this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(650, 358);
-            this.tabPage9.TabIndex = 4;
-            this.tabPage9.Text = "Archive Creator";
-            this.tabPage9.UseVisualStyleBackColor = true;
-            // 
             // tabPage10
             // 
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
@@ -857,6 +675,18 @@
             this.tabPage1.Text = "Start Page";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // TbUpdaterDetails
+            // 
+            this.TbUpdaterDetails.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TbUpdaterDetails.Location = new System.Drawing.Point(3, 3);
+            this.TbUpdaterDetails.Multiline = true;
+            this.TbUpdaterDetails.Name = "TbUpdaterDetails";
+            this.TbUpdaterDetails.ReadOnly = true;
+            this.TbUpdaterDetails.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.TbUpdaterDetails.Size = new System.Drawing.Size(658, 384);
+            this.TbUpdaterDetails.TabIndex = 2;
+            this.TbUpdaterDetails.Text = "Comet Updater Details";
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tabControlCreator);
@@ -891,18 +721,6 @@
             this.toolStripSeparator13.Name = "toolStripSeparator13";
             this.toolStripSeparator13.Size = new System.Drawing.Size(111, 6);
             // 
-            // TbUpdaterDetails
-            // 
-            this.TbUpdaterDetails.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TbUpdaterDetails.Location = new System.Drawing.Point(3, 3);
-            this.TbUpdaterDetails.Multiline = true;
-            this.TbUpdaterDetails.Name = "TbUpdaterDetails";
-            this.TbUpdaterDetails.ReadOnly = true;
-            this.TbUpdaterDetails.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.TbUpdaterDetails.Size = new System.Drawing.Size(658, 384);
-            this.TbUpdaterDetails.TabIndex = 2;
-            this.TbUpdaterDetails.Text = "Comet Updater Details";
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -916,7 +734,6 @@
             this.Name = "Main";
             this.Text = "[Comet] Package Manager";
             this.Load += new System.EventHandler(this.Main_Load);
-            this.cmsArchive.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -929,7 +746,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudBuild)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMajor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMinor)).EndInit();
-            this.tabPage9.ResumeLayout(false);
             this.tabPage12.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
@@ -949,11 +765,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.ListView lvArchive;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.StatusStrip statusStripMain;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewToolStripMenuItem;
@@ -981,23 +792,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ContextMenuStrip cmsArchive;
-        private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
-        private System.Windows.Forms.ToolStripMenuItem addFilesToArchiveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem extractToTheSpecifiedFolderToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
-        private System.Windows.Forms.ToolStripMenuItem deleteFileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
-        private System.Windows.Forms.ToolStripMenuItem extractFileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newArchiveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadArchiveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
         private System.Windows.Forms.TabControl tabControlCreator;
         private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.TabPage tabPage6;
-        private System.Windows.Forms.TabPage tabPage7;
-        private System.Windows.Forms.TabPage tabPage9;
         private System.Windows.Forms.TabPage tabPage10;
         private System.Windows.Forms.TabPage tabPage12;
         private System.Windows.Forms.TabControl tabControlMain;

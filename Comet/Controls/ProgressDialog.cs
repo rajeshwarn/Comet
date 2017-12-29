@@ -9,6 +9,7 @@
     using System.Diagnostics;
     using System.Drawing;
     using System.IO;
+    using System.IO.Compression;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
@@ -281,7 +282,7 @@
 
             foreach (string _archive in _installOptions.DownloadedFiles)
             {
-                Archive.ExtractToDirectory(new Archive(_archive), _installOptions.InstallFilesFolder);
+                ZipFile.ExtractToDirectory(_archive, _installOptions.InstallFilesFolder);
             }
 
             CompileInstaller(_installOptions);
