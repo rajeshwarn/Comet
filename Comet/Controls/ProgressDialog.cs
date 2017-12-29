@@ -278,6 +278,7 @@
         /// </summary>
         private void InstallUpdate()
         {
+            Directory.Delete(_installOptions.InstallFilesFolder, true);
             FileManager.CreateDirectory(_installOptions.InstallFilesFolder);
 
             foreach (string _archive in _installOptions.DownloadedFiles)
