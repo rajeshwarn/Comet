@@ -7,7 +7,6 @@
     using System.IO;
     using System.Reflection;
     using System.Resources;
-    using System.Runtime.InteropServices;
     using System.Text;
     using System.Windows.Forms;
 
@@ -17,13 +16,14 @@
     {
         #region Variables
 
-        private string _installFiles;
-        private string _installDirectory;
+        private string _downloadFolder;
         private string _executablePath;
+        private string _installDirectory;
+        private string _installFilesFolder;
         private bool _logging;
         private string _productName;
-        private string _workingFolder;
         private bool _restartApplicationAfterInstall;
+        private string _workingFolder;
 
         #endregion
 
@@ -40,19 +40,20 @@
         #endregion
 
         #region Properties
+
+        public string DownloadFolder
+        {
+            get
+            {
+                return _downloadFolder;
+            }
+        }
+
         public string ExecutablePath
         {
             get
             {
                 return _executablePath;
-            }
-        }
-
-        public string InstallFiles
-        {
-            get
-            {
-                return _installFiles;
             }
         }
 
@@ -64,11 +65,11 @@
             }
         }
 
-        public bool RestartApplicationAfterInstall
+        public string InstallFilesFolder
         {
             get
             {
-                return _restartApplicationAfterInstall;
+                return _installFilesFolder;
             }
         }
 
@@ -85,6 +86,14 @@
             get
             {
                 return _productName;
+            }
+        }
+
+        public bool RestartApplicationAfterInstall
+        {
+            get
+            {
+                return _restartApplicationAfterInstall;
             }
         }
 
@@ -121,12 +130,8 @@
                 Console.WriteLine(@"Initializing");
                 ConsoleManager.DrawLine();
 
-                _workingFolder = Path.GetTempPath() + ProductName + @"\Updater\";
-                Console.WriteLine(@"Working Folder: " + WorkingFolder);
-
-                _installFiles = WorkingFolder + @"InstallFiles\";
-                Console.WriteLine(@"Install Files: " + InstallFiles);
-
+                _workingFolder = Path.GetTempPath() + _productName + @"\Updater\";
+                Console.WriteLine(@"Working Folder: " + _workingFolder);
                 ConsoleManager.DrawLine();
 
                 _downloadFolder = _workingFolder + @"Download\";
@@ -135,24 +140,6 @@
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
-            }
-        }
-
-        private string _installFilesFolder;
-        public string InstallFilesFolder
-        {
-            get
-            {
-                return _installFilesFolder;
-            }
-        }
-
-        private string _downloadFolder;
-        public string DownloadFolder
-        {
-            get
-            {
-                return _downloadFolder;
             }
         }
 

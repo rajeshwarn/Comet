@@ -4,6 +4,7 @@
 
     using System;
     using System.Diagnostics;
+    using System.IO;
 
     #endregion
 
@@ -28,8 +29,9 @@
             try
             {
                 _resourceSettings = new ResourceSettings();
+                TerminateRunningProcess(_resourceSettings);
                 Installer.InstallData(_resourceSettings);
-                
+
                 if (_resourceSettings.RestartApplicationAfterInstall)
                 {
                     StartExecutable(_resourceSettings.ExecutablePath);
@@ -64,6 +66,25 @@
             Console.WriteLine(@"Starting process ({0}): {1}", processWindowStyle.ToString(), filename);
             ConsoleManager.DrawLine();
             _process.Start();
+        }
+
+        /// <summary>
+        ///     Terminate the running process.
+        /// </summary>
+        /// <param name="resourceSettings">The resource settings.</param>
+        private static void TerminateRunningProcess(ResourceSettings resourceSettings)
+        {
+            string _processName = Path.GetFileNameWithoutExtension(resourceSettings.ExecutablePath);
+
+            foreach (Process _process in Process.GetProcesses())
+            {
+                if (_process.ProcessName == _processName)
+                {
+                    Console.WriteLine(@"Terminating process: " + _processName);
+                    ConsoleManager.DrawLine();
+                    _process.Kill();
+                }
+            }
         }
 
         #endregion

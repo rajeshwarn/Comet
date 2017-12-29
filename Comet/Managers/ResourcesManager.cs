@@ -31,7 +31,7 @@
                 _resourceWriter.AddResource("ProductName", installOptions.ProductName);
                 _resourceWriter.AddResource("ExecutablePath", installOptions.ExecutablePath);
                 _resourceWriter.AddResource("InstallDirectory", installOptions.InstallDirectory);
-                _resourceWriter.AddResource("RestartApplicationAfterInstall", installOptions.RestartAfterInstall);
+                _resourceWriter.AddResource("RestartApplicationAfterInstall", installOptions.RestartApplicationAfterInstall);
 
                 _resourceWriter.Generate();
                 _resourceWriter.Close();

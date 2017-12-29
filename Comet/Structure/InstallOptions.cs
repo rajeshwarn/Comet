@@ -56,7 +56,6 @@
 
         #region Properties
 
-        // public string DownloadedFile { get; set; }
         public List<string> DownloadedFiles { get; set; } = new List<string>();
 
         public string DownloadFolder
@@ -106,8 +105,6 @@
                 return _resourceSettingsPath;
             }
         }
-
-        public bool RestartAfterInstall { get; set; }
 
         public bool RestartApplicationAfterInstall
         {

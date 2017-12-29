@@ -92,7 +92,7 @@
             _updaterStateEventArgsString.AppendLine("Install Directory: " + InstallOptions.InstallDirectory);
             _updaterStateEventArgsString.AppendLine("Install Files Folder: " + InstallOptions.InstallFilesFolder);
             _updaterStateEventArgsString.AppendLine("Product Name: " + InstallOptions.ProductName);
-            _updaterStateEventArgsString.AppendLine("Restart After Install: " + InstallOptions.RestartAfterInstall);
+            _updaterStateEventArgsString.AppendLine("Restart After Install: " + InstallOptions.RestartApplicationAfterInstall);
             _updaterStateEventArgsString.AppendLine("Working Folder: " + InstallOptions.WorkingFolder);
             _updaterStateEventArgsString.AppendLine("Package:");
             _updaterStateEventArgsString.AppendLine("Change Log: " + Package.ChangeLog);
