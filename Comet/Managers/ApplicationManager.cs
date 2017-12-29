@@ -30,7 +30,24 @@
                 throw new FileNotFoundException("The executable file doesn't exist.");
             }
 
-            return CompareVersion(assembly.Location, new Package(url));
+            if (string.IsNullOrEmpty(url.OriginalString))
+            {
+                throw new NoNullAllowedException(StringManager.IsNullOrEmpty(url.OriginalString));
+            }
+
+            if (!NetworkManager.IsURLFormatted(url.OriginalString))
+            {
+                throw new UriFormatException(StringManager.UrlNotWellFormatted(url.OriginalString));
+            }
+
+            if (NetworkManager.InternetAvailable)
+            {
+                return CompareVersion(assembly.Location, new Package(url));
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>Compares the source version with the comparison.</summary>

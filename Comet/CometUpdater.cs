@@ -42,10 +42,12 @@
         private bool _notifyUpdateAvailable;
         private bool _notifyUpdateReadyToInstall;
         private bool _opened;
-        private Uri _updateServerPackagePath;
         private ProgressDialog _progressDialog;
         private UpdaterState _state;
+
+        private bool _toggle;
         private bool _updateAvailable;
+        private Uri _updateServerPackagePath;
 
         #endregion
 
@@ -349,24 +351,6 @@
             }
         }
 
-        /// <summary>Gets or sets the update server package path.</summary>
-        [Browsable(true)]
-        [Category("Status")]
-        [Description("Gets or sets the update server package path.")]
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        public Uri UpdateServerPackagePath
-        {
-            get
-            {
-                return _updateServerPackagePath;
-            }
-
-            set
-            {
-                _updateServerPackagePath = value;
-            }
-        }
-
         /// <summary>Gets the product name.</summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -422,6 +406,24 @@
             }
         }
 
+        /// <summary>Gets or sets the update server package path.</summary>
+        [Browsable(true)]
+        [Category("Status")]
+        [Description("Gets or sets the update server package path.")]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public Uri UpdateServerPackagePath
+        {
+            get
+            {
+                return _updateServerPackagePath;
+            }
+
+            set
+            {
+                _updateServerPackagePath = value;
+            }
+        }
+
         /// <summary>Gets the updater path.</summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -474,6 +476,21 @@
             StringBuilder _updateReadyToInstall = new StringBuilder();
             _updateReadyToInstall.AppendLine($"The update (v.{GetLatestVersion}) is ready to install.");
             Notification.DisplayNotification(Resources.Comet, "Update Ready", _updateReadyToInstall.ToString(), ToolTipIcon.Info);
+        }
+
+        public void ShowProgressDialog()
+        {
+            if (!_opened)
+            {
+                _opened = true;
+                _progressDialog.Show();
+            }
+            else
+            {
+                _progressDialog.Focus();
+                _progressDialog.BringToFront();
+                _progressDialog.Activate();
+            }
         }
 
         /// <summary>
@@ -540,21 +557,14 @@
 
             if (_autoUpdate)
             {
-                _progressDialog.Show();
+                ShowProgressDialog();
                 _progressDialog.UpdateButton.PerformClick();
             }
             else
             {
-                if (!_opened)
+                if (_toggle)
                 {
-                    _opened = true;
-                    _progressDialog.Show();
-                }
-                else
-                {
-                    _progressDialog.Focus();
-                    _progressDialog.BringToFront();
-                    _progressDialog.Activate();
+                    ShowProgressDialog();
                 }
             }
         }
@@ -566,8 +576,15 @@
         /// <param name="e">The event args.</param>
         private void BackgroundUpdateCheckerDoWork(object sender, DoWorkEventArgs e)
         {
-            _state = UpdaterState.Checking;
-            OnCheckingForUpdate(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _updateServerPackagePath, _state));
+            try
+            {
+                _state = UpdaterState.Checking;
+                OnCheckingForUpdate(new UpdaterStateEventArgs(GetEntryAssembly, _installOptions, _updateServerPackagePath, _state));
+            }
+            catch (Exception exception)
+            {
+                VisualExceptionDialog.Show(exception);
+            }
         }
 
         /// <summary>

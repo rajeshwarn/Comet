@@ -78,8 +78,8 @@
             _updaterStateEventArgsString.AppendLine("Location: " + AssemblyLocation);
             _updaterStateEventArgsString.AppendLine("Package Path: " + PackagePath);
             _updaterStateEventArgsString.AppendLine("State: " + State);
-            _updaterStateEventArgsString.AppendLine("Update Available: " + UpdateAvailable);
             _updaterStateEventArgsString.AppendLine("Version: " + Version);
+            _updaterStateEventArgsString.AppendLine("Update Available: " + UpdateAvailable);
             _updaterStateEventArgsString.AppendLine("Install options:");
             _updaterStateEventArgsString.AppendLine("Download Folder: " + InstallOptions.DownloadFolder);
 
@@ -99,9 +99,12 @@
 
             _updaterStateEventArgsString.AppendLine("Downloads: ");
 
-            foreach (Uri _download in Package.Downloads)
+            if (Package.Downloads != null)
             {
-                _updaterStateEventArgsString.AppendLine("Link: " + _download.OriginalString);
+                foreach (Uri _download in Package.Downloads)
+                {
+                    _updaterStateEventArgsString.AppendLine("Link: " + _download.OriginalString);
+                }
             }
 
             _updaterStateEventArgsString.AppendLine("Filename: " + Package.Filename);

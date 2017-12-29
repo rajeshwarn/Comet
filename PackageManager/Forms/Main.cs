@@ -55,11 +55,9 @@
                 };
 
             _updater.CheckingForUpdate += CometUpdater_CheckingForUpdate;
+            _updater.CheckForUpdate();
 
-            // cometUpdater1.CheckForUpdate();
-            string _asm = Application.StartupPath + @"\Comet.dll";
-
-            string _source = ResourcesManager.ReadResource(_asm, "Comet.Setup.MainEntryPoint.cs");
+            string _source = ResourcesManager.ReadResource(Application.StartupPath + @"\Comet.dll", "Comet.Setup.MainEntryPoint.cs");
             tbSource.Text = _source;
 
             TabPage _downloadSitesTabPage = new TabPage("Download Sites");
@@ -123,6 +121,11 @@
         private void CheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _updater.CheckForUpdate();
+
+            if (_updater.UpdateAvailable)
+            {
+                _updater.ShowProgressDialog();
+            }
         }
 
         /// <summary>Close Tool Strip Menu Item Click.</summary>

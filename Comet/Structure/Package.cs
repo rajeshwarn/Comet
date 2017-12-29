@@ -272,10 +272,6 @@
                     // Deserialize(_xPackage);
                     // }
                 }
-                else
-                {
-                    throw new InvalidOperationException(@"Unable to connect to the internet.");
-                }
             }
             catch (WebException)
             {

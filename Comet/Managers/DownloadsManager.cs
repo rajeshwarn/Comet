@@ -31,7 +31,6 @@
 
         private readonly BackgroundWorker _backgroundDownloader;
         private int _bufferSize;
-        private int downloadedFilesCount;
         private Uri _currentUrl;
         private WebProxy _customProxy;
         private bool _downloadComplete;
@@ -44,6 +43,7 @@
         private Stopwatch _stopWatch;
         private int _totalCount;
         private bool _waitingForResponse;
+        private int downloadedFilesCount;
 
         #endregion
 
@@ -102,14 +102,6 @@
 
         #region Properties
 
-        public int DownloadedFilesCount
-        {
-            get
-            {
-                return downloadedFilesCount;
-            }
-        }
-
         public WebProxy CustomProxy
         {
             get
@@ -144,6 +136,14 @@
             get
             {
                 return _downloadedFiles;
+            }
+        }
+
+        public int DownloadedFilesCount
+        {
+            get
+            {
+                return downloadedFilesCount;
             }
         }
 

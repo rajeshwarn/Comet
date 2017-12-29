@@ -87,7 +87,7 @@
             // double _bytesReceived = double.Parse(e.BytesReceived.ToString());
             // double _totalBytesToReceive = double.Parse(e.TotalBytesToReceive.ToString());
             /// double _percentage = (_bytesReceived / _totalBytesToReceive) * 100;
-            
+
             _downloadedFilesCount = _downloadManager.DownloadedFilesCount;
             string _downloadedFilesString = $@"Download File/s: {_downloadedFilesCount} of {_package.Downloads.Count}";
             if (LDownloadFiles.InvokeRequired)
