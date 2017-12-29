@@ -107,12 +107,11 @@
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
-            this.LUpdateStats = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.TbUpdaterDetails = new System.Windows.Forms.TextBox();
             this.cmsArchive.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -150,7 +149,7 @@
             this.lvArchive.GridLines = true;
             this.lvArchive.Location = new System.Drawing.Point(3, 3);
             this.lvArchive.Name = "lvArchive";
-            this.lvArchive.Size = new System.Drawing.Size(617, 352);
+            this.lvArchive.Size = new System.Drawing.Size(644, 352);
             this.lvArchive.TabIndex = 4;
             this.lvArchive.UseCompatibleStateImageBehavior = false;
             this.lvArchive.View = System.Windows.Forms.View.Details;
@@ -276,7 +275,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.lvErrorList);
-            this.splitContainer1.Size = new System.Drawing.Size(617, 352);
+            this.splitContainer1.Size = new System.Drawing.Size(644, 352);
             this.splitContainer1.SplitterDistance = 246;
             this.splitContainer1.TabIndex = 6;
             // 
@@ -287,7 +286,7 @@
             this.tbSource.Multiline = true;
             this.tbSource.Name = "tbSource";
             this.tbSource.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbSource.Size = new System.Drawing.Size(617, 246);
+            this.tbSource.Size = new System.Drawing.Size(644, 246);
             this.tbSource.TabIndex = 0;
             this.tbSource.WordWrap = false;
             // 
@@ -304,7 +303,7 @@
             this.lvErrorList.GridLines = true;
             this.lvErrorList.Location = new System.Drawing.Point(0, 0);
             this.lvErrorList.Name = "lvErrorList";
-            this.lvErrorList.Size = new System.Drawing.Size(617, 102);
+            this.lvErrorList.Size = new System.Drawing.Size(644, 102);
             this.lvErrorList.TabIndex = 5;
             this.lvErrorList.UseCompatibleStateImageBehavior = false;
             this.lvErrorList.View = System.Windows.Forms.View.Details;
@@ -701,7 +700,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(623, 358);
+            this.tabPage6.Size = new System.Drawing.Size(650, 358);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Style";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -711,7 +710,7 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(623, 358);
+            this.tabPage7.Size = new System.Drawing.Size(650, 358);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Language";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -722,7 +721,7 @@
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(623, 358);
+            this.tabPage9.Size = new System.Drawing.Size(650, 358);
             this.tabPage9.TabIndex = 4;
             this.tabPage9.Text = "Archive Creator";
             this.tabPage9.UseVisualStyleBackColor = true;
@@ -732,7 +731,7 @@
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage10.Size = new System.Drawing.Size(623, 358);
+            this.tabPage10.Size = new System.Drawing.Size(650, 358);
             this.tabPage10.TabIndex = 5;
             this.tabPage10.Text = "Registry";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -743,7 +742,7 @@
             this.tabPage12.Location = new System.Drawing.Point(4, 22);
             this.tabPage12.Name = "tabPage12";
             this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage12.Size = new System.Drawing.Size(623, 358);
+            this.tabPage12.Size = new System.Drawing.Size(650, 358);
             this.tabPage12.TabIndex = 7;
             this.tabPage12.Text = "Build";
             this.tabPage12.UseVisualStyleBackColor = true;
@@ -759,7 +758,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(623, 358);
+            this.tabPage3.Size = new System.Drawing.Size(650, 358);
             this.tabPage3.TabIndex = 8;
             this.tabPage3.Text = "Setup";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -849,33 +848,14 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.LUpdateStats);
+            this.tabPage1.Controls.Add(this.TbUpdaterDetails);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(637, 390);
+            this.tabPage1.Size = new System.Drawing.Size(664, 390);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Start Page";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(113, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Comet Updater Details";
-            // 
-            // LUpdateStats
-            // 
-            this.LUpdateStats.AutoSize = true;
-            this.LUpdateStats.Location = new System.Drawing.Point(8, 3);
-            this.LUpdateStats.Name = "LUpdateStats";
-            this.LUpdateStats.Size = new System.Drawing.Size(141, 13);
-            this.LUpdateStats.TabIndex = 0;
-            this.LUpdateStats.Text = "Update Status: NotChecked";
             // 
             // tabPage2
             // 
@@ -910,6 +890,18 @@
             // 
             this.toolStripSeparator13.Name = "toolStripSeparator13";
             this.toolStripSeparator13.Size = new System.Drawing.Size(111, 6);
+            // 
+            // TbUpdaterDetails
+            // 
+            this.TbUpdaterDetails.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TbUpdaterDetails.Location = new System.Drawing.Point(3, 3);
+            this.TbUpdaterDetails.Multiline = true;
+            this.TbUpdaterDetails.Name = "TbUpdaterDetails";
+            this.TbUpdaterDetails.ReadOnly = true;
+            this.TbUpdaterDetails.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.TbUpdaterDetails.Size = new System.Drawing.Size(658, 384);
+            this.TbUpdaterDetails.TabIndex = 2;
+            this.TbUpdaterDetails.Text = "Comet Updater Details";
             // 
             // Main
             // 
@@ -1015,8 +1007,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
-        private System.Windows.Forms.Label LUpdateStats;
-        private System.Windows.Forms.Label label1;
         private Comet.CometUpdater _updater;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox2;
@@ -1041,6 +1031,7 @@
         private System.Windows.Forms.NumericUpDown nudBuild;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown nudRevision;
+        private System.Windows.Forms.TextBox TbUpdaterDetails;
     }
 }
 

@@ -150,32 +150,18 @@
         /// <param name="e">The event args.</param>
         private void CometUpdater_CheckingForUpdate(UpdaterStateEventArgs e)
         {
-            string _updateStatus = @"Update status: " + _updater.State;
+            string _updateStatus = e.ToString();
 
-            if (LUpdateStats.InvokeRequired)
+            if (TbUpdaterDetails.InvokeRequired)
             {
-                LUpdateStats.BeginInvoke((MethodInvoker)delegate
+                TbUpdaterDetails.BeginInvoke((MethodInvoker)delegate
                     {
-                        LUpdateStats.Text = _updateStatus;
+                        TbUpdaterDetails.Text = _updateStatus;
                     });
             }
             else
             {
-                LUpdateStats.Text = _updateStatus;
-            }
-
-            string _s = e.ToString();
-
-            if (label1.InvokeRequired)
-            {
-                label1.BeginInvoke((MethodInvoker)delegate
-                    {
-                        label1.Text = _s;
-                    });
-            }
-            else
-            {
-                label1.Text = _s;
+                TbUpdaterDetails.Text = _updateStatus;
             }
         }
 
