@@ -44,8 +44,6 @@
         private bool _opened;
         private ProgressDialog _progressDialog;
         private UpdaterState _state;
-
-        private bool _toggle;
         private bool _updateAvailable;
         private Uri _updateServerPackagePath;
 
@@ -559,13 +557,6 @@
             {
                 ShowProgressDialog();
                 _progressDialog.UpdateButton.PerformClick();
-            }
-            else
-            {
-                if (_toggle)
-                {
-                    ShowProgressDialog();
-                }
             }
         }
 
