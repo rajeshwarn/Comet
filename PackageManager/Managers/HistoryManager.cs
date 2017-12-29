@@ -170,22 +170,16 @@
 
         #region Events
 
-        public static bool AreAnyDuplicates<T>(IEnumerable<T> list)
-        {
-            var hashset = new HashSet<T>();
-            return list.Any(e => !hashset.Add(e));
-        }
-
-        /// <summary>Returns a value indicating whether the log entry already exists.</summary>
-        /// <param name="historyLogs">The history Manager.</param>
-        /// <param name="logEntry">The log entry.</param>
-        /// <returns>
-        ///     <see cref="bool" />
-        /// </returns>
-        public static bool Exists(List<HistoryLogEntry> historyLogs, HistoryLogEntry logEntry)
-        {
-            return historyLogs.Contains(logEntry);
-        }
+        ///// <summary>Returns a value indicating whether the log entry already exists.</summary>
+        ///// <param name="historyLogs">The history Manager.</param>
+        ///// <param name="logEntry">The log entry.</param>
+        ///// <returns>
+        /////     <see cref="bool" />
+        ///// </returns>
+        // public static bool Exists(List<HistoryLogEntry> historyLogs, HistoryLogEntry logEntry)
+        // {
+        // return historyLogs.Contains(logEntry);
+        // }
 
         /// <summary>
         ///     Add the file to the history.
@@ -202,14 +196,16 @@
             {
                 HistoryLogEntry _logEntry = new HistoryLogEntry(filePath);
 
-                if (!_historyLogs.Contains(_logEntry))
+                bool _duplicateExists = Exists(_logEntry);
+
+                if (!_duplicateExists)
                 {
                     _historyLogs.Add(_logEntry);
                 }
             }
             else
             {
-                if (Exists(_historyLogs, new HistoryLogEntry(filePath)))
+                if (Exists(new HistoryLogEntry(filePath)))
                 {
                     return;
                 }
@@ -228,26 +224,6 @@
         }
 
         /// <summary>
-        ///     Checks for duplicates in the list and removes them.
-        /// </summary>
-        public void CheckDuplicates()
-        {
-            if (_historyLogs.Count != 0)
-            {
-                // var _a = _historyLogs.Distinct().ToList();
-                // _historyLogs = _a;
-                if (AreAnyDuplicates(_historyLogs))
-                {
-                    MessageBox.Show("True");
-                }
-                else
-                {
-                    MessageBox.Show("False");
-                }
-            }
-        }
-
-        /// <summary>
         ///     Clears all history.
         /// </summary>
         public void ClearHistory()
@@ -256,17 +232,25 @@
             UpdateMenu();
         }
 
-        private void DetachMenu()
+        /// <summary>
+        ///     Gets a value determined whether the history contains the log entry.
+        /// </summary>
+        /// <param name="historyLogEntry">The history log entry.</param>
+        /// <returns>
+        ///     <see cref="HistoryLogEntry" />
+        /// </returns>
+        public bool Exists(HistoryLogEntry historyLogEntry)
         {
-            if (_toolStripMenuItem != null)
+            var _duplicateExists = false;
+            foreach (HistoryLogEntry _logs in _historyLogs)
             {
-                _toolStripMenuItem.DropDownItems.Remove(CreateClearHistoryLogItem());
-                _toolStripMenuItem.DropDownItems.Remove(new ToolStripSeparator());
+                if (_logs.Equals(historyLogEntry))
+                {
+                    _duplicateExists = true;
+                }
             }
-            else
-            {
-                throw new NoNullAllowedException("The tool strip menu item is null");
-            }
+
+            return _duplicateExists;
         }
 
         /// <summary>
@@ -451,7 +435,7 @@
                     {
                         HistoryLogEntry _historyLogEntry = new HistoryLogEntry(_file);
 
-                        if (!Exists(_historyLogs, _historyLogEntry))
+                        if (!Exists(_historyLogEntry))
                         {
                             _historyLogs.Add(_historyLogEntry);
                         }

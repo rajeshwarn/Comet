@@ -7,12 +7,11 @@
 
     #endregion
 
-    public class HistoryLogEntry
+    public class HistoryLogEntry : ICloneable
     {
         #region Variables
 
         private DateTime _dateModified;
-
         private string _fileName;
         private string _filePath;
 
@@ -34,7 +33,18 @@
 
         #region Properties
 
-        public DateTime DateModified { get; set; }
+        public DateTime DateModified
+        {
+            get
+            {
+                return _dateModified;
+            }
+
+            set
+            {
+                _dateModified = value;
+            }
+        }
 
         public string FileName
         {
@@ -52,28 +62,32 @@
             }
         }
 
-        public int ID { get; set; }
-
         #endregion
 
         #region Events
 
-        public bool Equals(HistoryLogEntry other)
+        public object Clone()
         {
-            if (FilePath == other.FilePath)
+            return this;
+        }
+
+        public override bool Equals(object obj)
+        {
+            HistoryLogEntry _historyLogEntryObject = (HistoryLogEntry)obj;
+
+            if (_historyLogEntryObject == null)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return _filePath == _historyLogEntryObject.FilePath;
         }
 
         public override int GetHashCode()
         {
-            int hashFirstName = FilePath == null ? 0 : FilePath.GetHashCode();
+            int _hashedFilePath = FilePath == null ? 0 : FilePath.GetHashCode();
 
-            // int hashLastName = DateModified == null ? 0 : DateModified.GetHashCode();
-            return hashFirstName;
+            return _hashedFilePath;
         }
 
         #endregion
