@@ -13,11 +13,11 @@
 
     /// <summary>The change log.</summary>
     [ToolboxItem(false)]
-    public partial class ChangeLog : UserControl
+    public partial class ChangeLogPanel : UserControl
     {
         #region Constructors
 
-        public ChangeLog(InstallOptions installOptions, Package package, Version currentVersion)
+        public ChangeLogPanel(InstallOptions installOptions, Package package, Version currentVersion)
         {
             InitializeComponent();
 

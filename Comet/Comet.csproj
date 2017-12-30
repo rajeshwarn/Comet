@@ -92,6 +92,18 @@
     <Compile Include="Events\Delegates.cs" />
     <Compile Include="Events\DownloaderEventArgs.cs" />
     <Compile Include="Events\UpdaterStateEventArgs.cs" />
+    <Compile Include="UserControls\Banner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Banner.Designer.cs">
+      <DependentUpon>Banner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\WelcomePage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\WelcomePage.Designer.cs">
+      <DependentUpon>WelcomePage.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Setup\MainEntryPoint.cs" />
     <EmbeddedResource Include="Setup\ConsoleManager.cs" />
     <EmbeddedResource Include="Setup\Installer.cs" />
@@ -123,12 +135,11 @@
     <Compile Include="Enums\UpdaterState.cs" />
     <Compile Include="PInvoke\wininet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserControls\Banner.cs" />
-    <Compile Include="UserControls\ChangeLog.cs">
+    <Compile Include="UserControls\ChangeLogPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\ChangeLog.Designer.cs">
-      <DependentUpon>ChangeLog.cs</DependentUpon>
+    <Compile Include="UserControls\ChangeLogPanel.Designer.cs">
+      <DependentUpon>ChangeLogPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DownloadPanel.cs">
       <SubType>UserControl</SubType>
@@ -141,11 +152,17 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\ChangeLog.resx">
-      <DependentUpon>ChangeLog.cs</DependentUpon>
+    <EmbeddedResource Include="UserControls\Banner.resx">
+      <DependentUpon>Banner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ChangeLogPanel.resx">
+      <DependentUpon>ChangeLogPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\DownloadPanel.resx">
       <DependentUpon>DownloadPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\WelcomePage.resx">
+      <DependentUpon>WelcomePage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

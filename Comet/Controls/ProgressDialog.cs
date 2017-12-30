@@ -41,19 +41,23 @@
 
         #region Variables
 
-        private string _bannerText;
-        private string _bannerTitle;
-        private ChangeLog _changeLogPanel;
+        private Banner _banner;
+        private Size _buttonSize;
+        private int _buttonSpacing;
+        private Panel _buttonsPanel;
+        private ChangeLogPanel _changeLogPanel;
         private Label _comet;
+        private Panel _contentPanel;
         private Version _currentVersion;
         private DownloadPanel _downloadPanel;
         private InstallOptions _installOptions;
-        private Point _location = new Point(40, 60);
+        private Button _nextButton;
         private Package _package;
         private Separator _separator;
-        private Size _size = new Size(400, 280);
+        private TableLayoutPanel _tableLayoutPanel;
         private UpdateMode _updateMode;
         private CometUpdater _updater;
+        private WelcomePage _welcomePage;
 
         #endregion
 
@@ -71,35 +75,36 @@
             ShowIcon = true;
             ShowInTaskbar = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Padding = new Padding(10);
-            Size = new Size(480, 420);
+            Padding = new Padding(0);
+            Size = new Size(530, 400);
             BackColor = SystemColors.Control;
-            Text = Application.ProductName + @" Update";
+            Text = $@"Update - {Application.ProductName}";
             Icon = Resources.Comet;
             StartPosition = FormStartPosition.CenterScreen;
 
+            _buttonSize = new Size(75, 23);
             _currentVersion = currentVersion;
-            _updateMode = UpdateMode.Changes;
-
+            _updateMode = UpdateMode.Welcome;
+            _buttonSpacing = 7;
             _installOptions = installOptions;
             _package = package;
             _updater = updater;
 
+            InitializeTableLayoutPanels();
+            InitializeWelcomePage();
+
             InitializeButtons();
 
-            _changeLogPanel = new ChangeLog(_installOptions, _package, _currentVersion)
-                {
-                    Location = _location,
-                    Size = _size,
-                    Name = "ChangeLogPanel"
-                };
-
-            Controls.Add(_changeLogPanel);
             UpdateDisplayMode(_updateMode);
         }
 
         public enum UpdateMode
         {
+            /// <summary>
+            ///     The welcome page.
+            /// </summary>
+            Welcome,
+
             /// <summary>The changes mode.</summary>
             Changes,
 
@@ -113,17 +118,6 @@
         #endregion
 
         #region Events
-
-        /// <summary>
-        ///     The on paint event.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            e.Graphics.FillRectangle(new SolidBrush(Color.LightSteelBlue), new Rectangle(0, 0, Width, 50));
-            Banner.DrawBanner(e.Graphics, _bannerTitle, _bannerText, Padding);
-        }
 
         /// <summary>The cancel button is clicked.</summary>
         /// <param name="sender">The sender.</param>
@@ -201,34 +195,31 @@
         /// <summary>Initializes the ok button.</summary>
         private void InitializeButtons()
         {
-            var _buttonSpacing = 7;
-            Size _buttonSize = new Size(75, 23);
-
             CancelButton0 = new Button
                 {
                     BackColor = SystemColors.Control,
                     Text = @"Cancel",
                     Size = _buttonSize,
-                    Location = new Point(Padding.Right + 356, 350),
+                    Location = new Point(_buttonsPanel.ClientSize.Width - _buttonSize.Width - _buttonsPanel.Padding.Right, _buttonsPanel.Padding.Top),
                     TabIndex = 1
                 };
 
             CancelButton0.Click += CancelButton_Click;
 
-            Controls.Add(CancelButton0);
+            _buttonsPanel.Controls.Add(CancelButton0);
 
-            UpdateButton = new Button
+            _nextButton = new Button
                 {
                     BackColor = SystemColors.Control,
-                    Text = @"Update",
+                    Text = @"Next >",
                     Size = _buttonSize,
                     Location = new Point(CancelButton0.Left - _buttonSize.Width - 5, CancelButton0.Location.Y),
                     TabIndex = 0
                 };
 
-            UpdateButton.Click += UpdateButton_Click;
+            _nextButton.Click += NextButton_Click;
 
-            Controls.Add(UpdateButton);
+            _buttonsPanel.Controls.Add(_nextButton);
 
             InstallButton = new Button
                 {
@@ -250,8 +241,7 @@
                     ForeColor = Color.DarkGray
                 };
 
-            Controls.Add(_comet);
-
+            // _buttonsPanel.Controls.Add(_comet);
             _separator = new Separator
                 {
                     Orientation = Orientation.Horizontal,
@@ -262,7 +252,62 @@
                     ShadowVisible = true
                 };
 
-            Controls.Add(_separator);
+            // _buttonsPanel.Controls.Add(_separator);
+        }
+
+        /// <summary>
+        ///     Initializes the table layout panels.
+        /// </summary>
+        private void InitializeTableLayoutPanels()
+        {
+            _tableLayoutPanel = new TableLayoutPanel
+                {
+                    BackColor = Color.White,
+                    Dock = DockStyle.Fill,
+                    ColumnCount = 0,
+                    RowCount = 1,
+                    Padding = new Padding(0)
+                };
+
+            _tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 320F));
+
+            Controls.Add(_tableLayoutPanel);
+
+            _contentPanel = new Panel
+                {
+                    BackColor = Color.White,
+                    Dock = DockStyle.Fill,
+                    Padding = new Padding(0),
+                    Margin = new Padding(0)
+                };
+
+            _tableLayoutPanel.Controls.Add(_contentPanel);
+
+            _buttonsPanel = new Panel
+                {
+                    BackColor = SystemColors.Control,
+                    Dock = DockStyle.Fill,
+                    Padding = new Padding(10),
+                    Margin = new Padding(0)
+                };
+
+            _tableLayoutPanel.Controls.Add(_buttonsPanel);
+        }
+
+        /// <summary>
+        ///     Initializes the welcome page.
+        /// </summary>
+        private void InitializeWelcomePage()
+        {
+            _welcomePage = new WelcomePage(_installOptions, _package, _currentVersion)
+                {
+                    Name = "WelcomePage",
+                    Dock = DockStyle.Fill,
+                    Margin = new Padding(0),
+                    Size = new Size(0, 0)
+                };
+
+            _contentPanel.Controls.Add(_welcomePage);
         }
 
         /// <summary>The update button is clicked.</summary>
@@ -293,16 +338,12 @@
             CompileInstaller(_installOptions);
         }
 
-        /// <summary>
-        ///     Updates the banner.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="text">The text.</param>
-        private void UpdateBanner(string title, string text)
+        /// <summary>The update button is clicked.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event.</param>
+        private void NextButton_Click(object sender, EventArgs e)
         {
-            _bannerTitle = title;
-            _bannerText = text;
-            Invalidate();
+            UpdateDisplayMode(UpdateMode.Changes);
         }
 
         /// <summary>The update button is clicked.</summary>
@@ -323,24 +364,56 @@
             {
                 case UpdateMode.Changes:
                     {
-                        UpdateBanner("Update Information", $"Changes in the latest version of {_package.Name}.");
+                        _banner = new Banner
+                            {
+                                Size = new Size(_contentPanel.Width, 42)
+                            };
+
+                        _changeLogPanel = new ChangeLogPanel(_installOptions, _package, _currentVersion)
+                            {
+                                Name = "ChangesPage",
+                                Location = new Point(0, _banner.Size.Height),
+                                Size = new Size(_contentPanel.Width, _contentPanel.Height - _banner.Size.Height)
+                            };
+
+                        UpdateButton = new Button
+                            {
+                                BackColor = SystemColors.Control,
+                                Text = @"Update",
+                                Size = _buttonSize,
+                                Location = new Point(CancelButton0.Left - _buttonSize.Width - 5, CancelButton0.Location.Y),
+                                TabIndex = 0
+                            };
+
+                        UpdateButton.Click += UpdateButton_Click;
+
+                        _contentPanel.Controls.Add(_banner);
+                        _banner.UpdateBanner("Update Information", $"Changes in the latest version of {_package.Name}.");
+
+                        _contentPanel.Controls.Remove(_welcomePage);
+                        _buttonsPanel.Controls.Remove(_nextButton);
+
+                        _contentPanel.Controls.Add(_changeLogPanel);
+                        _buttonsPanel.Controls.Add(UpdateButton);
                         break;
                     }
 
                 case UpdateMode.Download:
                     {
-                        UpdateBanner("Downloading", $"The latest v.{_package.Version} of {_package.Name}.");
+                        _banner.UpdateBanner("Downloading", $"The latest v.{_package.Version} of {_package.Name}.");
 
-                        Controls.Remove(_changeLogPanel);
-                        Controls.Remove(UpdateButton);
-                        Controls.Add(InstallButton);
+                        _contentPanel.Controls.Remove(_changeLogPanel);
+                        _buttonsPanel.Controls.Remove(UpdateButton);
+
+                        _buttonsPanel.Controls.Add(InstallButton);
 
                         _downloadPanel = new DownloadPanel(_installOptions, _package, _updater)
                             {
-                                Location = _location,
-                                Size = _size
+                                Location = new Point(0, _banner.Size.Height),
+                                Size = new Size(_contentPanel.Width, _contentPanel.Height - _banner.Size.Height)
                             };
-                        Controls.Add(_downloadPanel);
+
+                        _contentPanel.Controls.Add(_downloadPanel);
 
                         _downloadPanel.DownloadManager.DownloadsCompleted += DownloadFileCompleted;
                         break;
@@ -348,11 +421,16 @@
 
                 case UpdateMode.Installing:
                     {
-                        UpdateBanner("Installing", $"Updating {_package.Name} to the v.{_package.Version}.");
-                        Controls.Remove(_downloadPanel);
-                        Controls.Remove(InstallButton);
+                        _banner.UpdateBanner("Installing", $"Updating {_package.Name} to the v.{_package.Version}.");
+                        _contentPanel.Controls.Remove(_downloadPanel);
+                        _buttonsPanel.Controls.Remove(InstallButton);
                         InstallUpdate();
                         Close();
+                        break;
+                    }
+
+                case UpdateMode.Welcome:
+                    {
                         break;
                     }
 

@@ -40,10 +40,11 @@
             // 
             // LDown
             // 
-            this.LDown.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LDown.Location = new System.Drawing.Point(0, 0);
+            this.LDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LDown.Location = new System.Drawing.Point(3, 0);
             this.LDown.Name = "LDown";
-            this.LDown.Size = new System.Drawing.Size(446, 31);
+            this.LDown.Size = new System.Drawing.Size(440, 31);
             this.LDown.TabIndex = 3;
             this.LDown.Text = "Comet is downloading updates for {package.Name}. This process could take a few mi" +
     "nutes.";
@@ -92,7 +93,7 @@
             this.groupBox1.Controls.Add(this.LBytesTotalSize);
             this.groupBox1.Location = new System.Drawing.Point(3, 57);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(437, 47);
+            this.groupBox1.Size = new System.Drawing.Size(440, 47);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Details";
@@ -110,13 +111,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.LProgress);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.LDownloadFiles);
             this.Controls.Add(this.progressBarFileDownload);
             this.Controls.Add(this.LDown);
             this.Name = "DownloadPanel";
-            this.Size = new System.Drawing.Size(446, 237);
+            this.Size = new System.Drawing.Size(446, 140);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
