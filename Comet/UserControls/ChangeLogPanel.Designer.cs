@@ -43,6 +43,7 @@
             this.TbChangeLog.Name = "TbChangeLog";
             this.TbChangeLog.ReadOnly = true;
             this.TbChangeLog.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.TbChangeLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.TbChangeLog.Size = new System.Drawing.Size(406, 183);
             this.TbChangeLog.TabIndex = 1;
             // 
@@ -77,14 +78,14 @@
             this.panelHeader.Size = new System.Drawing.Size(406, 49);
             this.panelHeader.TabIndex = 5;
             // 
-            // ChangeLog
+            // ChangeLogPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.TbChangeLog);
             this.Controls.Add(this.panelHeader);
-            this.Name = "ChangeLog";
+            this.Name = "ChangeLogPanel";
             this.Size = new System.Drawing.Size(406, 232);
             this.panelHeader.ResumeLayout(false);
             this.ResumeLayout(false);
