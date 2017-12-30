@@ -4,6 +4,7 @@
 
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Windows.Forms;
 
     using Comet.Controls;
@@ -14,6 +15,7 @@
     #endregion
 
     /// <summary>The download sites UserControl page.</summary>
+    [ToolboxItem(false)]
     public partial class DownloadSites : UserControl
     {
         #region Variables
