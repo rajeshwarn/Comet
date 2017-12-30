@@ -556,7 +556,6 @@
             if (_autoUpdate)
             {
                 ShowProgressDialog();
-                _progressDialog.UpdateButton.PerformClick();
             }
         }
 

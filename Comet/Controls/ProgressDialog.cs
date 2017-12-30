@@ -33,28 +33,23 @@
     {
         #region Variables
 
-        internal Button CancelButton0;
-        internal Button InstallButton;
-        internal Button UpdateButton;
-
-        #endregion
-
-        #region Variables
-
         private Banner _banner;
         private Size _buttonSize;
         private int _buttonSpacing;
         private Panel _buttonsPanel;
+        private Button _cancelButton0;
         private ChangeLogPanel _changeLogPanel;
         private Label _comet;
         private Panel _contentPanel;
         private Version _currentVersion;
         private DownloadPanel _downloadPanel;
+        private Button _installButton;
         private InstallOptions _installOptions;
         private Button _nextButton;
         private Package _package;
         private Separator _separator;
         private TableLayoutPanel _tableLayoutPanel;
+        private Button _updateButton;
         private UpdateMode _updateMode;
         private CometUpdater _updater;
         private WelcomePage _welcomePage;
@@ -96,6 +91,14 @@
             InitializeButtons();
 
             UpdateDisplayMode(_updateMode);
+
+            if (_updater.AutoUpdate)
+            {
+                _nextButton.PerformClick();
+                _updateButton.PerformClick();
+
+                // TODO: Install update
+            }
         }
 
         public enum UpdateMode
@@ -174,16 +177,16 @@
         {
             _updater.NotificationUpdateReadyToInstall();
 
-            if (InstallButton.InvokeRequired)
+            if (_installButton.InvokeRequired)
             {
-                InstallButton.BeginInvoke((MethodInvoker)delegate
+                _installButton.BeginInvoke((MethodInvoker)delegate
                     {
-                        InstallButton.Enabled = true;
+                        _installButton.Enabled = true;
                     });
             }
             else
             {
-                InstallButton.Enabled = true;
+                _installButton.Enabled = true;
             }
 
             if (_updater.AutoUpdate)
@@ -195,7 +198,7 @@
         /// <summary>Initializes the ok button.</summary>
         private void InitializeButtons()
         {
-            CancelButton0 = new Button
+            _cancelButton0 = new Button
                 {
                     BackColor = SystemColors.Control,
                     Text = @"Cancel",
@@ -204,16 +207,16 @@
                     TabIndex = 1
                 };
 
-            CancelButton0.Click += CancelButton_Click;
+            _cancelButton0.Click += CancelButton_Click;
 
-            _buttonsPanel.Controls.Add(CancelButton0);
+            _buttonsPanel.Controls.Add(_cancelButton0);
 
             _nextButton = new Button
                 {
                     BackColor = SystemColors.Control,
                     Text = @"Next >",
                     Size = _buttonSize,
-                    Location = new Point(CancelButton0.Left - _buttonSize.Width - 5, CancelButton0.Location.Y),
+                    Location = new Point(_cancelButton0.Left - _buttonSize.Width - 5, _cancelButton0.Location.Y),
                     TabIndex = 0
                 };
 
@@ -221,21 +224,21 @@
 
             _buttonsPanel.Controls.Add(_nextButton);
 
-            InstallButton = new Button
+            _installButton = new Button
                 {
                     BackColor = SystemColors.Control,
                     Text = @"Install",
                     Size = _buttonSize,
-                    Location = new Point(CancelButton0.Left - _buttonSize.Width - 5, CancelButton0.Location.Y),
+                    Location = new Point(_cancelButton0.Left - _buttonSize.Width - 5, _cancelButton0.Location.Y),
                     TabIndex = 0,
                     Enabled = false
                 };
 
-            InstallButton.Click += InstallButton_Click;
+            _installButton.Click += InstallButton_Click;
 
             _comet = new Label
                 {
-                    Location = new Point(0, CancelButton0.Location.Y - 10),
+                    Location = new Point(0, _cancelButton0.Location.Y - 10),
                     Size = new Size(39, 20),
                     Text = @"Comet",
                     ForeColor = Color.DarkGray
@@ -376,16 +379,16 @@
                                 Size = new Size(_contentPanel.Width, _contentPanel.Height - _banner.Size.Height)
                             };
 
-                        UpdateButton = new Button
+                        _updateButton = new Button
                             {
                                 BackColor = SystemColors.Control,
                                 Text = @"Update",
                                 Size = _buttonSize,
-                                Location = new Point(CancelButton0.Left - _buttonSize.Width - 5, CancelButton0.Location.Y),
+                                Location = new Point(_cancelButton0.Left - _buttonSize.Width - 5, _cancelButton0.Location.Y),
                                 TabIndex = 0
                             };
 
-                        UpdateButton.Click += UpdateButton_Click;
+                        _updateButton.Click += UpdateButton_Click;
 
                         _contentPanel.Controls.Add(_banner);
                         _banner.UpdateBanner("Update Information", $"Changes in the latest version of {_package.Name}.");
@@ -394,7 +397,7 @@
                         _buttonsPanel.Controls.Remove(_nextButton);
 
                         _contentPanel.Controls.Add(_changeLogPanel);
-                        _buttonsPanel.Controls.Add(UpdateButton);
+                        _buttonsPanel.Controls.Add(_updateButton);
                         break;
                     }
 
@@ -403,9 +406,9 @@
                         _banner.UpdateBanner("Downloading", $"The latest v.{_package.Version} of {_package.Name}.");
 
                         _contentPanel.Controls.Remove(_changeLogPanel);
-                        _buttonsPanel.Controls.Remove(UpdateButton);
+                        _buttonsPanel.Controls.Remove(_updateButton);
 
-                        _buttonsPanel.Controls.Add(InstallButton);
+                        _buttonsPanel.Controls.Add(_installButton);
 
                         _downloadPanel = new DownloadPanel(_installOptions, _package, _updater)
                             {
@@ -423,7 +426,7 @@
                     {
                         _banner.UpdateBanner("Installing", $"Updating {_package.Name} to the v.{_package.Version}.");
                         _contentPanel.Controls.Remove(_downloadPanel);
-                        _buttonsPanel.Controls.Remove(InstallButton);
+                        _buttonsPanel.Controls.Remove(_installButton);
                         InstallUpdate();
                         Close();
                         break;
