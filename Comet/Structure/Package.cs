@@ -23,7 +23,7 @@
     [ComVisible(true)]
     [Description("The Package structure.")]
     [DesignerCategory("code")]
-    public class Package
+    public class Package : ICloneable
     {
         #region Variables
 
@@ -223,6 +223,17 @@
         #endregion
 
         #region Events
+
+        /// <summary>
+        ///     Creates a copy of the current object.
+        /// </summary>
+        /// <returns>
+        ///     <see cref="object" />
+        /// </returns>
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
 
         /// <summary>Clone the package information from another package to the current one.</summary>
         /// <param name="package">The package to clone.</param>
