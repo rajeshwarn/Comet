@@ -94,8 +94,8 @@
 
             if (_updater.AutoUpdate)
             {
-               // _nextButton.PerformClick();
-               // _updateButton.PerformClick();
+                // _nextButton.PerformClick();
+                // _updateButton.PerformClick();
 
                 // TODO: Install update
             }

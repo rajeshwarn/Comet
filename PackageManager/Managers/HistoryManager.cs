@@ -37,15 +37,15 @@
 
         #region Constructors
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="HistoryManager" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="HistoryManager" /> class.</summary>
         /// <param name="toolStripMenuItem">The tool strip menu item.</param>
         /// <param name="logFile">The file path.</param>
-        public HistoryManager(ToolStripMenuItem toolStripMenuItem, string logFile) : this()
+        /// <param name="maximum">The maximum history count.</param>
+        public HistoryManager(ToolStripMenuItem toolStripMenuItem, string logFile, int maximum) : this()
         {
             _toolStripMenuItem = toolStripMenuItem;
             _logFile = logFile;
+            _maximumHistory = maximum;
             Load();
             UpdateMenu();
         }
@@ -90,11 +90,6 @@
 
             set
             {
-                if (_historyLogs == value)
-                {
-                    return;
-                }
-
                 _historyLogs = value;
             }
         }
@@ -391,15 +386,15 @@
                 throw new ArgumentNullException(StringManager.IsNullOrEmpty(name));
             }
 
-            ToolStripItem _toolStripMenuItem = new ToolStripMenuItem(text)
+            ToolStripItem _toolStripItem = new ToolStripMenuItem(text)
                 {
                     Tag = tag,
                     Name = name
                 };
 
-            _toolStripMenuItem.Click += LogEntryToolStripMenuItem_Click;
+            _toolStripItem.Click += LogEntryToolStripMenuItem_Click;
 
-            return _toolStripMenuItem;
+            return _toolStripItem;
         }
 
         /// <summary>
@@ -417,9 +412,8 @@
                     var _entryFilePath = _historyLogEntries.Descendants("FilePath").Nodes();
                     string _file = string.Concat(_entryFilePath);
 
-                    var _dateModified = _historyLogEntries.Descendants("DateModified").Nodes();
-                    string _dateTime = string.Concat(_dateModified);
-
+                    // var _dateModified = _historyLogEntries.Descendants("DateModified").Nodes();
+                    // string _dateTime = string.Concat(_dateModified);
                     if (File.Exists(_file))
                     {
                         HistoryLogEntry _historyLogEntry = new HistoryLogEntry(_file);

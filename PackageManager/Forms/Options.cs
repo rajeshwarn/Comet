@@ -19,10 +19,10 @@
         public Options()
         {
             InitializeComponent();
-
-            CbDisplayWelcomePage.Checked = ControlPanel.SettingsManager.Settings.DisplayWelcomePage;
-            CbAutoUpdate.Checked = ControlPanel.SettingsManager.Settings.AutoUpdate;
-            CbNotifyBeforeInstallingUpdates.Checked = ControlPanel.SettingsManager.Settings.NotifyUpdateReadyToInstall;
+            NudMaximumRecentProjects.Value = ControlPanel.SettingsManager.ApplicationSettings.MaxRecentProjects;
+            CbDisplayWelcomePage.Checked = ControlPanel.SettingsManager.UpdaterSettings.DisplayWelcomePage;
+            CbAutoUpdate.Checked = ControlPanel.SettingsManager.UpdaterSettings.AutoUpdate;
+            CbNotifyBeforeInstallingUpdates.Checked = ControlPanel.SettingsManager.UpdaterSettings.NotifyUpdateReadyToInstall;
         }
 
         #endregion
@@ -41,16 +41,25 @@
             Close();
         }
 
+        /// <summary>
+        ///     Updates the settings manager with the latest options.
+        /// </summary>
         private void UpdateSettings()
         {
-            UpdaterSettings _settings = new UpdaterSettings
-            {
+            ApplicationSettings _applicationSettings = new ApplicationSettings
+                {
+                    MaxRecentProjects = Convert.ToInt32(NudMaximumRecentProjects.Value)
+                };
+
+            UpdaterSettings _updaterSettings = new UpdaterSettings
+                {
                     AutoUpdate = CbAutoUpdate.Checked,
                     DisplayWelcomePage = CbDisplayWelcomePage.Checked,
                     NotifyUpdateReadyToInstall = CbNotifyBeforeInstallingUpdates.Checked
                 };
 
-            ControlPanel.SettingsManager.Settings = _settings;
+            ControlPanel.SettingsManager.ApplicationSettings = _applicationSettings;
+            ControlPanel.SettingsManager.UpdaterSettings = _updaterSettings;
         }
 
         #endregion

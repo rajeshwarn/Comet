@@ -14,8 +14,6 @@
     {
         #region Properties
 
-        public static SettingsManager SettingsManager { get; set; }
-
         public static Logger.LogSettings DefaultSettings { get; set; }
 
         public static string FileHistoryLocation { get; set; }
@@ -31,6 +29,8 @@
         public static int MaxRecentProjects { get; set; }
 
         public static string PackageFileTypes { get; set; }
+
+        public static SettingsManager SettingsManager { get; set; }
 
         public static string UpdatePackageUrl { get; set; }
 

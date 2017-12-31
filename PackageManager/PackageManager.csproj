@@ -80,6 +80,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ControlPanel.cs" />
+    <Compile Include="Structure\ApplicationSettings.cs" />
     <Compile Include="Structure\HistoryLogEntry.cs" />
     <Compile Include="UserControls\DownloadSites.cs">
       <SubType>UserControl</SubType>

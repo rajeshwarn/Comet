@@ -29,7 +29,7 @@
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="InstallOptions"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="InstallOptions" /> class.</summary>
         /// <param name="executablePath">The executable path.</param>
         /// <param name="restartApplicationAfterInstall">The restart Application After Install.</param>
         /// <param name="displayWelcomePage">The display welcome page.</param>

@@ -57,7 +57,7 @@
 
             ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Update.package";
 
-            _updater = new CometUpdater(new Uri(ControlPanel.UpdatePackageUrl), Assembly.GetExecutingAssembly().Location, ControlPanel.SettingsManager.Settings.AutoUpdate, ControlPanel.SettingsManager.Settings.DisplayWelcomePage);
+            _updater = new CometUpdater(new Uri(ControlPanel.UpdatePackageUrl), Assembly.GetExecutingAssembly().Location, ControlPanel.SettingsManager.UpdaterSettings.AutoUpdate, ControlPanel.SettingsManager.UpdaterSettings.DisplayWelcomePage);
 
             _updater.CheckingForUpdate += CometUpdater_CheckingForUpdate;
             _updater.CheckForUpdate();
@@ -91,7 +91,7 @@
         private void CheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _updater.CheckForUpdate();
-            _updater.DisplayWelcomePage = ControlPanel.SettingsManager.Settings.DisplayWelcomePage;
+            _updater.DisplayWelcomePage = ControlPanel.SettingsManager.UpdaterSettings.DisplayWelcomePage;
 
             if (_updater.UpdateAvailable)
             {
@@ -199,7 +199,7 @@
             lvErrorList.Columns[3].Width = 50;
             lvErrorList.Columns[4].Width = 50;
 
-            _historyManager = new HistoryManager(recentHistoryToolStripMenuItem, ControlPanel.FileHistoryLocation);
+            _historyManager = new HistoryManager(recentHistoryToolStripMenuItem, ControlPanel.FileHistoryLocation, ControlPanel.SettingsManager.ApplicationSettings.MaxRecentProjects);
             _historyManager.ToolStripMenuItemClicked += RecentHistory_Click;
         }
 

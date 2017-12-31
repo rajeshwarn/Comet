@@ -11,12 +11,15 @@
     using Comet.Managers;
     using Comet.Structure;
 
+    using PackageManager.Structure;
+
     #endregion
 
     public class SettingsManager
     {
         #region Variables
 
+        private ApplicationSettings _applicationSettings;
         private string _filePath;
         private UpdaterSettings _updaterSettings;
 
@@ -33,11 +36,13 @@
 
         /// <summary>Initializes a new instance of the <see cref="SettingsManager" /> class. </summary>
         /// <param name="filePath">The settings file Path.</param>
-        /// <param name="settings">The settings.</param>
-        public SettingsManager(string filePath, UpdaterSettings settings) : this()
+        /// <param name="applicationSettings">The application settings.</param>
+        /// <param name="updaterSettings">The updater settings.</param>
+        public SettingsManager(string filePath, ApplicationSettings applicationSettings, UpdaterSettings updaterSettings) : this()
         {
             _filePath = filePath;
-            _updaterSettings = settings;
+            _applicationSettings = applicationSettings;
+            _updaterSettings = updaterSettings;
         }
 
         /// <summary>
@@ -46,12 +51,26 @@
         public SettingsManager()
         {
             _filePath = string.Empty;
+            _applicationSettings = new ApplicationSettings { MaxRecentProjects = 7 };
             _updaterSettings = new UpdaterSettings();
         }
 
         #endregion
 
         #region Properties
+
+        public ApplicationSettings ApplicationSettings
+        {
+            get
+            {
+                return _applicationSettings;
+            }
+
+            set
+            {
+                _applicationSettings = value;
+            }
+        }
 
         public string FilePath
         {
@@ -66,7 +85,7 @@
             }
         }
 
-        public UpdaterSettings Settings
+        public UpdaterSettings UpdaterSettings
         {
             get
             {
@@ -127,6 +146,8 @@
                 _headerElement.Add(new XElement("NotifyBeforeInstallingUpdates", _updaterSettings.NotifyUpdateReadyToInstall));
                 _headerElement.Add(new XElement("DisplayWelcomePage", _updaterSettings.DisplayWelcomePage));
 
+                _headerElement.Add(new XElement("MaxRecentProjects", _applicationSettings.MaxRecentProjects));
+
                 _settingsDocument.Save(FilePath, SaveOptions.None);
             }
             catch (Exception e)
@@ -147,6 +168,8 @@
                 _updaterSettings.DisplayWelcomePage = Convert.ToBoolean(string.Concat(settingsFile.Descendants("DisplayWelcomePage").Nodes()));
                 _updaterSettings.NotifyUpdateAvailable = Convert.ToBoolean(string.Concat(settingsFile.Descendants("NotifyUpdateAvailable").Nodes()));
                 _updaterSettings.NotifyUpdateReadyToInstall = Convert.ToBoolean(string.Concat(settingsFile.Descendants("NotifyBeforeInstallingUpdates").Nodes()));
+
+                _applicationSettings.MaxRecentProjects = Convert.ToInt32(string.Concat(settingsFile.Descendants("MaxRecentProjects").Nodes()));
             }
             catch (Exception e)
             {
