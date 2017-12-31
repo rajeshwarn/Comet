@@ -47,7 +47,6 @@
 
             ControlPanel.SettingsManager = new SettingsManager(@"Logs\Settings.xml");
             ControlPanel.SettingsManager.Load();
-            
 
             ControlPanel.FileHistoryLocation = @"Logs\History.xml";
             ControlPanel.PackageFileTypes = @"Package File|*.package";
@@ -277,6 +276,31 @@
         }
 
         /// <summary>
+        ///     Occurs when the options form is closed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        private void OptionsForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // TODO: Reload settings.
+            // _updater.AutoUpdate = ControlPanel.SettingsManager.Settings.AutoUpdate;
+            // _updater.DisplayWelcomePage = ControlPanel.SettingsManager.Settings.DisplayWelcomePage;
+            // _updater.NotifyUpdateReadyToInstall = ControlPanel.SettingsManager.Settings.NotifyBeforeInstallUpdates;
+        }
+
+        /// <summary>
+        ///     Displays the options form.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Options _optionsForm = new Options();
+            _optionsForm.FormClosed += OptionsForm_FormClosed;
+            _optionsForm.ShowDialog();
+        }
+
+        /// <summary>
         ///     The tool strip menu item click event for a recent history entry.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -358,28 +382,22 @@
         }
 
         /// <summary>
-        ///     Displays the options form.
+        ///     The status bar tool strip menu item clicked.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event args.</param>
-        private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Options _optionsForm = new Options();
-            _optionsForm.FormClosed += OptionsForm_FormClosed;
-            _optionsForm.ShowDialog();
-        }
-
-        /// <summary>
-        /// Occurs when the options form is closed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event args.</param>
-        private void OptionsForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            // TODO: Reload settings.
-           // _updater.AutoUpdate = ControlPanel.SettingsManager.Settings.AutoUpdate;
-           // _updater.DisplayWelcomePage = ControlPanel.SettingsManager.Settings.DisplayWelcomePage;
-           // _updater.NotifyUpdateReadyToInstall = ControlPanel.SettingsManager.Settings.NotifyBeforeInstallUpdates;
+            if (statusbarToolStripMenuItem.Checked)
+            {
+                statusbarToolStripMenuItem.Checked = false;
+                statusStripMain.Visible = false;
+            }
+            else
+            {
+                statusbarToolStripMenuItem.Checked = true;
+                statusStripMain.Visible = true;
+            }
         }
 
         /// <summary>Text box data value changed.</summary>
