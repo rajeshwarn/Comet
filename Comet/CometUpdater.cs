@@ -139,9 +139,7 @@
             }
         }
 
-        /// <summary>
-        ///     Verify the connection state.
-        /// </summary>
+        /// <summary>Verify the connection state.</summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Always)]
         public bool Connected
