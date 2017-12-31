@@ -606,7 +606,5 @@
         }
 
         #endregion
-
-        // TODO: Launch application after install setting.
     }
 }
