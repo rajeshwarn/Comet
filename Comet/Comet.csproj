@@ -92,6 +92,7 @@
     <Compile Include="Events\Delegates.cs" />
     <Compile Include="Events\DownloaderEventArgs.cs" />
     <Compile Include="Events\UpdaterStateEventArgs.cs" />
+    <Compile Include="Structure\UpdaterSettings.cs" />
     <Compile Include="UserControls\Banner.cs">
       <SubType>UserControl</SubType>
     </Compile>

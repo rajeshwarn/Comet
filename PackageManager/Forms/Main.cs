@@ -65,17 +65,7 @@
             string _source = ResourcesManager.ReadResource(Application.StartupPath + @"\Comet.dll", "Comet.Setup.MainEntryPoint.cs");
             tbSource.Text = _source;
 
-            TabPage _downloadSitesTabPage = new TabPage("Download Sites");
-
-            _downloadSites = new DownloadSites
-                {
-                    BackColor = Color.White,
-                    Dock = DockStyle.Fill
-                };
-
-            _downloadSitesTabPage.Controls.Add(_downloadSites);
-
-            tabControlCreator.TabPages.Add(_downloadSitesTabPage);
+            InitializeDownloadSitesTabPage();
         }
 
         #endregion
@@ -177,6 +167,23 @@
             int _revision = Convert.ToInt32(nudRevision.Value);
 
             return new Version(_major, _minor, _build, _revision);
+        }
+
+        /// <summary>
+        ///     Initializes the download sites tab page.
+        /// </summary>
+        private void InitializeDownloadSitesTabPage()
+        {
+            TabPage _downloadSitesTabPage = new TabPage("Download Sites");
+
+            _downloadSites = new DownloadSites
+                {
+                    BackColor = Color.White,
+                    Dock = DockStyle.Fill
+                };
+
+            _downloadSitesTabPage.Controls.Add(_downloadSites);
+            tabControlCreator.TabPages.Add(_downloadSitesTabPage);
         }
 
         /// <summary>The main load.</summary>

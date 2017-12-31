@@ -5,6 +5,8 @@
     using System;
     using System.Windows.Forms;
 
+    using Comet.Structure;
+
     using PackageManager.Structure;
 
     #endregion
@@ -20,7 +22,7 @@
 
             CbDisplayWelcomePage.Checked = ControlPanel.SettingsManager.Settings.DisplayWelcomePage;
             CbAutoUpdate.Checked = ControlPanel.SettingsManager.Settings.AutoUpdate;
-            CbNotifyBeforeInstallingUpdates.Checked = ControlPanel.SettingsManager.Settings.NotifyBeforeInstallUpdates;
+            CbNotifyBeforeInstallingUpdates.Checked = ControlPanel.SettingsManager.Settings.NotifyUpdateReadyToInstall;
         }
 
         #endregion
@@ -41,11 +43,11 @@
 
         private void UpdateSettings()
         {
-            Settings _settings = new Settings
-                {
+            UpdaterSettings _settings = new UpdaterSettings
+            {
                     AutoUpdate = CbAutoUpdate.Checked,
                     DisplayWelcomePage = CbDisplayWelcomePage.Checked,
-                    NotifyBeforeInstallUpdates = CbNotifyBeforeInstallingUpdates.Checked
+                    NotifyUpdateReadyToInstall = CbNotifyBeforeInstallingUpdates.Checked
                 };
 
             ControlPanel.SettingsManager.Settings = _settings;

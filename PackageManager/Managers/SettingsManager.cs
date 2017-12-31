@@ -9,8 +9,7 @@
 
     using Comet.Controls;
     using Comet.Managers;
-
-    using PackageManager.Structure;
+    using Comet.Structure;
 
     #endregion
 
@@ -19,7 +18,7 @@
         #region Variables
 
         private string _filePath;
-        private Settings _settings;
+        private UpdaterSettings _updaterSettings;
 
         #endregion
 
@@ -35,10 +34,10 @@
         /// <summary>Initializes a new instance of the <see cref="SettingsManager" /> class. </summary>
         /// <param name="filePath">The settings file Path.</param>
         /// <param name="settings">The settings.</param>
-        public SettingsManager(string filePath, Settings settings) : this()
+        public SettingsManager(string filePath, UpdaterSettings settings) : this()
         {
             _filePath = filePath;
-            _settings = settings;
+            _updaterSettings = settings;
         }
 
         /// <summary>
@@ -47,7 +46,7 @@
         public SettingsManager()
         {
             _filePath = string.Empty;
-            _settings = new Settings();
+            _updaterSettings = new UpdaterSettings();
         }
 
         #endregion
@@ -67,16 +66,16 @@
             }
         }
 
-        public Settings Settings
+        public UpdaterSettings Settings
         {
             get
             {
-                return _settings;
+                return _updaterSettings;
             }
 
             set
             {
-                _settings = value;
+                _updaterSettings = value;
             }
         }
 
@@ -123,9 +122,10 @@
                 XElement _headerElement = new XElement("Settings");
                 _settingsDocument.Add(_headerElement);
 
-                _headerElement.Add(new XElement("AutoUpdate", _settings.AutoUpdate));
-                _headerElement.Add(new XElement("NotifyBeforeInstallingUpdates", _settings.NotifyBeforeInstallUpdates));
-                _headerElement.Add(new XElement("DisplayWelcomePage", _settings.DisplayWelcomePage));
+                _headerElement.Add(new XElement("AutoUpdate", _updaterSettings.AutoUpdate));
+                _headerElement.Add(new XElement("NotifyUpdateAvailable", _updaterSettings.NotifyUpdateAvailable));
+                _headerElement.Add(new XElement("NotifyBeforeInstallingUpdates", _updaterSettings.NotifyUpdateReadyToInstall));
+                _headerElement.Add(new XElement("DisplayWelcomePage", _updaterSettings.DisplayWelcomePage));
 
                 _settingsDocument.Save(FilePath, SaveOptions.None);
             }
@@ -143,9 +143,10 @@
         {
             try
             {
-                _settings.AutoUpdate = Convert.ToBoolean(string.Concat(settingsFile.Descendants("AutoUpdate").Nodes()));
-                _settings.DisplayWelcomePage = Convert.ToBoolean(string.Concat(settingsFile.Descendants("DisplayWelcomePage").Nodes()));
-                _settings.NotifyBeforeInstallUpdates = Convert.ToBoolean(string.Concat(settingsFile.Descendants("NotifyBeforeInstallingUpdates").Nodes()));
+                _updaterSettings.AutoUpdate = Convert.ToBoolean(string.Concat(settingsFile.Descendants("AutoUpdate").Nodes()));
+                _updaterSettings.DisplayWelcomePage = Convert.ToBoolean(string.Concat(settingsFile.Descendants("DisplayWelcomePage").Nodes()));
+                _updaterSettings.NotifyUpdateAvailable = Convert.ToBoolean(string.Concat(settingsFile.Descendants("NotifyUpdateAvailable").Nodes()));
+                _updaterSettings.NotifyUpdateReadyToInstall = Convert.ToBoolean(string.Concat(settingsFile.Descendants("NotifyBeforeInstallingUpdates").Nodes()));
             }
             catch (Exception e)
             {
