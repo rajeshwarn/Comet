@@ -9,6 +9,7 @@
 
     using Comet.Controls;
     using Comet.Managers;
+    using Comet.Structure;
 
     using PackageManager.Managers;
 
@@ -32,8 +33,7 @@
         public DownloadSites()
         {
             InitializeComponent();
-            ControlPanel.WriteLog($"Initializing Download Sites Panel");
-
+            Logger.Log(ControlPanel.DefaultSettings, "Initializing Download Sites Panel");
             _urlList = new List<Uri>();
             CbUrlScheme.SelectedIndex = 0;
         }

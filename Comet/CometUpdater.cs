@@ -62,10 +62,11 @@
         /// <param name="updateServerPackagePath">The update server package path.</param>
         /// <param name="executablePath">The executable path.</param>
         /// <param name="restartApplicationAfterInstall">Restart application after install toggle.</param>
-        public CometUpdater(Uri updateServerPackagePath, string executablePath, bool restartApplicationAfterInstall) : this()
+        /// <param name="displayWelcomePage">The display welcome page.</param>
+        public CometUpdater(Uri updateServerPackagePath, string executablePath, bool restartApplicationAfterInstall, bool displayWelcomePage) : this()
         {
             _updateServerPackagePath = updateServerPackagePath;
-            _installOptions = new InstallOptions(executablePath, restartApplicationAfterInstall);
+            _installOptions = new InstallOptions(executablePath, restartApplicationAfterInstall, displayWelcomePage);
         }
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
@@ -73,11 +74,12 @@
         /// <param name="executablePath">The executable path.</param>
         /// <param name="autoUpdate">Auto update the application.</param>
         /// <param name="restartApplicationAfterInstall">Restart application after install toggle.</param>
-        public CometUpdater(Uri updateServerPackagePath, string executablePath, bool autoUpdate, bool restartApplicationAfterInstall) : this()
+        /// <param name="displayWelcomePage">The display welcome page.</param>
+        public CometUpdater(Uri updateServerPackagePath, string executablePath, bool autoUpdate, bool restartApplicationAfterInstall, bool displayWelcomePage) : this()
         {
             _autoUpdate = autoUpdate;
             _updateServerPackagePath = updateServerPackagePath;
-            _installOptions = new InstallOptions(executablePath, restartApplicationAfterInstall);
+            _installOptions = new InstallOptions(executablePath, restartApplicationAfterInstall, displayWelcomePage);
         }
 
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
@@ -88,7 +90,7 @@
             _notifyUpdateAvailable = true;
             _notifyUpdateReadyToInstall = true;
             _state = UpdaterState.NotChecked;
-            _installOptions = new InstallOptions(string.Empty, true);
+            _installOptions = new InstallOptions(string.Empty, true, true);
             _opened = false;
 
             _backgroundUpdateChecker = new BackgroundWorker
@@ -138,7 +140,7 @@
         }
 
         /// <summary>
-        ///     verify the connection state.
+        ///     Verify the connection state.
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -169,6 +171,22 @@
             get
             {
                 return GetEntryAssembly.GetName().Version;
+            }
+        }
+
+        /// <summary>Gets or sets the display welcome page.</summary>
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public bool DisplayWelcomePage
+        {
+            get
+            {
+                return _installOptions.DisplayWelcomePage;
+            }
+
+            set
+            {
+                _installOptions.DisplayWelcomePage = value;
             }
         }
 
@@ -588,5 +606,7 @@
         }
 
         #endregion
+
+        // TODO: Launch application after install setting.
     }
 }

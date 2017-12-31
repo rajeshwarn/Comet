@@ -6,15 +6,19 @@
 
     using Comet.Structure;
 
+    using PackageManager.Managers;
+
     #endregion
 
     internal class ControlPanel
     {
         #region Properties
 
-        public static string ArchiveFileTypes { get; set; }
+        public static SettingsManager SettingsManager { get; set; }
 
-        public static string ArchivePath { get; set; }
+        public static Logger.LogSettings DefaultSettings { get; set; }
+
+        public static string FileHistoryLocation { get; set; }
 
         public static string FileName { get; set; }
 
@@ -34,26 +38,7 @@
 
         #region Events
 
-        // TODO: Create logger settings
-        public static string LogDirectory = "Logs";
-
-        public static string LogExtension = ".xml";
-        public static string LogFile = "Log";
-
         public static string ResourceSettingsPath = Application.StartupPath + @"\\CometSettings.resources";
-
-        /// <summary>
-        ///     Write entry to log file.
-        /// </summary>
-        /// <param name="message"></param>
-        public static void WriteLog(string message)
-        {
-            Logger.Log(new Logger(LogDirectory, LogExtension, LogFile, WriteMode), message);
-        }
-
-        public static Logger.WriteMode WriteMode = Logger.WriteMode.XML;
-
-        internal static string FileHistoryLocation;
 
         #endregion
     }

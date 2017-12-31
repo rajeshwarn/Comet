@@ -15,6 +15,7 @@
     {
         #region Variables
 
+        private bool _displayWelcomePage;
         private string _downloadFolder;
         private string _executablePath;
         private string _installDirectory;
@@ -28,12 +29,14 @@
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="InstallOptions" /> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="InstallOptions"/> class.</summary>
         /// <param name="executablePath">The executable path.</param>
         /// <param name="restartApplicationAfterInstall">The restart Application After Install.</param>
-        public InstallOptions(string executablePath, bool restartApplicationAfterInstall)
+        /// <param name="displayWelcomePage">The display welcome page.</param>
+        public InstallOptions(string executablePath, bool restartApplicationAfterInstall, bool displayWelcomePage)
         {
             _executablePath = executablePath;
+            _displayWelcomePage = displayWelcomePage;
             _restartApplicationAfterInstall = restartApplicationAfterInstall;
 
             if (string.IsNullOrEmpty(_executablePath))
@@ -55,6 +58,19 @@
         #endregion
 
         #region Properties
+
+        public bool DisplayWelcomePage
+        {
+            get
+            {
+                return _displayWelcomePage;
+            }
+
+            set
+            {
+                _displayWelcomePage = value;
+            }
+        }
 
         public List<string> DownloadedFiles { get; set; } = new List<string>();
 

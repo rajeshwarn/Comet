@@ -170,17 +170,6 @@
 
         #region Events
 
-        ///// <summary>Returns a value indicating whether the log entry already exists.</summary>
-        ///// <param name="historyLogs">The history Manager.</param>
-        ///// <param name="logEntry">The log entry.</param>
-        ///// <returns>
-        /////     <see cref="bool" />
-        ///// </returns>
-        // public static bool Exists(List<HistoryLogEntry> historyLogs, HistoryLogEntry logEntry)
-        // {
-        // return historyLogs.Contains(logEntry);
-        // }
-
         /// <summary>
         ///     Add the file to the history.
         /// </summary>

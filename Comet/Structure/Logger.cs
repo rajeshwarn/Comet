@@ -4,7 +4,6 @@
 
     using System;
     using System.IO;
-    using System.Reflection;
     using System.Windows.Forms;
     using System.Xml.Linq;
 
@@ -14,38 +13,21 @@
     {
         #region Variables
 
-        private string _directory;
-        private string _extension;
-        private string _fileName;
+        private string _filePath;
         private WriteMode _writeMode;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="Logger" /> class.</summary>
-        /// <param name="directory">The directory name.</param>
-        /// <param name="extension">The file extension.</param>
-        /// <param name="fileName">The file name.</param>
-        /// <param name="writeMode">The write mode.</param>
-        public Logger(string directory = null, string extension = ".log", string fileName = "Log", WriteMode writeMode = WriteMode.Text)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Logger" /> class.
+        /// </summary>
+        /// <param name="logSettings">The logger settings.</param>
+        public Logger(LogSettings logSettings)
         {
-            _fileName = fileName;
-            _directory = directory;
-            _extension = extension;
-            _writeMode = writeMode;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Logger" /> class.</summary>
-        /// <param name="extension">The extension.</param>
-        /// <param name="fileName">The file name.</param>
-        /// <param name="writeMode">The write mode.</param>
-        public Logger(string extension = ".log", string fileName = "Log", WriteMode writeMode = WriteMode.Text)
-        {
-            _directory = string.Empty;
-            _extension = extension;
-            _fileName = fileName;
-            _writeMode = writeMode;
+            _filePath = logSettings.FilePath;
+            _writeMode = logSettings.WriteMode;
         }
 
         public enum WriteMode
@@ -62,56 +44,13 @@
         #region Properties
 
         /// <summary>
-        ///     The directory path.
+        ///     The file path.
         /// </summary>
-        public string DirectoryPath
+        public string FilePath
         {
             get
             {
-                string _folder;
-                if (string.IsNullOrEmpty(_directory))
-                {
-                    _folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                }
-                else
-                {
-                    _folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + _directory;
-                }
-
-                return $"{_folder}\\";
-            }
-        }
-
-        /// <summary>
-        ///     The file extension.
-        /// </summary>
-        public string Extension
-        {
-            get
-            {
-                return _extension;
-            }
-        }
-
-        /// <summary>
-        ///     The file name.
-        /// </summary>
-        public string FileName
-        {
-            get
-            {
-                return $"{_fileName}{_extension}";
-            }
-        }
-
-        /// <summary>
-        ///     The full log path.
-        /// </summary>
-        public string LogFullPath
-        {
-            get
-            {
-                return $"{DirectoryPath}{FileName}";
+                return _filePath;
             }
         }
 
@@ -142,21 +81,21 @@
         }
 
         /// <summary>Write the log entry to file.</summary>
-        /// <param name="logger">The logger.</param>
+        /// <param name="logSettings">The log settings.</param>
         /// <param name="message">The message.</param>
-        public static void Log(Logger logger, string message)
+        public static void Log(LogSettings logSettings, string message)
         {
-            switch (logger.Mode)
+            switch (logSettings.WriteMode)
             {
                 case WriteMode.Text:
                     {
-                        LogText(logger, message);
+                        LogText(logSettings, message);
                         break;
                     }
 
                 case WriteMode.XML:
                     {
-                        LogXML(logger, message);
+                        LogXML(logSettings, message);
                         break;
                     }
 
@@ -170,9 +109,9 @@
         /// <summary>
         ///     Write exception log.
         /// </summary>
-        /// <param name="logger">The logger.</param>
+        /// <param name="logSettings">The log settings.</param>
         /// <param name="exception">The exception.</param>
-        public static void LogException(Logger logger, Exception exception)
+        public static void LogException(LogSettings logSettings, Exception exception)
         {
             try
             {
@@ -197,7 +136,7 @@
                         new XElement("Type", exception.InnerException.GetType().FullName)));
                 }
 
-                WriteLine(logger, _xmlEntry);
+                WriteLine(logSettings, _xmlEntry);
             }
             catch (Exception e)
             {
@@ -208,15 +147,15 @@
         /// <summary>
         ///     Write using text mode.
         /// </summary>
-        /// <param name="logger">The logger.</param>
+        /// <param name="logSettings">The log Settings.</param>
         /// <param name="message">The message.</param>
-        private static void LogText(Logger logger, string message)
+        private static void LogText(LogSettings logSettings, string message)
         {
             string _layout = $"{GetTimeFormatString()} : {message}";
 
             try
             {
-                WriteLine(logger, _layout);
+                WriteLine(logSettings, _layout);
             }
             catch (Exception e)
             {
@@ -224,12 +163,10 @@
             }
         }
 
-        /// <summary>
-        ///     Write using XML mode.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
+        /// <summary>Write using XML mode.</summary>
+        /// <param name="logSettings">The log Settings.</param>
         /// <param name="message">The message.</param>
-        private static void LogXML(Logger logger, string message)
+        private static void LogXML(LogSettings logSettings, string message)
         {
             try
             {
@@ -238,7 +175,7 @@
                     new XElement("Date", GetTimeFormatString()),
                     new XElement("Message", message));
 
-                WriteLine(logger, _xmlEntryLog);
+                WriteLine(logSettings, _xmlEntryLog);
             }
             catch (Exception e)
             {
@@ -249,13 +186,13 @@
         /// <summary>
         ///     Write line to log.
         /// </summary>
-        /// <param name="logger">The logger.</param>
+        /// <param name="logSettings">The log settings.</param>
         /// <param name="message">The message.</param>
-        private static void WriteLine(Logger logger, object message)
+        private static void WriteLine(LogSettings logSettings, object message)
         {
             try
             {
-                StreamWriter _streamWriter = new StreamWriter(logger.LogFullPath, true);
+                StreamWriter _streamWriter = new StreamWriter(logSettings.FilePath, true);
                 _streamWriter.WriteLine(message);
                 _streamWriter.Close();
             }
@@ -263,6 +200,17 @@
             {
                 MessageBox.Show(e.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public struct LogSettings
+        {
+            public WriteMode WriteMode { get; set; }
+
+            public string FilePath { get; set; }
         }
 
         #endregion

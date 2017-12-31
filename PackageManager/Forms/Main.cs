@@ -29,6 +29,7 @@
 
         private DownloadSites _downloadSites;
         private HistoryManager _historyManager;
+        private CometUpdater _updater;
 
         #endregion
 
@@ -38,20 +39,26 @@
         {
             InitializeComponent();
 
+            ControlPanel.DefaultSettings = new Logger.LogSettings
+                {
+                    FilePath = @"Logs\Log.xml",
+                    WriteMode = Logger.WriteMode.XML
+                };
+
+            ControlPanel.SettingsManager = new SettingsManager(@"Logs\Settings.xml");
+            ControlPanel.SettingsManager.Load();
+            
+
             ControlPanel.FileHistoryLocation = @"Logs\History.xml";
-            ControlPanel.ArchiveFileTypes = @"ZIP File|*.zip";
             ControlPanel.PackageFileTypes = @"Package File|*.package";
             ControlPanel.MaxRecentProjects = 10;
             ControlPanel.InstallerPath = "Installer.exe";
 
-            ControlPanel.WriteLog($"Started {Application.ProductName}");
+            Logger.Log(ControlPanel.DefaultSettings, $"Started {Application.ProductName}");
 
             ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Update.package";
 
-            _updater = new CometUpdater(new Uri(ControlPanel.UpdatePackageUrl), Assembly.GetExecutingAssembly().Location, true)
-                {
-                    AutoUpdate = false
-                };
+            _updater = new CometUpdater(new Uri(ControlPanel.UpdatePackageUrl), Assembly.GetExecutingAssembly().Location, ControlPanel.SettingsManager.Settings.AutoUpdate, ControlPanel.SettingsManager.Settings.DisplayWelcomePage);
 
             _updater.CheckingForUpdate += CometUpdater_CheckingForUpdate;
             _updater.CheckForUpdate();
@@ -95,6 +102,7 @@
         private void CheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _updater.CheckForUpdate();
+            _updater.DisplayWelcomePage = ControlPanel.SettingsManager.Settings.DisplayWelcomePage;
 
             if (_updater.UpdateAvailable)
             {
@@ -347,6 +355,31 @@
                     saveAsToolStripMenuItem.PerformClick();
                 }
             }
+        }
+
+        /// <summary>
+        ///     Displays the options form.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Options _optionsForm = new Options();
+            _optionsForm.FormClosed += OptionsForm_FormClosed;
+            _optionsForm.ShowDialog();
+        }
+
+        /// <summary>
+        /// Occurs when the options form is closed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        private void OptionsForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // TODO: Reload settings.
+           // _updater.AutoUpdate = ControlPanel.SettingsManager.Settings.AutoUpdate;
+           // _updater.DisplayWelcomePage = ControlPanel.SettingsManager.Settings.DisplayWelcomePage;
+           // _updater.NotifyUpdateReadyToInstall = ControlPanel.SettingsManager.Settings.NotifyBeforeInstallUpdates;
         }
 
         /// <summary>Text box data value changed.</summary>

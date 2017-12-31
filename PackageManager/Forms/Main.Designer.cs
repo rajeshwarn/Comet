@@ -52,6 +52,7 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportAProblemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
@@ -59,9 +60,6 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControlCreator = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.nudRevision = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
@@ -77,13 +75,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.tabPage12 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.TbUpdaterDetails = new System.Windows.Forms.TextBox();
@@ -91,6 +82,11 @@
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -102,15 +98,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudMajor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMinor)).BeginInit();
             this.tabPage12.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.tabControlMain.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.menuStripMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -289,9 +284,18 @@
             // 
             // viewToolStripMenuItem
             // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.optionsToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "&View";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.optionsToolStripMenuItem.Text = "Options...";
+            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.OptionsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -335,7 +339,6 @@
             this.tabControlCreator.Controls.Add(this.tabPage5);
             this.tabControlCreator.Controls.Add(this.tabPage10);
             this.tabControlCreator.Controls.Add(this.tabPage12);
-            this.tabControlCreator.Controls.Add(this.tabPage3);
             this.tabControlCreator.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlCreator.Location = new System.Drawing.Point(3, 3);
             this.tabControlCreator.Multiline = true;
@@ -346,17 +349,19 @@
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.checkBox4);
-            this.tabPage5.Controls.Add(this.checkBox2);
-            this.tabPage5.Controls.Add(this.checkBox1);
+            this.tabPage5.Controls.Add(this.numericUpDown4);
             this.tabPage5.Controls.Add(this.label3);
             this.tabPage5.Controls.Add(this.nudRevision);
+            this.tabPage5.Controls.Add(this.numericUpDown3);
             this.tabPage5.Controls.Add(this.label5);
             this.tabPage5.Controls.Add(this.dtpRelease);
+            this.tabPage5.Controls.Add(this.numericUpDown2);
             this.tabPage5.Controls.Add(this.label8);
             this.tabPage5.Controls.Add(this.nudBuild);
+            this.tabPage5.Controls.Add(this.numericUpDown1);
             this.tabPage5.Controls.Add(this.tbPackageFilename);
             this.tabPage5.Controls.Add(this.tbPackageChangeLog);
+            this.tabPage5.Controls.Add(this.label1);
             this.tabPage5.Controls.Add(this.nudMajor);
             this.tabPage5.Controls.Add(this.tbPackageName);
             this.tabPage5.Controls.Add(this.label7);
@@ -369,36 +374,6 @@
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "General";
             this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(8, 270);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(220, 17);
-            this.checkBox4.TabIndex = 2;
-            this.checkBox4.Text = "User option: Allow custom install directory";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(8, 293);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(229, 17);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "User option: Launch application after install";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(8, 316);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(169, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Launch application after install";
-            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -565,94 +540,6 @@
             this.tabPage12.Text = "Build";
             this.tabPage12.UseVisualStyleBackColor = true;
             // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.numericUpDown1);
-            this.tabPage3.Controls.Add(this.numericUpDown2);
-            this.tabPage3.Controls.Add(this.numericUpDown3);
-            this.tabPage3.Controls.Add(this.numericUpDown4);
-            this.tabPage3.Controls.Add(this.label2);
-            this.tabPage3.Controls.Add(this.checkBox3);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(650, 358);
-            this.tabPage3.TabIndex = 8;
-            this.tabPage3.Text = "Setup";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(296, 79);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(53, 20);
-            this.numericUpDown1.TabIndex = 27;
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(237, 79);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(53, 20);
-            this.numericUpDown2.TabIndex = 26;
-            // 
-            // numericUpDown3
-            // 
-            this.numericUpDown3.Location = new System.Drawing.Point(178, 79);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(53, 20);
-            this.numericUpDown3.TabIndex = 25;
-            // 
-            // numericUpDown4
-            // 
-            this.numericUpDown4.Location = new System.Drawing.Point(119, 78);
-            this.numericUpDown4.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(53, 20);
-            this.numericUpDown4.TabIndex = 24;
-            this.numericUpDown4.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 81);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 13);
-            this.label2.TabIndex = 23;
-            this.label2.Text = "Minimum Version:";
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(6, 55);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(160, 17);
-            this.checkBox3.TabIndex = 0;
-            this.checkBox3.Text = "Disable install directory page";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
             // tabControlMain
             // 
             this.tabControlMain.Controls.Add(this.tabPage1);
@@ -721,6 +608,68 @@
             this.toolStripSeparator13.Name = "toolStripSeparator13";
             this.toolStripSeparator13.Size = new System.Drawing.Size(111, 6);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(5, 322);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(89, 13);
+            this.label1.TabIndex = 23;
+            this.label1.Text = "Minimum Version:";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(121, 319);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(53, 20);
+            this.numericUpDown1.TabIndex = 24;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(180, 320);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(53, 20);
+            this.numericUpDown2.TabIndex = 25;
+            // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.Location = new System.Drawing.Point(239, 320);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(53, 20);
+            this.numericUpDown3.TabIndex = 26;
+            // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.Location = new System.Drawing.Point(298, 320);
+            this.numericUpDown4.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(53, 20);
+            this.numericUpDown4.TabIndex = 27;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -747,18 +696,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudMajor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMinor)).EndInit();
             this.tabPage12.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.tabControlMain.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -803,17 +750,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
-        private Comet.CometUpdater _updater;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
-        private System.Windows.Forms.NumericUpDown numericUpDown4;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.TextBox tbPackageName;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
@@ -828,6 +764,12 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown nudRevision;
         private System.Windows.Forms.TextBox TbUpdaterDetails;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label1;
     }
 }
 
