@@ -407,7 +407,8 @@
             // 
             // numericUpDown4
             // 
-            this.numericUpDown4.Location = new System.Drawing.Point(298, 320);
+            this.numericUpDown4.Enabled = false;
+            this.numericUpDown4.Location = new System.Drawing.Point(297, 254);
             this.numericUpDown4.Maximum = new decimal(new int[] {
             10,
             0,
@@ -441,7 +442,8 @@
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(239, 320);
+            this.numericUpDown3.Enabled = false;
+            this.numericUpDown3.Location = new System.Drawing.Point(238, 254);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             10,
             0,
@@ -472,7 +474,8 @@
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(180, 320);
+            this.numericUpDown2.Enabled = false;
+            this.numericUpDown2.Location = new System.Drawing.Point(179, 254);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             10,
             0,
@@ -506,7 +509,8 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(121, 319);
+            this.numericUpDown1.Enabled = false;
+            this.numericUpDown1.Location = new System.Drawing.Point(120, 253);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             10,
             0,
@@ -546,7 +550,8 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 322);
+            this.label1.Enabled = false;
+            this.label1.Location = new System.Drawing.Point(4, 256);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(89, 13);
             this.label1.TabIndex = 23;
