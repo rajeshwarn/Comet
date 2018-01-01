@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DarkByte7")]
 [assembly: AssemblyProduct("Comet")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright ©  2017-2018")]
 [assembly: AssemblyTrademark("https://darkbyte7.github.io/Comet/")]
 [assembly: AssemblyCulture("")]
 
