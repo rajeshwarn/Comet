@@ -44,11 +44,10 @@
                     FilePath = @"Logs\Log.xml",
                     WriteMode = Logger.WriteMode.XML
                 };
-            ControlPanel.ResourceSettingsPath = Application.StartupPath + @"\\CometSettings.resources";
 
+            ControlPanel.ResourceSettingsPath = Application.StartupPath + @"\\CometSettings.resources";
             ControlPanel.SettingsManager = new SettingsManager(@"Logs\Settings.xml");
             ControlPanel.SettingsManager.Load();
-
             ControlPanel.FileHistoryLocation = @"Logs\History.xml";
             ControlPanel.PackageFileTypes = @"Package File|*.package";
             ControlPanel.InstallerPath = "Installer.exe";
