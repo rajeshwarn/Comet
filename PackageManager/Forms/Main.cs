@@ -55,9 +55,8 @@
 
             Logger.Log(ControlPanel.DefaultSettings, $"Started {Application.ProductName}");
 
-            ControlPanel.UpdatePackageUrl = @"https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Update.package";
-
-            _updater = new CometUpdater(new Uri(ControlPanel.UpdatePackageUrl), Assembly.GetExecutingAssembly().Location, ControlPanel.SettingsManager.UpdaterSettings.AutoUpdate, ControlPanel.SettingsManager.UpdaterSettings.DisplayWelcomePage);
+            Uri _updaterServerPath = new Uri(@"https://raw.githubusercontent.com/DarkByte7/Comet/master/PackageManager/Update.package");
+            _updater = new CometUpdater(_updaterServerPath, Assembly.GetExecutingAssembly().Location, ControlPanel.SettingsManager.UpdaterSettings.AutoUpdate, ControlPanel.SettingsManager.UpdaterSettings.DisplayWelcomePage);
 
             _updater.CheckingForUpdate += CometUpdater_CheckingForUpdate;
             _updater.CheckForUpdate();

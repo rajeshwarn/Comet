@@ -30,8 +30,6 @@
 
         public static SettingsManager SettingsManager { get; set; }
 
-        public static string UpdatePackageUrl { get; set; }
-
         #endregion
     }
 }
