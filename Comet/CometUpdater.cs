@@ -85,7 +85,7 @@
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
         public CometUpdater()
         {
-            _updateServerPackagePath = new Uri(DefaultUri);
+            _updateServerPackagePath = new Uri("https://www.site.com/update.package");
             _autoUpdate = false;
             _notifyUpdateAvailable = true;
             _notifyUpdateReadyToInstall = true;
@@ -566,8 +566,6 @@
 
             _backgroundUpdateChecker.CancelAsync();
         }
-
-        private const string DefaultUri = "https://www.site.com/update.package";
 
         /// <summary>Checking for update complete.</summary>
         /// <param name="sender">The sender.</param>
