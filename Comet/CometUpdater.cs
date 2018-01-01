@@ -85,7 +85,7 @@
         /// <summary>Initializes a new instance of the <see cref="CometUpdater" /> class.</summary>
         public CometUpdater()
         {
-            _updateServerPackagePath = null;
+            _updateServerPackagePath = new Uri(DefaultUri);
             _autoUpdate = false;
             _notifyUpdateAvailable = true;
             _notifyUpdateReadyToInstall = true;
@@ -425,16 +425,27 @@
         [Category("Status")]
         [Description("Gets or sets the update server package path.")]
         [EditorBrowsable(EditorBrowsableState.Always)]
-        public Uri UpdateServerPackagePath
+        public string UpdateServerPackagePath
         {
             get
             {
-                return _updateServerPackagePath;
+                return _updateServerPackagePath.OriginalString;
             }
 
             set
             {
-                _updateServerPackagePath = value;
+                if (string.IsNullOrEmpty(value))
+                {
+                    return;
+                }
+
+                if (value == _updateServerPackagePath.OriginalString)
+                {
+                    return;
+                }
+
+                string _url = value;
+                _updateServerPackagePath = new Uri(_url);
             }
         }
 
@@ -555,6 +566,8 @@
 
             _backgroundUpdateChecker.CancelAsync();
         }
+
+        private const string DefaultUri = "https://www.site.com/update.package";
 
         /// <summary>Checking for update complete.</summary>
         /// <param name="sender">The sender.</param>

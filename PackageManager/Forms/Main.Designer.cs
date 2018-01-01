@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tbSource = new System.Windows.Forms.TextBox();
@@ -91,7 +90,6 @@
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
-            this.cometUpdater1 = new Comet.CometUpdater(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -705,15 +703,6 @@
             this.toolStripSeparator13.Name = "toolStripSeparator13";
             this.toolStripSeparator13.Size = new System.Drawing.Size(111, 6);
             // 
-            // cometUpdater1
-            // 
-            this.cometUpdater1.AutoUpdate = false;
-            this.cometUpdater1.DisplayWelcomePage = true;
-            this.cometUpdater1.NotifyUpdateAvailable = true;
-            this.cometUpdater1.NotifyUpdateReadyToInstall = true;
-            this.cometUpdater1.RestartApplicationAfterInstall = true;
-            this.cometUpdater1.UpdateServerPackagePath = null;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -819,7 +808,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem statusbarToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private Comet.CometUpdater cometUpdater1;
     }
 }
 
