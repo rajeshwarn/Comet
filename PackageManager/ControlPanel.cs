@@ -2,8 +2,6 @@
 {
     #region Namespace
 
-    using System.Windows.Forms;
-
     using Comet.Structure;
 
     using PackageManager.Managers;
@@ -26,19 +24,13 @@
 
         public static string InstallerPath { get; set; }
 
-        public static int MaxRecentProjects { get; set; }
-
         public static string PackageFileTypes { get; set; }
+
+        public static string ResourceSettingsPath { get; set; }
 
         public static SettingsManager SettingsManager { get; set; }
 
         public static string UpdatePackageUrl { get; set; }
-
-        #endregion
-
-        #region Events
-
-        public static string ResourceSettingsPath = Application.StartupPath + @"\\CometSettings.resources";
 
         #endregion
     }

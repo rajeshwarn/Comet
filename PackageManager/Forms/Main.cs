@@ -44,13 +44,13 @@
                     FilePath = @"Logs\Log.xml",
                     WriteMode = Logger.WriteMode.XML
                 };
+            ControlPanel.ResourceSettingsPath = Application.StartupPath + @"\\CometSettings.resources";
 
             ControlPanel.SettingsManager = new SettingsManager(@"Logs\Settings.xml");
             ControlPanel.SettingsManager.Load();
 
             ControlPanel.FileHistoryLocation = @"Logs\History.xml";
             ControlPanel.PackageFileTypes = @"Package File|*.package";
-            ControlPanel.MaxRecentProjects = 10;
             ControlPanel.InstallerPath = "Installer.exe";
 
             Logger.Log(ControlPanel.DefaultSettings, $"Started {Application.ProductName}");
@@ -289,10 +289,11 @@
         /// <param name="e">The event args.</param>
         private void OptionsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // TODO: Reload settings.
-            // _updater.AutoUpdate = ControlPanel.SettingsManager.Settings.AutoUpdate;
-            // _updater.DisplayWelcomePage = ControlPanel.SettingsManager.Settings.DisplayWelcomePage;
-            // _updater.NotifyUpdateReadyToInstall = ControlPanel.SettingsManager.Settings.NotifyBeforeInstallUpdates;
+            _historyManager.MaximumHistory = ControlPanel.SettingsManager.ApplicationSettings.MaxRecentProjects;
+            _updater.AutoUpdate = ControlPanel.SettingsManager.UpdaterSettings.AutoUpdate;
+            _updater.DisplayWelcomePage = ControlPanel.SettingsManager.UpdaterSettings.DisplayWelcomePage;
+            _updater.NotifyUpdateReadyToInstall = ControlPanel.SettingsManager.UpdaterSettings.NotifyUpdateReadyToInstall;
+            _updater.NotifyUpdateAvailable = ControlPanel.SettingsManager.UpdaterSettings.NotifyUpdateAvailable;
         }
 
         /// <summary>
