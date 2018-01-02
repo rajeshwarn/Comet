@@ -59,10 +59,10 @@
         public static string ReadResource(string file, string resource)
         {
             Assembly _assembly = ApplicationManager.LoadAssembly(file);
-            string result;
 
             try
             {
+                string result;
                 using (Stream stream = _assembly.GetManifestResourceStream(resource))
                 using
                     (StreamReader reader = new StreamReader(stream))
