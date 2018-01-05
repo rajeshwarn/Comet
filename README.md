@@ -7,7 +7,7 @@
 <p align="center">
     <a href="https://github.com/DarkByte7/Comet/issues/"><img alt="Issues" src="https://img.shields.io/github/issues/DarkByte7/Comet.svg?style=flat"></a>
     <a href="https://gitter.im/Comet7/Lobby"><img alt="Gitter" src="https://img.shields.io/gitter/room/nwjs/nw.js.svg"></a>
-    <a href="https://github.com/DarkByte7/Comet/network"><img alt="Forks" src="https://img.shields.io/github/forks/DarkByte7/Comet.svg?style=flat"></a>
+    <a href="https://github.com/DarkByte7/Comet/network/members"><img alt="Forks" src="https://img.shields.io/github/forks/DarkByte7/Comet.svg?style=flat"></a>
     <a href="https://github.com/DarkByte7/Comet/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/DarkByte7/Comet.svg?style=flat"></a>
     <a href="https://github.com/DarkByte7/Comet/blob/master/LICENSE.md"><img alt="Licence" src="https://img.shields.io/badge/GPL-3.0-blue.svg?style=flat"></a>
 </p >
