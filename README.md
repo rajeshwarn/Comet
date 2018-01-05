@@ -40,7 +40,7 @@ The [`Comet`](https://github.com/DarkByte7/Comet) repository is where we do deve
 3. Rebuild your project and it will now be available in the toolbox.
 
 ## Tutorial
-Coming...
+- [Wiki](https://github.com/DarkByte7/Comet/wiki)
 
 ## Features
 * Windows Toolbox Control
