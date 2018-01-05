@@ -43,6 +43,7 @@ The [`Comet`](https://github.com/DarkByte7/Comet) repository is where we do deve
 - [Wiki](https://github.com/DarkByte7/Comet/wiki)
 
 ## Features
+* Windows Toolbox Component
 * Windows Toolbox Control
 * Automatic Updating
 
